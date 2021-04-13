@@ -7,17 +7,20 @@ fun main() {
 
     val parser = Parser(tokenCreator(bufRead))
     println(parser.createAST())
+
+
+
     //println(System.currentTimeMillis() - startTime)
 }
 
 
-fun tokenCreator (file: BufferedReader) : List<Pair<Any, String>>  {
+fun tokenCreator (file: BufferedReader) : List<Pair<String, String>>  {
 
     var lexicon : String = file.readText()
 
     val numRegex  = Regex("^[1-9]\\d*(\\.\\d+)?\$")
     val dataRegex = Regex("[:(){}]")
-    val token = mutableListOf<Pair<Any, String>>()
+    val token = mutableListOf<Pair<String, String>>()
     var index = 0
     lexicon = lexicon.replace("\\s+".toRegex(), "")
 
@@ -27,7 +30,7 @@ fun tokenCreator (file: BufferedReader) : List<Pair<Any, String>>  {
 
         when {
 
-            char.toString().matches(dataRegex) -> token.add( Pair(char, "" ) )
+            char.toString().matches(dataRegex) -> token.add( Pair(char.toString(), "" ) )
 
             char == '<' ->
             {
@@ -90,7 +93,7 @@ fun tokenCreator (file: BufferedReader) : List<Pair<Any, String>>  {
                 index = -1
                 token.add(Pair(stringOf, "databaseName"))
             }
-            char == ';' -> token.add(Pair(char, "break"))
+            char == ';' -> token.add(Pair(char.toString(), "break"))
 
             char == '!' -> {
                 val secondChar = lexicon.indexOf('=', index + 1)
