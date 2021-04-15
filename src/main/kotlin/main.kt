@@ -75,7 +75,7 @@ fun tokenCreator (file: BufferedReader) : List<Pair<String, String>>  {
 
             char == ';' -> token.add(Pair(char.toString(), "break"))
 
-            concatChars.contains("\\s*str (?<=\\s|^)[_a-zA-Z]*(?=[\\s=,:;]+)".toRegex()) -> {
+            concatChars.contains("str +[_a-zA-Z]*(?=[\\s=,:;]*)".toRegex()) -> {
 
                 val indexType = concatChars.indexOf("str ")
 
