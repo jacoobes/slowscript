@@ -1,12 +1,13 @@
 import java.io.File
 import java.io.BufferedReader
+
 fun main() {
 
     val bufRead : BufferedReader = File("src/main/kotlin/db.lorem").bufferedReader()
     //val startTime = System.currentTimeMillis()
 
     val parser = Parser(tokenCreator(bufRead))
-    println(parser.createAST())
+   // println(parser.createAST())
 
 
 
@@ -16,51 +17,40 @@ fun main() {
 
 fun tokenCreator (file: BufferedReader) : List<Pair<String, String>>  {
 
-    var lexicon : String = file.readText()
+
+
+    var lexicon : String = file.readText().replace("\t+".toRegex(), "")
 
     val numRegex  = Regex("^[1-9]\\d*(\\.\\d+)?\$")
     val dataRegex = Regex("[:(){}]")
     val token = mutableListOf<Pair<String, String>>()
     var index = 0
-    lexicon = lexicon.replace("\\s+".toRegex(), "")
+    var concatChars = ""
+
+    fun tokenSurroundedChars(startingChar : String, endingChar: String = startingChar, specifiedTokenType: String) {
+        val endIndex = lexicon.indexOf(endingChar, index + 1)
+        if (endIndex == -1) {
+            throw Error("unclosed character.")
+        }
+        val verb = lexicon.substring(index, endIndex + 1)
+
+        index = endIndex
+        token.add(Pair(verb, specifiedTokenType))
+    }
 
     while( index < lexicon.length) {
 
         val char = lexicon[index]
 
+        concatChars += char
+
         when {
 
             char.toString().matches(dataRegex) -> token.add( Pair(char.toString(), "" ) )
 
-            char == '<' ->
-            {
-                val secondTriangle = lexicon.indexOf('>', index + 1)
-                if(secondTriangle == -1) {
-                    break
-                }
-                val verb = lexicon.substring(index, secondTriangle + 1)
+            char == '<' ->  tokenSurroundedChars("<", endingChar = ">", specifiedTokenType = "grouper")
 
-                if(!isValidVerb(verb)) throw Error("Unknown verb $verb")
-
-                lexicon = lexicon.drop(secondTriangle + 1)
-                index = -1
-                token.add(Pair(verb, "verb"))
-            }
-            char == '"' ->
-            {
-
-                val secondQuote = lexicon.indexOf(char, index + 1)
-
-                if(secondQuote == -1) {
-                    break
-                }
-
-                val stringOf = lexicon.substring(index, secondQuote + 1)
-
-                lexicon = lexicon.drop(secondQuote + 1)
-                index = -1
-                token.add(Pair(stringOf, "string"))
-            }
+            char == '"' ->  tokenSurroundedChars(startingChar = "\"",specifiedTokenType = "string")
 
             char.toString().matches(numRegex) -> {
 
@@ -75,42 +65,32 @@ fun tokenCreator (file: BufferedReader) : List<Pair<String, String>>  {
                     }
                 }
                 val numberOf = lexicon.substring(index, numIndex + 1)
-                lexicon = lexicon.drop(numIndex  + 1)
-                index = -1
+
+                index = numIndex
+
                 token.add(Pair(numberOf, "number"))
 
             }
-            char == '\'' -> {
-                val secondQuote = lexicon.indexOf(char, index + 1)
+            char == '\'' ->  tokenSurroundedChars(startingChar = "'", specifiedTokenType = "char")
 
-                if(secondQuote == -1) {
-                    break
-                }
-
-                val stringOf = lexicon.substring(index, secondQuote + 1)
-
-                lexicon = lexicon.drop(secondQuote + 1)
-                index = -1
-                token.add(Pair(stringOf, "databaseName"))
-            }
             char == ';' -> token.add(Pair(char.toString(), "break"))
 
-            char == '!' -> {
-                val secondChar = lexicon.indexOf('=', index + 1)
+            concatChars.contains("\\s*str (?<=\\s|^)[_a-zA-Z]*(?=[\\s=,:;]+)".toRegex()) -> {
 
-                if(secondChar == -1) {
-                    break
-                }
+                val indexType = concatChars.indexOf("str ")
 
-                val stringOf = lexicon.substring(index, secondChar + 1)
+                val declaration = concatChars.substring(indexType)
+                token.add(Pair(declaration, "declaration"))
 
-                lexicon = lexicon.drop(secondChar + 1)
-                index = -1
-                token.add(Pair(stringOf, "declaration"))
+                concatChars = ""
             }
+            char == '=' -> token.add(Pair(char.toString(), "initialization"))
+
+
 
             else -> {
-                throw Error("Unknown token $char")
+
+             //   throw Error("Unknown token $char")
             }
 
         }
@@ -123,10 +103,6 @@ fun tokenCreator (file: BufferedReader) : List<Pair<String, String>>  {
 
 }
 
-fun isValidVerb(verb : String): Boolean {
-    val mutatedVerb = verb.removePrefix("<").removeSuffix(">").trim()
-    return mutatedVerb.matches(Regex("STORE|TO|FIND|GET|FROM|SEND|AS"))
-}
 
 
 

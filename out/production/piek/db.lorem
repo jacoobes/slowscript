@@ -1,9 +1,21 @@
-!NEW = 'Hollo' ("dsvjsdvlsdv");
 
-<STORE> {"chello" : "tomo"} <AS> "map1" <TO> 'Hollo';
 
-<SEND> {1234} <TO> 'Hollo';
+int tommo= 124142;
 
-<GET> {1234} <FROM> 'Hollo';
+str lom= "aa";
+str lsdsd      = "sdsvdav";
+        str tommor ;
 
-<STORE> {"tomrod" : <GET> "map1"} <TO> 'Hollo';
+str bom;
+task embody (int this, str that, boolean then) is void  {
+
+    return number;
+
+}
+
+sub
+
+
+
+
+

@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="First Commit">
+    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="In process of adding functions to tree">
+      <change afterPath="$PROJECT_DIR$/src/test/kotlin/db.lorem" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/piek/MainKt.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/piek/MainKt.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/piek/Parser.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/piek/Parser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/piek/Tree$Declaration.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/piek/Tree$Declaration.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/piek/Tree$Expression.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/piek/Tree$Function.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/piek/Tree$Function.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/piek/Tree$Value.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/piek/Tree$Value.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/piek/Tree.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/piek/Tree.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/piek/db.lorem" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/piek/db.lorem" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/AST.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/AST.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/Parser.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Parser.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/db.lorem" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/db.lorem" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/main.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -58,6 +68,7 @@
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
+    <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
   </component>
   <component name="RunManager" selected="Application.MainKt">
     <configuration name="C:/Users/jacob/OneDrive/Desktop/Projects/piek" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
@@ -135,7 +146,21 @@
       <option name="project" value="LOCAL" />
       <updated>1618275996673</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="In process of adding functions to tree">
+      <created>1618287306750</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1618287306750</updated>
+    </task>
+    <task id="LOCAL-00006" summary="In process of adding functions to tree">
+      <created>1618287647028</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1618287647028</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -164,7 +189,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="First Commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="First Commit" />
+    <MESSAGE value="In process of adding functions to tree" />
+    <option name="LAST_COMMIT_MESSAGE" value="In process of adding functions to tree" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
