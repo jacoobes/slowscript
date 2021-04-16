@@ -1,19 +1,17 @@
 
 
-int tommo= 124142;
+int tommo = 124142;
 
-str lom= "aa";
-str lsdsd      = "sdsvdav";
-        str tommor ;
+str lom = "aa";
+str lsdsd = "sdsvdav";
+str tommor = "";
 
-str bom;
-task embody (int this, str that, boolean then) is void  {
+str bom = "";
+task embody ( int this, str that = "", boolean then) is void  {
 
     return number;
 
 }
-
-sub
 
 
 
