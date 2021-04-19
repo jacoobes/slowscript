@@ -3,16 +3,18 @@ import java.io.BufferedReader
 
 
 fun main() {
-
+    val timer = Stopwatch()
     val bufRead : BufferedReader = File("src/main/kotlin/db.lorem").bufferedReader()
-    //val startTime = System.currentTimeMillis()
 
+timer.start()
     //val parser = Parser(tokenCreator(bufRead))
    // println(parser.createAST())
 
 print(tokenCreator(bufRead))
+timer.stop()
+println()
+println("${timer.elapsedTime} ms elapsed")
 
-    //println(System.currentTimeMillis() - startTime)
 }
 
 fun tokenCreator (file: BufferedReader)  : List<Pair<String, String>> {
@@ -22,6 +24,8 @@ fun tokenCreator (file: BufferedReader)  : List<Pair<String, String>> {
     val dataRegex = Regex("[:(){}]")
     var index = 0;
     val numRegex  = Regex("^[1-9]\\d*(\\.\\d+)?\$")
+    val operatorRegex = Regex("[+\\-%/*]")
+
      while (index < src.length) {
         var char = src.elementAt(index)
 
@@ -41,26 +45,70 @@ fun tokenCreator (file: BufferedReader)  : List<Pair<String, String>> {
                 index++;
             }
 
+            char == ',' -> {
+                token.add(Pair(char.toString(), ""))
+                concatChars = ""
+                index++;
+            }
+
+            concatChars == "->" -> {
+                val secondIndex = src.findAnyOf(listOf(" ", "{"), index + 1)?.first ?: throw Error("No return type detected.")
+
+                token.add(Pair(src.substring(index - 2, secondIndex), "return_type"))
+                concatChars = ""
+                index = secondIndex;
+            }
+
             concatChars == "int" -> {
-                val secondIndex = src.findAnyOf(listOf("=", ";", ",", " "), index + 1)?.first ?: throw Error("Not initialized")
+                val secondIndex = src.findAnyOf(listOf("=", ";", ",", " ", ")"), index + 1)?.first ?: throw Error("Not initialized")
                 token.add(Pair(src.substring(index + 1, secondIndex), "int_Init"))
                 concatChars = ""
                 index = secondIndex;
             }
 
-
             concatChars == "str" -> {
-                val secondIndex = src.findAnyOf(listOf("=", ";", ",", " "), index + 1)?.first ?: throw Error("Not initialized")
-                token.add(Pair(src.substring(index, secondIndex), "str_Init"))
+                val secondIndex = src.findAnyOf(listOf("=", ";", ",", " ", ")"), index + 1)?.first ?: throw Error("Not initialized")
+                token.add(Pair(src.substring(index + 1, secondIndex), "str_Init"))
                 concatChars = ""
                 index = secondIndex;
             }
+
+            concatChars == "boolean" -> {
+                val secondIndex = src.findAnyOf(listOf("=", ";", ",", " ", ")"), index + 1)?.first ?: throw Error("Not initialized")
+                token.add(Pair(src.substring(index + 1, secondIndex), "bool_Init"))
+                concatChars = ""
+                index = secondIndex;
+            }
+
+            concatChars == "double" -> {
+
+                val secondIndex = src.findAnyOf(listOf("=", ";", ",", " ", ")"), index + 1)?.first ?: throw Error("Not initialized")
+                token.add(Pair(src.substring(index + 1, secondIndex), "double_Init"))
+                concatChars = ""
+                index = secondIndex;
+            }
+
+            concatChars == "char" -> {
+
+                val secondIndex = src.findAnyOf(listOf("=", ";", ",", " ", ")"), index + 1)?.first ?: throw Error("Not initialized")
+                token.add(Pair(src.substring(index + 1, secondIndex), "char_Init"))
+                concatChars = ""
+                index = secondIndex;
+            }
+
+            concatChars == "true" || concatChars == "false" -> {
+
+                token.add(Pair(concatChars, "boolean_value"))
+
+                concatChars = ""
+            }
+
             char.toString().matches(numRegex) -> {
 
                 var numIndex = index
                 while(true) {
 
-                    if(src[numIndex+1].toString().matches(numRegex)) {
+                    if(src[numIndex+1].toString().matches(numRegex) || src[numIndex + 1] == '.') {
                         numIndex++
                     }
                     else {
@@ -76,7 +124,12 @@ fun tokenCreator (file: BufferedReader)  : List<Pair<String, String>> {
             }
 
             char == '=' ->  {
-                token.add(Pair(char.toString(), "initialization"))
+                if(src.elementAt(index + 1) == '=') {
+                    token.add(Pair("==", "equality_operator"))
+                    index++
+                } else {
+                    token.add(Pair(char.toString(), "initialization"))
+                }
                 index++
             }
 
@@ -89,15 +142,18 @@ fun tokenCreator (file: BufferedReader)  : List<Pair<String, String>> {
 
             }
 
+            char.toString().matches(operatorRegex) -> {
+                token.add(Pair(char.toString(), "operator"))
+                index++;
+            }
             char == ';' -> {
                 token.add(Pair(char.toString(), "endStatement"))
 
-//                if(concatChars.isNotEmpty()) {
-//                    throw IllegalArgumentException("Unexpected characters $concatChars")
-//                }
                 concatChars = ""
                 index++
             }
+
+
 
             else -> {
                 if(char.isWhitespace()){
@@ -114,104 +170,4 @@ fun tokenCreator (file: BufferedReader)  : List<Pair<String, String>> {
     }
     return token
 }
-
-//fun tokenCreator (file: BufferedReader) : List<Pair<String, String>>  {
-//
-//
-//
-//    var lexicon : String = file.readText().replace("\t+".toRegex(), "")
-//
-//
-//
-//    val token = mutableListOf<Pair<String, String>>()
-//    var index = 0
-//    var concatChars = ""
-//
-//    fun tokenSurroundedChars(startingChar : String, endingChar: String = startingChar, specifiedTokenType: String) {
-//        val endIndex = lexicon.indexOf(endingChar, index + 1)
-//        if (endIndex == -1) {
-//            throw Error("unclosed character.")
-//        }
-//        val verb = lexicon.substring(index, endIndex + 1)
-//
-//        index = endIndex
-//        token.add(Pair(verb, specifiedTokenType))
-//    }
-//
-//    while( index < lexicon.length) {
-//
-//        val char = lexicon[index]
-//
-//        concatChars += char
-//
-//        when {
-//
-//            char.toString().matches(dataRegex) -> token.add( Pair(char.toString(), "" ) )
-//
-//            char == '<' ->  tokenSurroundedChars("<", endingChar = ">", specifiedTokenType = "grouper")
-//
-//            char == '"' ->  tokenSurroundedChars(startingChar = "\"",specifiedTokenType = "string")
-//
-//            char.toString().matches(numRegex) -> {
-//
-//                var numIndex = index
-//                while(true) {
-//
-//                    if(lexicon[numIndex+1].toString().matches(numRegex)) {
-//                        numIndex++
-//                    }
-//                    else {
-//                        break
-//                    }
-//                }
-//                val numberOf = lexicon.substring(index, numIndex + 1)
-//
-//                index = numIndex
-//
-//                token.add(Pair(numberOf, "number"))
-//
-//            }
-//            char == '\'' ->  tokenSurroundedChars(startingChar = "'", specifiedTokenType = "char")
-//
-//            char == ';' -> {
-//
-//
-//                //"\\s?str[ ]+[_a-zA-Z]+(?=[\\s=;])+").containsMatchIn(concatChars)) {
-//
-//                token.add(Pair(char.toString(), "break"))
-//
-//            }
-//
-////           Regex("\\s?str[ ]+[_a-zA-Z]+(?=[\\s=;])*").containsMatchIn(concatChars) -> {
-////
-////
-////                val declaration = concatChars.substring(concatChars.indexOf("str"))
-////
-////                token.add(Pair(declaration, "declaration"))
-////
-////                concatChars = ""
-////            }
-//            char == '=' -> token.add(Pair(char.toString(), "initialization"))
-//
-//
-//
-//            else -> {
-//
-//             //   throw Error("Unknown token $char")
-//            }
-//
-//        }
-//
-//        index++
-//    }
-//
-//
-//    return token
-//
-//}
-//
-
-
-
-
 

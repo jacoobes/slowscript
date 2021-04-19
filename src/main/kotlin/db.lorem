@@ -1,19 +1,21 @@
 
-
-int tommo = 124142;
+boolean smell = true;
+int tommo = 124.142;
 
 str lom = "aa";
 str lsdsd = "sdsvdav";
 str tommor = "";
-
+char bob = 's'
 str bom = "";
-task embody ( int this, str that = "", boolean then) is void  {
+boolean quenBo_ = false;
+
+task test (int this, str that = "", boolean then = true) -> int {
 
     return number;
 
 }
 
-
+5 * 2 + 1 - (1.23)
 
 
 
