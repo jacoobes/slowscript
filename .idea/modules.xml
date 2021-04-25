@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/piek.iml" filepath="$PROJECT_DIR$/piek.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pieck-lite.iml" filepath="$PROJECT_DIR$/pieck-lite.iml" />
     </modules>
   </component>
 </project>

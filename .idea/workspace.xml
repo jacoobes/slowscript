@@ -1,12 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="Revamping lexer for full high level language support">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/Stopwatch.java" afterDir="false" />
+    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="almost finish lex">
+      <change afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/TOKEN_TYPES.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/Token.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/first.pkL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/piekLite.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/piek/MainKt.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/piek/MainKt.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/piek/db.lorem" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/piek/db.lorem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/db.lorem" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/db.lorem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/piek/META-INF/piek.kotlin_module" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/piek/MainKt.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/piek/Parser.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/piek/Tree$Declaration.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/piek/Tree$Function.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/piek/Tree$Parent.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/piek/Tree$Value.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/piek/Tree.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/piek.iml" beforeDir="false" afterPath="$PROJECT_DIR$/pieck-lite.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Regex.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/db.lorem" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/main.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -17,10 +30,11 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Kotlin Class" />
         <option value="Kotlin File" />
-        <option value="Kotlin Interface" />
         <option value="Class" />
+        <option value="Kotlin Enum" />
+        <option value="Kotlin Interface" />
+        <option value="Kotlin Class" />
       </list>
     </option>
   </component>
@@ -43,9 +57,19 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/piekLite.kt" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/src/main/kotlin/Parser.kt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/LICENSE" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/main.kt" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProjectId" id="1qx6NkZiRa4fj1iZt9nkswFQv84" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -65,7 +89,7 @@
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
   </component>
   <component name="RunManager" selected="Application.MainKt">
-    <configuration name="C:/Users/jacob/OneDrive/Desktop/Projects/piek" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
+    <configuration name="C:/Users/jacob/OneDrive/Desktop/Projects/piek" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -85,7 +109,7 @@
       <method v="2" />
     </configuration>
     <configuration name="MainKt" type="JetRunConfigurationType" nameIsGenerated="true">
-      <module name="piek" />
+      <module name="pieck-lite" />
       <option name="VM_PARAMETERS" value="" />
       <option name="PROGRAM_PARAMETERS" value="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
@@ -97,11 +121,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Gradle.C:/Users/jacob/OneDrive/Desktop/Projects/piek" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -175,7 +194,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618546688900</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="almost finish lex">
+      <created>1618795301342</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1618795301342</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -206,7 +232,8 @@
     <MESSAGE value="First Commit" />
     <MESSAGE value="In process of adding functions to tree" />
     <MESSAGE value="Revamping lexer for full high level language support" />
-    <option name="LAST_COMMIT_MESSAGE" value="Revamping lexer for full high level language support" />
+    <MESSAGE value="almost finish lex" />
+    <option name="LAST_COMMIT_MESSAGE" value="almost finish lex" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -217,6 +244,11 @@
         </breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="kotlin.jvm.internal.Ref$IntRef" memberName="element" />
+      </pinned-members>
+    </pin-to-top-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/piek$MainKt.ic" NAME="MainKt Coverage Results" MODIFIED="1618276042512" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
