@@ -3,9 +3,6 @@
 
 //this is a comment!
 
-
-
-
 val tommo = 124.142
 var bol = "as"
 task test (var this, val that = "", var then = true) {

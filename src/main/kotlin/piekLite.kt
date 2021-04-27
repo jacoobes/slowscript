@@ -49,9 +49,15 @@ class piekLite {
             reservedKeywords["var"] = TOKEN_TYPES.MUTABLE_VARIABLE
             reservedKeywords["val"] = TOKEN_TYPES.IMMUTABLE_VARIABLE
             reservedKeywords["task"] = TOKEN_TYPES.TASK
-            reservedKeywords["null"] = TOKEN_TYPES.NULL
+            reservedKeywords["false"] = TOKEN_TYPES.NULL
             reservedKeywords["true"] = TOKEN_TYPES.TRUE
-            reservedKeywords["null"] = TOKEN_TYPES.FALSE
+            reservedKeywords["null"] = TOKEN_TYPES.NULL
+            reservedKeywords["if"] = TOKEN_TYPES.IF
+            reservedKeywords["else if"] = TOKEN_TYPES.ELSE_IF
+            reservedKeywords["else"] = TOKEN_TYPES.ELSE
+            reservedKeywords["loop"] = TOKEN_TYPES.LOOP
+            reservedKeywords["while"] = TOKEN_TYPES.WHILE
+            reservedKeywords["of"] = TOKEN_TYPES.OF
 
             return reservedKeywords
         }

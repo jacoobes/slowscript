@@ -2,25 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="almost finish lex">
-      <change afterPath="$PROJECT_DIR$/.idea/discord.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/TOKEN_TYPES.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/Token.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/first.pkL" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/piekLite.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/piek/META-INF/piek.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/piek/MainKt.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/piek/Parser.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/piek/Tree$Declaration.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/piek/Tree$Function.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/piek/Tree$Parent.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/piek/Tree$Value.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/piek/Tree.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/piek.iml" beforeDir="false" afterPath="$PROJECT_DIR$/pieck-lite.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Regex.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/db.lorem" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Stopwatch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Stopwatch.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/TOKEN_TYPES.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/TOKEN_TYPES.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/first.pkL" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/first.pkL" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/main.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/piekLite.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/piekLite.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -201,7 +188,21 @@
       <option name="project" value="LOCAL" />
       <updated>1618795301342</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="almost finish lex">
+      <created>1619389465298</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1619389465298</updated>
+    </task>
+    <task id="LOCAL-00012" summary="almost finish lex">
+      <created>1619389477461</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1619389477461</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
