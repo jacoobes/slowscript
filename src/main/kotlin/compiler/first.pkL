@@ -1,0 +1,15 @@
+
+class Bird {
+    { (looba)
+        this.looba = looba
+    }
+}
+
+
+class Chicken from Bird {
+    { (gooba, looba)
+
+       super(looba)
+       this.gooba = gooba
+    }
+}

@@ -1,3 +1,7 @@
+package compiler
+
+import tokenCreator
+import tokens.TOKEN_TYPES
 import kotlin.system.exitProcess
 import java.io.File
 import java.io.BufferedReader
@@ -6,8 +10,6 @@ class piekLite {
 
     companion object {
         var hadError = false;
-
-
 
         fun run( args : Array<String>) {
 
@@ -58,6 +60,9 @@ class piekLite {
             reservedKeywords["loop"] = TOKEN_TYPES.LOOP
             reservedKeywords["while"] = TOKEN_TYPES.WHILE
             reservedKeywords["of"] = TOKEN_TYPES.OF
+            reservedKeywords["from"] = TOKEN_TYPES.FROM
+            reservedKeywords["super"] = TOKEN_TYPES.SUPER
+            reservedKeywords["this"] = TOKEN_TYPES.THIS
 
             return reservedKeywords
         }

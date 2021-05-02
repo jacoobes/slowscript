@@ -2,12 +2,43 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="almost finish lex">
+      <change afterPath="$PROJECT_DIR$/.gradle/6.8/fileChanges/last-build.bin" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/6.8/fileHashes/fileHashes.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/6.8/gc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/configuration-cache/gc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gradle/vcs-1/gc.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Expression.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/first.pkL" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/main.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Stopwatch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/Stopwatch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/TOKEN_TYPES.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/TOKEN_TYPES.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/first.pkL" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/first.pkL" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/main.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/piekLite.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/piekLite.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$1.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$10.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$2.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$3.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$4.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$5.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$6.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$7.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$8.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$9.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/Parser.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/Stopwatch.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/TOKEN_TYPES.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/Token.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/first.pkL" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/piekLite$Companion.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/piekLite.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/AST.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/AST.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Parser.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Stopwatch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Stopwatch.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/TOKEN_TYPES.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/tokens/TOKEN_TYPES.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Token.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/tokens/Token.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/first.pkL" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/main.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/piekLite.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/PiekLite.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,18 +84,20 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/piekLite.kt" root0="SKIP_INSPECTION" />
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/Parser.kt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/LICENSE" root0="SKIP_INSPECTION" />
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/main.kt" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/PiekLite.kt" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/main.kt" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProjectId" id="1qx6NkZiRa4fj1iZt9nkswFQv84" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
@@ -72,10 +105,20 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
   </component>
-  <component name="RunManager" selected="Application.MainKt">
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\jacob\OneDrive\Desktop\Projects\piekLite\src\main\kotlin\Compiler" />
+      <recent name="C:\Users\jacob\OneDrive\Desktop\Projects\piekLite\src\main\kotlin" />
+    </key>
+    <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="Compiler" />
+      <recent name="Tokens" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Kotlin.MainKt">
     <configuration name="C:/Users/jacob/OneDrive/Desktop/Projects/piek" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -96,14 +139,10 @@
       <method v="2" />
     </configuration>
     <configuration name="MainKt" type="JetRunConfigurationType" nameIsGenerated="true">
-      <module name="pieck-lite" />
-      <option name="VM_PARAMETERS" value="" />
-      <option name="PROGRAM_PARAMETERS" value="" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="ALTERNATIVE_JRE_PATH" value="corretto-1.8" />
-      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="MainKt" />
-      <option name="WORKING_DIRECTORY" value="" />
+      <module name="pieck-lite" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -230,6 +269,7 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="First Commit" />
     <MESSAGE value="In process of adding functions to tree" />
     <MESSAGE value="Revamping lexer for full high level language support" />
