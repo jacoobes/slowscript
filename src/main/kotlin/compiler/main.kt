@@ -1,6 +1,6 @@
 
 
-import compiler.Stopwatch
+import compiler.utils.Stopwatch
 import compiler.piekLite
 import tokens.TOKEN_TYPES
 import tokens.Token

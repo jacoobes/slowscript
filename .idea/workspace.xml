@@ -1,44 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="almost finish lex">
-      <change afterPath="$PROJECT_DIR$/.gradle/6.8/fileChanges/last-build.bin" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/6.8/fileHashes/fileHashes.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/6.8/gc.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/checksums/checksums.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/configuration-cache/gc.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/vcs-1/gc.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Expression.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/first.pkL" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/main.kt" afterDir="false" />
+    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="Lexer finished, script for Expression.kt works">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$10.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$5.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$6.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$7.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$8.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$9.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/Parser.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/Stopwatch.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/TOKEN_TYPES.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/Token.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/first.pkL" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/piekLite$Companion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/piekLite.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/AST.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/AST.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Parser.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Stopwatch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Stopwatch.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/TOKEN_TYPES.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/tokens/TOKEN_TYPES.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/Token.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/tokens/Token.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/first.pkL" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/main.kt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/piekLite.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/PiekLite.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Expression.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Expression.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Stopwatch.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/utils/Stopwatch.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/main.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -241,7 +209,21 @@
       <option name="project" value="LOCAL" />
       <updated>1619389477461</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="Lexer finished, script for Expression.kt works">
+      <created>1619986935288</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1619986935288</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Lexer finished, script for Expression.kt works">
+      <created>1619986971401</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1619986971401</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -274,7 +256,8 @@
     <MESSAGE value="In process of adding functions to tree" />
     <MESSAGE value="Revamping lexer for full high level language support" />
     <MESSAGE value="almost finish lex" />
-    <option name="LAST_COMMIT_MESSAGE" value="almost finish lex" />
+    <MESSAGE value="Lexer finished, script for Expression.kt works" />
+    <option name="LAST_COMMIT_MESSAGE" value="Lexer finished, script for Expression.kt works" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

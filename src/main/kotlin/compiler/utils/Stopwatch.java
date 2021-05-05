@@ -1,4 +1,4 @@
-package compiler;
+package compiler.utils;
 
 public class Stopwatch {
 
