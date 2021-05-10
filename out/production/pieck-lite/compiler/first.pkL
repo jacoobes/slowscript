@@ -1,15 +1,5 @@
 
-class Bird {
-    { (looba)
-        this.looba = looba
-    }
+task uh () {
+return "helma"
 }
 
-
-class Chicken from Bird {
-    { (gooba, looba)
-
-       super(looba)
-       this.gooba = gooba
-    }
-}

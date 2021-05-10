@@ -1,76 +1,74 @@
 package compiler
 
 import tokens.*
-interface ExprVisitor<R> { 
+import java.lang.StringBuilder
 
- fun <R> visitBinary(visitor : Expression.Binary) {
 
- }
- fun <R> visitUnary(visitor : Expression.Unary) {
 
- }
- fun <R> visitGrouping(visitor : Expression.Grouping) {
-
- }
- fun <R> visitLiteral(visitor : Expression.Literal) {
-
- }
- fun <R> visitTernary(visitor : Expression.Ternary) {
-
- }
 abstract class Expression {
 
-class Binary(left:Expression, operator:Token, right:Expression) : Expression() {   
-override fun <R> accept(visitor: ExprVisitor<R> ) {
+    interface Visitor<R> {
+        fun <R> visit(expression: Expression.Binary) : String
+        fun <R> visit(expression: Expression.Unary) : String
+        fun <R> visit(expression: Expression.Ternary) : String
+        fun <R> visit(expression: Expression.Grouping) : String
+        fun <R> visit(expression: Expression.Literal) : String
+    }
 
-visitor.visitBinary<R>(this)
+
+class Binary(val left:Expression, val operator:Token, val right:Expression) : Expression() {
+override fun <R> accept(visitor: Visitor<R>) : String {
+
+    return visitor.visit<R>(this)
+
+
+    }
+
+
+}
+
+
+class Unary(val expression:Expression, val postfix:Token) : Expression() {
+    override fun <R> accept(visitor: Visitor<R> ): String {
+
+     return visitor.visit<R>(this)
 
     }
 
 }
 
 
-class Unary(prefix:Token?, expression:Expression, postfix:Token?) : Expression() {   
-override fun <R> accept(visitor: ExprVisitor<R> ) {
+class Grouping(val expression:Expression) : Expression() {
+override fun <R> accept(visitor: Visitor<R> ): String {
 
-visitor.visitUnary<R>(this)
-
-    }
-
-}
-
-
-class Grouping(expression:Expression) : Expression() {   
-override fun <R> accept(visitor: ExprVisitor<R> ) {
-
-visitor.visitGrouping<R>(this)
+return visitor.visit<R>(this)
 
     }
 
 }
 
 
-class Literal(value:Any) : Expression() {   
-override fun <R> accept(visitor: ExprVisitor<R> ) {
+class Literal(val value:Any) : Expression() {
+override fun <R> accept(visitor: Visitor<R> ): String {
 
-visitor.visitLiteral<R>(this)
-
-    }
-
-}
-
-
-class Ternary(left:Expression, questionMark:String, middle:Expression, colon:String, right:Expression) : Expression() {   
-override fun <R> accept(visitor: ExprVisitor<R> ) {
-
-visitor.visitTernary<R>(this)
+ return visitor.visit<R>(this)
 
     }
 
 }
 
 
+class Ternary(val left:Expression, val questionMark:Token, val middle:Expression, val colon:Token, val right:Expression) : Expression() {
+override fun <R> accept(visitor: Visitor<R> ): String {
 
-abstract fun <R> accept(visitor : ExprVisitor<R>)
+return visitor.visit<R>(this)
+
     }
+
 }
+
+
+abstract fun <R> accept(visitor : Visitor<R>) : String
+
+    }
+

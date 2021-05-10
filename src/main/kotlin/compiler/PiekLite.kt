@@ -63,6 +63,9 @@ class piekLite {
             reservedKeywords["from"] = TOKEN_TYPES.FROM
             reservedKeywords["super"] = TOKEN_TYPES.SUPER
             reservedKeywords["this"] = TOKEN_TYPES.THIS
+            reservedKeywords["public"] = TOKEN_TYPES.PUBLIC
+            reservedKeywords["private"] = TOKEN_TYPES.PRIVATE
+            reservedKeywords["protected"] = TOKEN_TYPES.PROTECTED
 
             return reservedKeywords
         }
