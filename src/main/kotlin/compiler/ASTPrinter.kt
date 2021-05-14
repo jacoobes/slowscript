@@ -11,9 +11,7 @@ class ASTPrinter :  Expression.Visitor<String> {
 
 
     private fun parenthesize(name: String, vararg expression: Expression): String {
-        val builder = StringBuilder()
-
-        builder.append("(").append(name)
+        val builder = StringBuilder().run { append("(").append(name) }
         for (expr in expression) {
 
             builder.append(" ")
@@ -34,7 +32,7 @@ class ASTPrinter :  Expression.Visitor<String> {
     }
 
     override fun <R> visit(expression: Expression.Unary): String {
-        return parenthesize(expression.postfix.lexeme, expression.expression)
+        return parenthesize(expression.prefix.lexeme, expression.expression)
     }
 
     override fun <R> visit(expression: Expression.Literal): String {

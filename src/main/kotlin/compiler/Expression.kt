@@ -28,7 +28,7 @@ override fun <R> accept(visitor: Visitor<R>) : String {
 }
 
 
-class Unary(val expression:Expression, val postfix:Token) : Expression() {
+class Unary( val prefix:Token, val expression:Expression) : Expression() {
     override fun <R> accept(visitor: Visitor<R> ): String {
 
      return visitor.visit<R>(this)
@@ -48,7 +48,7 @@ return visitor.visit<R>(this)
 }
 
 
-class Literal(val value:Any) : Expression() {
+class Literal(val value: Any?) : Expression() {
 override fun <R> accept(visitor: Visitor<R> ): String {
 
  return visitor.visit<R>(this)
@@ -61,7 +61,7 @@ override fun <R> accept(visitor: Visitor<R> ): String {
 class Ternary(val left:Expression, val questionMark:Token, val middle:Expression, val colon:Token, val right:Expression) : Expression() {
 override fun <R> accept(visitor: Visitor<R> ): String {
 
-return visitor.visit<R>(this)
+    return visitor.visit<R>(this)
 
     }
 

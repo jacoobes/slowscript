@@ -1,35 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="Still trying to configure Visitor Pattern&#10;Why so confusing">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/ASTPrinter.kt" afterDir="false" />
+    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="AST ✓">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Parser/Parser.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/tokenCreator.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/META-INF/pieck-lite.kotlin_module" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/META-INF/pieck-lite.kotlin_module" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$1.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$1.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$2.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$2.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$3.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$3.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$4.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$4.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$5.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$5.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$6.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$6.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$7.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$7.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$8.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$8.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$3.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$4.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$5.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$6.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$7.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt$tokenCreator$8.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/Tree$Declaration.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/Tree$Function.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/Tree$Value.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/Tree.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$Binary.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$Binary.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$Unary.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$Unary.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$grouping.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$grouping.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$literal.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$literal.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$ternary.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$ternary.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/first.pkL" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/first.pkL" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/piekLite$Companion.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/piekLite$Companion.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/piekLite.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/piekLite.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/tokens/TOKEN_TYPES.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/tokens/TOKEN_TYPES.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/tokens/Token.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/tokens/Token.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/AST.kt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/ASTPrinter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/ASTPrinter.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Expression.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Expression.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/PiekLite.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/PiekLite.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/first.pkL" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/first.pkL" afterDir="false" />
@@ -45,10 +38,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Kotlin File" />
         <option value="Class" />
         <option value="Kotlin Enum" />
         <option value="Kotlin Interface" />
+        <option value="Kotlin File" />
         <option value="Kotlin Class" />
       </list>
     </option>
@@ -101,7 +94,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
@@ -138,17 +131,21 @@
     </configuration>
     <configuration name="MainKt" type="JetRunConfigurationType" nameIsGenerated="true">
       <module name="pieck-lite" />
-      <option name="VM_PARAMETERS" />
-      <option name="PROGRAM_PARAMETERS" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="src/main/kotlin/compiler/first.pkL" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="ALTERNATIVE_JRE_PATH" value="corretto-1.8" />
       <option name="PASS_PARENT_ENVS" value="true" />
       <option name="MAIN_CLASS_NAME" value="MainKt" />
-      <option name="WORKING_DIRECTORY" />
+      <option name="WORKING_DIRECTORY" value="" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Gradle.C:/Users/jacob/OneDrive/Desktop/Projects/piek" />
+      <item itemvalue="Application.MainKt" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -264,7 +261,14 @@
       <option name="project" value="LOCAL" />
       <updated>1620182538814</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="AST ✓">
+      <created>1620676601846</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1620676601846</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -299,7 +303,8 @@
     <MESSAGE value="almost finish lex" />
     <MESSAGE value="Lexer finished, script for Expression.kt works" />
     <MESSAGE value="Still trying to configure Visitor Pattern&#10;Why so confusing" />
-    <option name="LAST_COMMIT_MESSAGE" value="Still trying to configure Visitor Pattern&#10;Why so confusing" />
+    <MESSAGE value="AST ✓" />
+    <option name="LAST_COMMIT_MESSAGE" value="AST ✓" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

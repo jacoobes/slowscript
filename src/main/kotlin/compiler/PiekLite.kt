@@ -1,46 +1,71 @@
 package compiler
 
-import tokenCreator
+import compiler.Parser.Parser
+import compiler.tokenCreator
 import tokens.TOKEN_TYPES
 import kotlin.system.exitProcess
 import java.io.File
 import java.io.BufferedReader
+import compiler.utils.Stopwatch
+import tokens.Token
 
 class piekLite {
 
     companion object {
         var hadError = false;
-
+        val timer = Stopwatch()
         fun run( args : Array<String>) {
 
-            if(args.size > 1) {
-
+            if(args.size != 1) {
                 println("Usage: piekL [script]")
                 exitProcess(64);
 
-            } else if( args.size == 1) {
-                runFile(args[0])
             }
-
+                timer.start()
+                runFile(args[0])
+                println()
+                println("${timer.elapsedTime} ms elapsed")
+                timer.stop()
 
 
         }
 
 
         private fun runFile(path: String) {
-            val bufRead : BufferedReader = File(path).bufferedReader()
 
-            tokenCreator(bufRead)
-        }
+            if(!hadError) {
+                File(path).bufferedReader().run {
+                    val expression = Parser(tokenCreator(this)).parse()
+                    println(expression?.let {
 
-        fun error  (line: Int, message: String, where: String ) {
+                        if (hadError) return
+                        ASTPrinter().print(it)
+                    })
+                }
+
+                }
+
+            }
+
+
+
+        fun error (line: Int, message: String, where: String ) {
             println(Error("[line $line] Error $where: $message"));
             hadError = true
+            exitProcess(64)
         }
 
         fun error(line: Int, message: String,) {
-            println(Error("[line $line] Error $message"));
+            println(Error("[line $line] Error : $message"));
             hadError = true
+            exitProcess(64)
+        }
+        fun error(token:Token, message: String)  {
+            if(token.type == TOKEN_TYPES.END) {
+                error("line ${token.line} unexpected end of program with ${token.lexeme}")
+            } else {
+                error(token.line, "$message ${token.lexeme}")
+            }
         }
 
         fun reservedKeywords() : HashMap<String, TOKEN_TYPES> {
@@ -51,7 +76,7 @@ class piekLite {
             reservedKeywords["var"] = TOKEN_TYPES.MUTABLE_VARIABLE
             reservedKeywords["val"] = TOKEN_TYPES.IMMUTABLE_VARIABLE
             reservedKeywords["task"] = TOKEN_TYPES.TASK
-            reservedKeywords["false"] = TOKEN_TYPES.NULL
+            reservedKeywords["false"] = TOKEN_TYPES.FALSE
             reservedKeywords["true"] = TOKEN_TYPES.TRUE
             reservedKeywords["null"] = TOKEN_TYPES.NULL
             reservedKeywords["if"] = TOKEN_TYPES.IF
@@ -66,16 +91,11 @@ class piekLite {
             reservedKeywords["public"] = TOKEN_TYPES.PUBLIC
             reservedKeywords["private"] = TOKEN_TYPES.PRIVATE
             reservedKeywords["protected"] = TOKEN_TYPES.PROTECTED
-
+            reservedKeywords["all"] = TOKEN_TYPES.ALL
             return reservedKeywords
         }
 
 
     }
-
-
-
-
-
 
 }
