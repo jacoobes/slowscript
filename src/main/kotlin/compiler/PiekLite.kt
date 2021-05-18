@@ -1,5 +1,8 @@
 package compiler
 
+
+import compiler.Interpreter.InterVisitor
+import compiler.Interpreter.RuntimeError
 import compiler.Parser.Parser
 import compiler.tokenCreator
 import tokens.TOKEN_TYPES
@@ -13,6 +16,8 @@ class piekLite {
 
     companion object {
         var hadError = false;
+        var hadRuntimeError = false;
+
         val timer = Stopwatch()
         fun run( args : Array<String>) {
 
@@ -38,8 +43,9 @@ class piekLite {
                     val expression = Parser(tokenCreator(this)).parse()
                     println(expression?.let {
 
-                        if (hadError) return
-                        ASTPrinter().print(it)
+                        if (hadError)  exitProcess(65)
+                        if(hadRuntimeError) exitProcess(70)
+                        InterVisitor().interpret(it)
                     })
                 }
 
@@ -52,13 +58,11 @@ class piekLite {
         fun error (line: Int, message: String, where: String ) {
             println(Error("[line $line] Error $where: $message"));
             hadError = true
-            exitProcess(64)
         }
 
         fun error(line: Int, message: String,) {
             println(Error("[line $line] Error : $message"));
             hadError = true
-            exitProcess(64)
         }
         fun error(token:Token, message: String)  {
             if(token.type == TOKEN_TYPES.END) {
@@ -66,6 +70,7 @@ class piekLite {
             } else {
                 error(token.line, "$message ${token.lexeme}")
             }
+
         }
 
         fun reservedKeywords() : HashMap<String, TOKEN_TYPES> {
@@ -92,10 +97,17 @@ class piekLite {
             reservedKeywords["private"] = TOKEN_TYPES.PRIVATE
             reservedKeywords["protected"] = TOKEN_TYPES.PROTECTED
             reservedKeywords["all"] = TOKEN_TYPES.ALL
+            reservedKeywords["NaN"] = TOKEN_TYPES.NaN
             return reservedKeywords
+        }
+
+        fun error(error: RuntimeError) {
+            println("${error.message} line ${error.token.line}" )
+            hadRuntimeError = true
         }
 
 
     }
+
 
 }

@@ -11,23 +11,23 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
     val token = mutableListOf<Token>()
 
 
-    var index = 0;
-    var line = 1;
-    var start = 0;
+    var index = 0
+    var line = 1
+    var start = 0
 
 
     val isAtEnd = { index >= src.length; }
     val advance = { src.elementAt(index++) }
 
     val match = fun (expected: Char): Boolean {
-        if (isAtEnd()) return false;
-        if (src.elementAt(index) != expected) return false;
+        if (isAtEnd()) return false
+        if (src.elementAt(index) != expected) return false
 
-        index++;
+        index++
         return true
     }
 
-    fun addComplexToken(type: TOKEN_TYPES) {
+    val addComplexToken = fun (type: TOKEN_TYPES) {
         val text: String = src.substring(start, index)
         token.add(Token(type, text, line))
     }
@@ -77,6 +77,8 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
             char == ':' -> token.add(Token(TOKEN_TYPES.COLON, char.toString(), line))
             char == '&' -> token.add(Token(TOKEN_TYPES.AND, char.toString(), line))
             char == '?' -> token.add(Token(TOKEN_TYPES.QUESTION, char.toString(), line))
+            char == '~' -> token.add(Token(TOKEN_TYPES.SQUIGGLY, char.toString(), line))
+
             char == '!' -> {
                 if (match('=')) addComplexToken(TOKEN_TYPES.NOT_EQUAL)
                 else token.add(Token(TOKEN_TYPES.NOT, char.toString(), line))
@@ -95,9 +97,7 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
                 if (match('=')) addComplexToken(TOKEN_TYPES.EQUAL_EQUAL)
                 else token.add(Token(TOKEN_TYPES.ASSIGNMENT, char.toString(), line))
             }
-            char == 'o' -> {
-                if (match('r')) addComplexToken(TOKEN_TYPES.OR)
-            }
+
             char == '+' -> {
                 if (match('=')) addComplexToken(TOKEN_TYPES.PLUS_EQUALS)
                 else if (match('+')) addComplexToken(TOKEN_TYPES.INCREMENT)
@@ -134,17 +134,17 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
 
             char.isDigit() -> {
 
-                while (src.elementAt(index).isDigit()) {
+                while (peek().isDigit()) {
                     advance()
-                    if(isAtEnd()) break;
+                    if(isAtEnd()) break
                 }
 
                 if (peek() == '.' && peekNext().isDigit()) {
                     advance()
                     while (src.elementAt(index).isDigit()) {
                         advance()
-                        if(isAtEnd()) break;
-                    };
+                        if(isAtEnd()) break
+                    }
                 }
 
                 addComplexToken(TOKEN_TYPES.NUMBER, src.substring(start, index), src.substring(start, index).toDouble())
@@ -158,6 +158,7 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
                 if (char.isLetter()) {
                     while (src.elementAt(index).isLetterOrDigit()) {
                         advance()
+                        if(isAtEnd()) break
                     }
 
                     val type = piekLite.reservedKeywords().let {

@@ -4,14 +4,14 @@ import java.lang.StringBuilder
 
 class ASTPrinter :  Expression.Visitor<String> {
 
-    fun print(expression: Expression): String {
+    fun print(expression: Expression): Any? {
       return expression.accept(this)
     }
 
 
 
-    private fun parenthesize(name: String, vararg expression: Expression): String {
-        val builder = StringBuilder().run { append("(").append(name) }
+    private fun <R> parenthesize(name: String, vararg expression: Expression): String {
+        val builder = StringBuilder().apply { append("(").append(name) }
         for (expr in expression) {
 
             builder.append(" ")
@@ -24,15 +24,15 @@ class ASTPrinter :  Expression.Visitor<String> {
     }
 
     override fun <R> visit(expression: Expression.Binary): String {
-     return parenthesize(expression.operator.lexeme, expression.left, expression.right)
+     return parenthesize<String>(expression.operator.lexeme, expression.left, expression.right)
     }
 
     override fun <R> visit(expression: Expression.Ternary): String {
-        return parenthesize("${expression.questionMark}${expression.colon}", expression.left, expression.middle, expression.right)
+        return parenthesize<String>("${expression.questionMark.lexeme}${expression.colon.lexeme}", expression.left, expression.middle, expression.right)
     }
 
     override fun <R> visit(expression: Expression.Unary): String {
-        return parenthesize(expression.prefix.lexeme, expression.expression)
+        return parenthesize<String>(expression.prefix.lexeme, expression.expression)
     }
 
     override fun <R> visit(expression: Expression.Literal): String {
@@ -41,6 +41,6 @@ class ASTPrinter :  Expression.Visitor<String> {
     }
 
     override fun <R> visit(expression: Expression.Grouping): String {
-        return parenthesize("group", expression.expression)
+        return parenthesize<String>("group", expression.expression)
     }
 }

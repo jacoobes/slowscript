@@ -26,11 +26,31 @@ class Parser(private val tokens: List<Token>) {
 
     private fun expression(): Expression {
 
-        return equality()
+        return ternary()
+    }
+
+    private fun ternary() : Expression {
+        var ternary = equality()
+        while(matchAndAdvance(TOKEN_TYPES.QUESTION)) {
+            val question = previous().apply {
+                if(lexeme != "?") ParseError.error(line, "Expected ? character for expected ternary, not $lexeme")
+            }
+
+            val firstOption = ternary()
+
+            if(matchAndAdvance(TOKEN_TYPES.COLON)) {
+                val colon = previous().apply {
+                    if (lexeme != ":") ParseError.error(line, "Expected : character for expected ternary, not $lexeme")
+                }
+            val secondOption = ternary()
+           ternary = Expression.Ternary(ternary, question, firstOption, colon, secondOption)
+            }
+        }
+        return ternary
     }
 
     private fun equality(): Expression {
-        var equality: Expression = comparison()
+        var equality = comparison()
         while (matchAndAdvance(TOKEN_TYPES.NOT_EQUAL, TOKEN_TYPES.EQUAL_EQUAL)) {
             val token = previous()
             val secondComparison = comparison()
@@ -79,12 +99,12 @@ class Parser(private val tokens: List<Token>) {
         }
         return primary()
     }
-
+    //primary Expressions are Literals
     private fun primary() : Expression {
         if(matchAndAdvance(TOKEN_TYPES.TRUE)) return Expression.Literal(true)
         if(matchAndAdvance(TOKEN_TYPES.NULL)) return Expression.Literal(null)
         if(matchAndAdvance(TOKEN_TYPES.FALSE)) return Expression.Literal(false)
-
+        if(matchAndAdvance(TOKEN_TYPES.NaN)) return Expression.Literal(Double.NaN)
         if(matchAndAdvance(TOKEN_TYPES.NUMBER, TOKEN_TYPES.STRING)) {
             return Expression.Literal(previous().literalValue)
         }
@@ -93,9 +113,9 @@ class Parser(private val tokens: List<Token>) {
             consume(TOKEN_TYPES.RIGHT_PAREN, "expected ) after expression")
             return Expression.Grouping(expression)
         }
-        throw error("${peek().lexeme}, unexpected expression")
+        throw error("${peek().lexeme}, unexpected expression, line : ${peek().line}")
     }
-
+    // if check() is true, advances and returns true, else returns false
     private fun matchAndAdvance(vararg types: TOKEN_TYPES): Boolean {
 
         if (types.any { check(it) }) {
@@ -104,7 +124,7 @@ class Parser(private val tokens: List<Token>) {
         }
         return false
     }
-
+    //check TOKEN_TYPES is equal to given TOKEN_TYPEs
     private fun check(type: TOKEN_TYPES): Boolean {
         if (isAtEnd()) return false
         if (type == peek().type) {
@@ -114,27 +134,29 @@ class Parser(private val tokens: List<Token>) {
         return false
     }
 
+    //returns the current token of token list
     private fun peek(): Token {
         return tokens.elementAt(current)
     }
-
+    //checks if is at end
     private fun isAtEnd(): Boolean {
         return tokens.lastIndex  == current
     }
-
+    //returns token of index - 1
     private fun previous(): Token {
         return tokens[current - 1]
     }
-
+    //advances and increments token
     private fun advance(): Token {
         if (!isAtEnd()) current++
         return previous()
     }
+    //advances and throws error if current token is not desired
     private fun consume(token: TOKEN_TYPES, message: String) : Token {
         if(check(token)) return advance()
         throw ParseError.error(peek().line, message)
     }
-
+    //parser
    fun parse() : Expression? {
        return try {
            expression()
