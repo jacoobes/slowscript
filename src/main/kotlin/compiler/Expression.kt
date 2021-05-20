@@ -13,6 +13,7 @@ abstract class Expression {
         fun <R> visit(expression: Expression.Ternary) : Any?
         fun <R> visit(expression: Expression.Grouping) : Any?
         fun <R> visit(expression: Expression.Literal) : Any?
+        fun <R> visit(variable: Expression.Variable): Any?
     }
 
 
@@ -47,7 +48,6 @@ return visitor.visit<R>(this)
 
 }
 
-
 class Literal(val value: Any?) : Expression() {
 override fun <R> accept(visitor: Visitor<R> ): Any? {
 
@@ -55,6 +55,11 @@ override fun <R> accept(visitor: Visitor<R> ): Any? {
 
     }
 
+}
+class Variable(val name: Token) : Expression() {
+    override fun <R> accept(visitor: Visitor<R>): Any? {
+        return visitor.visit<R>(this)
+    }
 }
 
 

@@ -40,13 +40,13 @@ class piekLite {
 
             if(!hadError) {
                 File(path).bufferedReader().run {
-                    val expression = Parser(tokenCreator(this)).parse()
-                    println(expression?.let {
+                    val statements = Parser(tokenCreator(this)).parse()
+                    statements.let {
 
                         if (hadError)  exitProcess(65)
                         if(hadRuntimeError) exitProcess(70)
                         InterVisitor().interpret(it)
-                    })
+                    }
                 }
 
                 }
@@ -98,6 +98,7 @@ class piekLite {
             reservedKeywords["protected"] = TOKEN_TYPES.PROTECTED
             reservedKeywords["all"] = TOKEN_TYPES.ALL
             reservedKeywords["NaN"] = TOKEN_TYPES.NaN
+            reservedKeywords["log"] = TOKEN_TYPES.DISPLAY
             return reservedKeywords
         }
 

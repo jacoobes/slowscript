@@ -6,15 +6,15 @@ public class Stopwatch {
     private long startTime;
     private boolean isRunning;
 
-    public Stopwatch(){
+    public Stopwatch() {
 
         reset();
     }
 
 
-    public void start(){
+    public void start() {
 
-        if(isRunning) return;
+        if (isRunning) return;
         isRunning = true;
         startTime = System.currentTimeMillis();
 
@@ -24,7 +24,7 @@ public class Stopwatch {
 
     public void stop() {
 
-        if(!isRunning) return;
+        if (!isRunning) return;
 
         isRunning = false;
 
@@ -33,7 +33,7 @@ public class Stopwatch {
 
     }
 
-    public void reset(){
+    public void reset() {
         elapsedTime = 0;
         isRunning = false;
 
@@ -42,7 +42,7 @@ public class Stopwatch {
 
     public long getElapsedTime() {
 
-        if(isRunning) {
+        if (isRunning) {
 
             long endTime = System.currentTimeMillis();
             return elapsedTime + endTime - startTime;
@@ -53,8 +53,6 @@ public class Stopwatch {
 
 
         }
-
-
 
 
     }

@@ -1,0 +1,2 @@
+log ("name") --> valid syntax
+log "name" --> invalid

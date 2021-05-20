@@ -1,8 +1,9 @@
-package compiler
+package compiler.utils
 
+import compiler.Expression
 import java.lang.StringBuilder
 
-class ASTPrinter :  Expression.Visitor<String> {
+class ASTPrinter : Expression.Visitor<String> {
 
     fun print(expression: Expression): Any? {
       return expression.accept(this)
@@ -42,5 +43,9 @@ class ASTPrinter :  Expression.Visitor<String> {
 
     override fun <R> visit(expression: Expression.Grouping): String {
         return parenthesize<String>("group", expression.expression)
+    }
+
+    override fun <R> visit(variable: Expression.Variable): Any? {
+        TODO("Not yet implemented")
     }
 }

@@ -152,7 +152,9 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
             }
 
 
-            char.isWhitespace() -> if (char == '\n') line++
+            char.isWhitespace() -> if (char == '\n') {
+                line++
+            };
 
             else -> {
                 if (char.isLetter()) {
