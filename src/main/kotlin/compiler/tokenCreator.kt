@@ -75,7 +75,6 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
             char == '.' -> token.add(Token(TOKEN_TYPES.DOT, char.toString(), line))
             char == ',' -> token.add(Token(TOKEN_TYPES.COMMA, char.toString(), line))
             char == ':' -> token.add(Token(TOKEN_TYPES.COLON, char.toString(), line))
-            char == '&' -> token.add(Token(TOKEN_TYPES.AND, char.toString(), line))
             char == '?' -> token.add(Token(TOKEN_TYPES.QUESTION, char.toString(), line))
             char == '~' -> token.add(Token(TOKEN_TYPES.SQUIGGLY, char.toString(), line))
 
@@ -116,6 +115,14 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
             char == '*' -> {
                 if (match('=')) addComplexToken(TOKEN_TYPES.MULT_EQUAL)
                 else token.add(Token(TOKEN_TYPES.MULT, char.toString(), line))
+            }
+            char == '&' -> {
+                if (match('&')) addComplexToken(TOKEN_TYPES.AND)
+                else token.add(Token(TOKEN_TYPES.AMPER, char.toString(), line))
+            }
+            char == '|' -> {
+                if(match('|')) addComplexToken(TOKEN_TYPES.OR)
+                else token.add(Token(TOKEN_TYPES.LINE, char.toString(), line))
             }
 
             char == '/' -> {
@@ -158,7 +165,7 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
 
             else -> {
                 if (char.isLetter()) {
-                    while (src.elementAt(index).isLetterOrDigit()) {
+                    while (peek().isLetterOrDigit()) {
                         advance()
                         if(isAtEnd()) break
                     }

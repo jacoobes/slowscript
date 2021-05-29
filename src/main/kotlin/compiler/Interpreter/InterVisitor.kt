@@ -6,7 +6,10 @@ import compiler.piekLite
 import tokens.TOKEN_TYPES
 import compiler.Statement.Statement
 
+
 class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
+    private var env = Env()
+
     override fun <R> visit(expression: Expression.Unary): Any? {
         val unary: Any? = evaluate(expression.expression)
 
@@ -18,7 +21,7 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
                 null
             }
             TOKEN_TYPES.NOT -> {
-                if (isTruthy(unary, expression) == true) {
+                if (!isTruthy(unary)) {
                     return true
                 }
                 false
@@ -69,8 +72,6 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
             TOKEN_TYPES.NOT_EQUAL -> {
                 !isEqual(left, right)
             }
-
-
             else -> null
         }
     }
@@ -92,24 +93,88 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         println(stringify(expression))
     }
 
+    override fun <R> visit(variable: Expression.Variable): Any? {
+        return env.get(variable.name)
+    }
+
+    override fun <R> visit(declaration: Statement.Declaration){
+        declaration.expr?.let { env.define(declaration.name,evaluate(it)) } ?: env.define(declaration.name, null)
+    }
+    override fun <R> visit(assignment: Expression.Assignment) : Any? {
+        val value = evaluate(assignment.right)
+        env.assign(assignment.name, value)
+        return value
+    }
+
+    override fun <R> visit(block: Statement.Block) {
+       executeBlock(block.statementList, Env(this.env))
+    }
+
+    override fun <R> visit(tree: Statement.If): Any? {
+      return if(isTruthy(evaluate(tree.ifBranch))) {
+            tree.acted?.let { execute(it) }
+            }
+            else {
+               tree.elseBranch?.let{execute(it)}
+            }
+
+    }
+
+    override fun <R> visit(logical: Expression.Logical): Any? {
+        val leftSide = evaluate(logical.left)
+
+        if(logical.operator.type === TOKEN_TYPES.OR) {
+            if(isTruthy(leftSide)) return leftSide
+       } else {
+            if(!isTruthy(leftSide)) {
+                return leftSide
+            }
+        }
+
+        return evaluate(logical.right)
+    }
+
+    override fun <R> visit(loop: Statement.While) {
+
+        while(isTruthy( evaluate(loop.expr))) {
+            execute(loop.body)
+        }
+    }
+
+
+    private fun executeBlock(listOfStatements: List<Statement>, currentEnv: Env ) {
+        val previous = this.env
+        try {
+            this.env = currentEnv
+            for(statement in listOfStatements) {
+                execute(statement)
+            }
+        }
+        finally {
+            this.env = previous
+        }
+    }
+
     private fun evaluate(expression: Expression): Any? {
         return expression.accept(this)
     }
 
-    private fun isTruthy(unary: Any?, expression: Expression.Unary): Any {
-
-        return unary?.let {
-            if (it is Boolean) return !it
-            throw RuntimeError("Failed use of NOT operator on value $unary", expression.prefix)
-        } ?: return true
+    private fun isTruthy(unary: Any?): Boolean {
+      if(unary == null) return false
+      if(unary is Double) {
+          if(unary.isNaN()) return false
+      }
+      if(unary is Boolean) return unary
+      return true
     }
+
 
     private fun add(left: Any?, right: Any?): Any {
         if (left is Double && right is Double) {
             return left + right
         }
 
-        if ((left is String && right is String) || (left is String && right is Double)) {
+        if ((left is String && right is String)) {
             return "$left$right"
         }
         return Double.NaN
@@ -202,16 +267,7 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         }
     }
 
-    override fun <R> visit(variable: Expression.Variable): Any? {
-        return Env.get(variable.name)
-    }
 
-    override fun <R> visit(declaration: Statement.Declaration): Any? {
-
-        declaration.expr?.let { Env.define(declaration.name,evaluate(it)) } ?: Env.define(declaration.name, null)
-
-         return null
-    }
 
 
 }

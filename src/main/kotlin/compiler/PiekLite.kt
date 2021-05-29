@@ -15,10 +15,10 @@ import tokens.Token
 class piekLite {
 
     companion object {
-        var hadError = false;
-        var hadRuntimeError = false;
+        private var hadError = false;
+        private var hadRuntimeError = false;
 
-        val timer = Stopwatch()
+        private val timer = Stopwatch()
         fun run( args : Array<String>) {
 
             if(args.size != 1) {

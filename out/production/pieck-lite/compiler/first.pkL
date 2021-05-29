@@ -1,4 +1,16 @@
-var a = 1
-var b = a
 
-log(b
+{
+  var i = 10
+    var test = true
+     while(test){
+      if ( i > 100) {
+            log(i)
+             test = false
+          }
+        i = i + 15
+
+
+    }
+
+
+}
