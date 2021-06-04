@@ -12,7 +12,14 @@ class Env(private val enclosed : Env? = null) {
             }
 
             values[name.lexeme] = value
+        }
+        fun define(name: String, value: Any) {
+            if (values.containsKey(name)) {
+                println("WARNING: variable has already been declared as $name in the same scope. The current value of $name remains the same.")
+                return
+            }
 
+            values[name] = value
         }
         fun get(name: Token): Any? {
 
@@ -24,7 +31,7 @@ class Env(private val enclosed : Env? = null) {
             }
 
 
-             throw RuntimeError("undefined variable ${name.lexeme}", name)
+             throw RuntimeError("Undefined variable ${name.lexeme}", name)
 
         }
 
@@ -43,5 +50,24 @@ class Env(private val enclosed : Env? = null) {
             }
             throw RuntimeError("Variable ${identifier.lexeme} has not been declared!", identifier)
         }
+
+        fun getAt(distance: Int, lexeme: String): Any? {
+            return ancestor(distance).values[lexeme]
+        }
+        fun assignAt(distance: Int, name: Token, value: Any?) {
+            ancestor(distance).values[name.lexeme] = value
+        }
+
+        private fun ancestor(distance: Int): Env {
+            var environment : Env = this
+            var i = 0
+            while( i < distance) {
+                environment = environment.enclosed!!
+                    i++
+            }
+            return environment
+        }
+
+
 
 }

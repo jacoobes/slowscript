@@ -15,6 +15,7 @@ abstract class Expression {
         fun <R> visit(variable: Expression.Variable): Any?
         fun <R> visit(assignment: Expression.Assignment): Any?
         fun <R> visit(logical: Expression.Logical): Any?
+        fun <R> visit(call: Expression.Call): Any?
     }
 
 
@@ -80,6 +81,7 @@ abstract class Expression {
         val middle: Expression,
         val colon: Token,
         val right: Expression
+
     ) : Expression() {
         override fun <R> accept(visitor: Visitor<R>): Any? {
 
@@ -90,6 +92,15 @@ abstract class Expression {
     }
 
     class Logical(val left: Expression, val operator: Token, val right: Expression) : Expression() {
+        override fun <R> accept(visitor: Visitor<R>): Any? {
+
+            return visitor.visit<R>(this)
+
+        }
+
+    }
+
+    class Call(val callee: Expression, val paren: Token, val args: List<Expression>) : Expression() {
         override fun <R> accept(visitor: Visitor<R>): Any? {
 
             return visitor.visit<R>(this)

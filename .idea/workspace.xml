@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="Basic variable declarations down, need to fix some bugs">
-      <change afterPath="$PROJECT_DIR$/.gradle/6.8/executionHistory/executionHistory.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/cache.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Tests/VariableTests.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Tests/logicalOpsIfStatements.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Tests/loopTest.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Tests/scopetest.txt" afterDir="false" />
+    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="Loops and Conditionals work &#10;fixed big scope bug.">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/Callable.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/Callee.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/Return.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Resolver/Resolver.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$Binary.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$Binary.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$Unary.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$Unary.class" afterDir="false" />
@@ -27,6 +27,7 @@
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Statement/Env.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Statement/Env.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Statement/Statement.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Statement/Statement.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/first.pkL" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/first.pkL" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/main.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/tokenCreator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/tokenCreator.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/utils/ASTPrinter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/utils/ASTPrinter.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/tokens/TOKEN_TYPES.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/tokens/TOKEN_TYPES.kt" afterDir="false" />
@@ -39,10 +40,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Kotlin Enum" />
-        <option value="Kotlin Interface" />
         <option value="Kotlin File" />
+        <option value="Kotlin Interface" />
+        <option value="Class" />
         <option value="Kotlin Class" />
       </list>
     </option>
@@ -290,7 +291,14 @@
       <option name="project" value="LOCAL" />
       <updated>1621545510261</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Loops and Conditionals work &#10;fixed big scope bug.">
+      <created>1622321614135</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1622321614135</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -329,7 +337,8 @@
     <MESSAGE value="Parser ✓ will add ternary operation as an expression" />
     <MESSAGE value="Interpreter should be finished. Testing needed" />
     <MESSAGE value="Basic variable declarations down, need to fix some bugs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Basic variable declarations down, need to fix some bugs" />
+    <MESSAGE value="Loops and Conditionals work &#10;fixed big scope bug." />
+    <option name="LAST_COMMIT_MESSAGE" value="Loops and Conditionals work &#10;fixed big scope bug." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -338,94 +347,6 @@
           <properties class="java.lang.StackOverflowError" package="java.lang" />
           <option name="timeStamp" value="2" />
         </breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/compiler/Parser/Parser.kt</url>
-          <line>311</line>
-          <option name="timeStamp" value="13" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/compiler/Parser/Parser.kt</url>
-          <line>308</line>
-          <option name="timeStamp" value="15" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/InterVisitor.kt</url>
-          <line>109</line>
-          <option name="timeStamp" value="95" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/InterVisitor.kt</url>
-          <line>145</line>
-          <option name="timeStamp" value="96" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/InterVisitor.kt</url>
-          <line>146</line>
-          <option name="timeStamp" value="97" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/InterVisitor.kt</url>
-          <line>147</line>
-          <option name="timeStamp" value="98" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/InterVisitor.kt</url>
-          <line>148</line>
-          <option name="timeStamp" value="99" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/InterVisitor.kt</url>
-          <line>149</line>
-          <option name="timeStamp" value="100" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" log-message="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/InterVisitor.kt</url>
-          <line>153</line>
-          <option name="timeStamp" value="101" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/InterVisitor.kt</url>
-          <line>87</line>
-          <option name="timeStamp" value="106" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/InterVisitor.kt</url>
-          <line>96</line>
-          <option name="timeStamp" value="107" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/InterVisitor.kt</url>
-          <line>103</line>
-          <option name="timeStamp" value="109" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/InterVisitor.kt</url>
-          <line>105</line>
-          <option name="timeStamp" value="110" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/InterVisitor.kt</url>
-          <line>104</line>
-          <option name="timeStamp" value="111" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/InterVisitor.kt</url>
-          <line>139</line>
-          <option name="timeStamp" value="112" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/InterVisitor.kt</url>
-          <line>138</line>
-          <option name="timeStamp" value="113" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="kotlin-line">
-          <url>file://$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/InterVisitor.kt</url>
-          <line>100</line>
-          <properties>
-            <option name="lambda-ordinal" value="-1" />
-          </properties>
-          <option name="timeStamp" value="121" />
-        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
     <pin-to-top-manager>

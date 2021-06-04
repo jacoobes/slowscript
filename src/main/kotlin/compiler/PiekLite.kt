@@ -4,11 +4,10 @@ package compiler
 import compiler.Interpreter.InterVisitor
 import compiler.Interpreter.RuntimeError
 import compiler.Parser.Parser
-import compiler.tokenCreator
+import compiler.Resolver.Resolver
 import tokens.TOKEN_TYPES
 import kotlin.system.exitProcess
 import java.io.File
-import java.io.BufferedReader
 import compiler.utils.Stopwatch
 import tokens.Token
 
@@ -17,7 +16,8 @@ class piekLite {
     companion object {
         private var hadError = false;
         private var hadRuntimeError = false;
-
+        private val interpreter = InterVisitor()
+        private val resolver = Resolver(interpreter)
         private val timer = Stopwatch()
         fun run( args : Array<String>) {
 
@@ -45,7 +45,9 @@ class piekLite {
 
                         if (hadError)  exitProcess(65)
                         if(hadRuntimeError) exitProcess(70)
-                        InterVisitor().interpret(it)
+                            resolver.resolve(it)
+                        if(hadError) return
+                            interpreter.interpret(it)
                     }
                 }
 
@@ -73,33 +75,34 @@ class piekLite {
 
         }
 
-        fun reservedKeywords() : HashMap<String, TOKEN_TYPES> {
-            val reservedKeywords = hashMapOf<String, TOKEN_TYPES>()
-            reservedKeywords["super"] = TOKEN_TYPES.SUPER
-            reservedKeywords["class"] = TOKEN_TYPES.CLASS
-            reservedKeywords["return"] = TOKEN_TYPES.RETURN
-            reservedKeywords["var"] = TOKEN_TYPES.MUTABLE_VARIABLE
-            reservedKeywords["val"] = TOKEN_TYPES.IMMUTABLE_VARIABLE
-            reservedKeywords["task"] = TOKEN_TYPES.TASK
-            reservedKeywords["false"] = TOKEN_TYPES.FALSE
-            reservedKeywords["true"] = TOKEN_TYPES.TRUE
-            reservedKeywords["null"] = TOKEN_TYPES.NULL
-            reservedKeywords["if"] = TOKEN_TYPES.IF
-            reservedKeywords["else if"] = TOKEN_TYPES.ELSE_IF
-            reservedKeywords["else"] = TOKEN_TYPES.ELSE
-            reservedKeywords["loop"] = TOKEN_TYPES.LOOP
-            reservedKeywords["while"] = TOKEN_TYPES.WHILE
-            reservedKeywords["of"] = TOKEN_TYPES.OF
-            reservedKeywords["from"] = TOKEN_TYPES.FROM
-            reservedKeywords["super"] = TOKEN_TYPES.SUPER
-            reservedKeywords["this"] = TOKEN_TYPES.THIS
-            reservedKeywords["public"] = TOKEN_TYPES.PUBLIC
-            reservedKeywords["private"] = TOKEN_TYPES.PRIVATE
-            reservedKeywords["protected"] = TOKEN_TYPES.PROTECTED
-            reservedKeywords["all"] = TOKEN_TYPES.ALL
-            reservedKeywords["NaN"] = TOKEN_TYPES.NaN
-            reservedKeywords["log"] = TOKEN_TYPES.DISPLAY
-            return reservedKeywords
+        fun reservedKeywords(): HashMap<String, TOKEN_TYPES> {
+
+            return hashMapOf(
+                "super" to TOKEN_TYPES.SUPER,
+                "class" to TOKEN_TYPES.CLASS,
+                "return" to TOKEN_TYPES.RETURN,
+                "var" to TOKEN_TYPES.MUTABLE_VARIABLE,
+                "task" to TOKEN_TYPES.TASK,
+                "false" to TOKEN_TYPES.FALSE,
+                "true" to TOKEN_TYPES.TRUE,
+                "null" to TOKEN_TYPES.NULL,
+                "if" to TOKEN_TYPES.IF,
+                "else" to TOKEN_TYPES.ELSE,
+                "loop" to TOKEN_TYPES.LOOP,
+                "while" to TOKEN_TYPES.WHILE,
+                "of" to TOKEN_TYPES.OF,
+                "from" to TOKEN_TYPES.FROM,
+                "super" to TOKEN_TYPES.SUPER,
+                "this" to TOKEN_TYPES.THIS,
+                "public" to TOKEN_TYPES.PUBLIC,
+                "private" to TOKEN_TYPES.PRIVATE,
+                "protected" to TOKEN_TYPES.PROTECTED,
+                "all" to TOKEN_TYPES.ALL,
+                "NaN" to TOKEN_TYPES.NaN,
+                "log" to TOKEN_TYPES.DISPLAY,
+                "as" to TOKEN_TYPES.AS,
+                "STOP" to TOKEN_TYPES.STOP
+            )
         }
 
         fun error(error: RuntimeError) {

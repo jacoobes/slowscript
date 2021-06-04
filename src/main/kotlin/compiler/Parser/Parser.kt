@@ -36,11 +36,27 @@ class Parser(private val tokens: List<Token>) {
             if (matchAndAdvance(TOKEN_TYPES.IMMUTABLE_VARIABLE, TOKEN_TYPES.MUTABLE_VARIABLE)) {
                 return variableDecl()
             }
+            if(matchAndAdvance(TOKEN_TYPES.TASK)) return task()
             return statements()
         } catch (runtimeErr: RuntimeError) {
             synchronize()
         }
         throw ParseError.error(peek().line, "No top level declaration found")
+    }
+    private fun task() : Statement {
+        val fnName = consume(TOKEN_TYPES.IDENTIFIER, "No function name provided!")
+        consume(TOKEN_TYPES.LEFT_PAREN, "( expected after ${fnName.lexeme}")
+        val params = mutableListOf<Token>()
+        if(!check(TOKEN_TYPES.RIGHT_PAREN)) {
+            do {
+                params.add(consume(TOKEN_TYPES.IDENTIFIER, "Parameters can only be alphanumeric"),)
+            } while (matchAndAdvance(TOKEN_TYPES.COMMA))
+        }
+       consume(TOKEN_TYPES.RIGHT_PAREN, "Closing \")\" expected after parameters")
+       consume(TOKEN_TYPES.LEFT_BRACE, "{ expected after )")
+
+        return Statement.Function(fnName, params, block())
+
     }
 
     private fun variableDecl(): Statement {
@@ -60,18 +76,21 @@ class Parser(private val tokens: List<Token>) {
         if(matchAndAdvance(TOKEN_TYPES.LEFT_BRACE)) return Statement.Block(block())
         if(matchAndAdvance(TOKEN_TYPES.IF)) return ifStatement()
         if(matchAndAdvance(TOKEN_TYPES.WHILE)) return whileLoop()
+        if(matchAndAdvance(TOKEN_TYPES.LOOP)) return forLoop()
+        if(matchAndAdvance(TOKEN_TYPES.RETURN)) return returnStatement()
         return expressionStatement()
     }
 
     private fun printStatement(): Statement {
 
+
         if (matchAndAdvance(TOKEN_TYPES.LEFT_PAREN)) {
             val value = expression()
-            consume(TOKEN_TYPES.RIGHT_PAREN, "expected ) after value to print")
+            consume(TOKEN_TYPES.RIGHT_PAREN, "Expected ) after value to print")
             return Statement.Print(value)
         }
 
-        throw ParseError.error(peek().line, "expected ( before value to print")
+        throw ParseError.error(peek().line, "Expected ( before value to print")
 
     }
 
@@ -105,6 +124,46 @@ class Parser(private val tokens: List<Token>) {
         consume(TOKEN_TYPES.RIGHT_PAREN, "No ) was found for expected while loop")
         val body = statements()
         return Statement.While(condition, body)
+    }
+
+    private fun forLoop(): Statement {
+        consume(TOKEN_TYPES.LEFT_PAREN, " No ( found for expected loop")
+        val init: Statement? = when {
+            matchAndAdvance(TOKEN_TYPES.MUTABLE_VARIABLE) -> variableDecl().also { advance() }
+            matchAndAdvance(TOKEN_TYPES.AS) -> null
+            else -> expressionStatement().also { advance() }
+        }
+        val condition: Expression = if (!check(TOKEN_TYPES.COLON)) expression() else Expression.Literal(true)
+        consume(TOKEN_TYPES.COLON, "No colon detected after condition")
+        val increment: Expression? = if (!check(TOKEN_TYPES.RIGHT_PAREN)) expression() else null
+        consume(TOKEN_TYPES.RIGHT_PAREN, "Enclosing ) expected")
+
+
+        return statements().let {
+            var block = it
+            if(increment != null) {
+             block = Statement.Block(
+                    listOf(
+                        it,
+                        Statement.Expression(increment)
+                    )
+                )
+            }
+           var body : Statement = Statement.While(condition, block)
+
+            if(init != null) {
+                body = Statement.Block(listOf(init, body))
+            }
+            body
+        }
+    }
+
+    private fun returnStatement(): Statement {
+        val returnName = previous()
+        val value: Expression? = if (!check(TOKEN_TYPES.SQUIGGLY)) expression() else null
+
+        consume(TOKEN_TYPES.SEMICOLON, "No ; detected following returned expression")
+        return Statement.Return(returnName, value)
     }
 
     private fun expressionStatement(): Statement {
@@ -226,7 +285,29 @@ class Parser(private val tokens: List<Token>) {
         if (matchAndAdvance(TOKEN_TYPES.MINUS, TOKEN_TYPES.NOT)) {
             return Expression.Unary(previous(), unary())
         }
-        return primary()
+        return callee()
+    }
+
+    private fun callee() : Expression {
+       var expr = primary()
+       while (true) {
+           if(matchAndAdvance(TOKEN_TYPES.LEFT_PAREN)) {
+               expr = finishCall(expr)
+           } else {
+               break
+           }
+       }
+        return expr
+    }
+    private fun finishCall(expression: Expression) : Expression {
+        val listOfArgs = mutableListOf<Expression>()
+        if(!check(TOKEN_TYPES.RIGHT_PAREN)) {
+            do {
+                listOfArgs.add(expression())
+            } while (matchAndAdvance(TOKEN_TYPES.COMMA))
+        }
+        val rightParen = consume(TOKEN_TYPES.RIGHT_PAREN, "Closing right parenthesis expected")
+        return Expression.Call(expression, rightParen, listOfArgs)
     }
 
     //primary Expressions are Literals

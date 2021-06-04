@@ -105,6 +105,7 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
 
             char == '-' -> {
                 if (match('=')) addComplexToken(TOKEN_TYPES.MINUS_EQUALS)
+                else if(match('>')) addComplexToken(TOKEN_TYPES.ARROW)
                 else if (match('-')) addComplexToken(TOKEN_TYPES.DECREMENT)
                 else token.add(Token(TOKEN_TYPES.MINUS, char.toString(), line))
             }

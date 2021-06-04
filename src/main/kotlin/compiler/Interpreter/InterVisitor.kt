@@ -5,10 +5,74 @@ import compiler.Statement.Env
 import compiler.piekLite
 import tokens.TOKEN_TYPES
 import compiler.Statement.Statement
+import tokens.Token
+import java.lang.RuntimeException
+import kotlin.system.exitProcess
 
 
 class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
-    private var env = Env()
+    private val globals = Env()
+    private val locals = HashMap<Expression, Int>()
+    private var env = globals
+
+    init {
+        globals.define("clockMS", object : Callee {
+            override fun call(interpreter: InterVisitor, arguments: List<Any?>) : Any {
+                return System.currentTimeMillis().toDouble() / 1000
+            }
+            override fun arity(): Int {
+                return 0
+            }
+            override fun toString(): String {
+                return "native function"
+            }
+
+        })
+      globals.define("endProcess", object : Callee {
+          override fun call(interpreter: InterVisitor, arguments: List<Any?>): Any? {
+              if(arguments[0] is Double) {
+                  exitProcess(arguments[0].toString().dropLast(2).toInt() )
+              }
+              throw RuntimeException("Expected number for exit code")
+          }
+
+          override fun arity(): Int {
+              return 1
+          }
+
+      })
+    globals.define("responseTo", object : Callee {
+        override fun call(interpreter: InterVisitor, arguments: List<Any?>): Any? {
+          println(arguments[0])
+          return when(arguments[1]) {
+                "string" -> readLine()
+                "number" ->  readLine().toString().toDouble()
+                "boolean" -> readLine().toString().toBoolean()
+                else -> throw RuntimeException("Invalid argument for second parameter")
+            }
+
+        }
+
+        override fun arity(): Int {
+            return 2
+        }
+
+
+    })
+
+
+    }
+
+    fun interpret(listOfStatements: List<Statement>) {
+        try {
+            for (declaration in listOfStatements) {
+                execute(declaration)
+            }
+        } catch (error: RuntimeError) {
+            piekLite.error(error)
+        }
+    }
+
 
     override fun <R> visit(expression: Expression.Unary): Any? {
         val unary: Any? = evaluate(expression.expression)
@@ -94,15 +158,20 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
     }
 
     override fun <R> visit(variable: Expression.Variable): Any? {
-        return env.get(variable.name)
+        return lookUpVariable(variable.name, variable)
     }
 
     override fun <R> visit(declaration: Statement.Declaration){
         declaration.expr?.let { env.define(declaration.name,evaluate(it)) } ?: env.define(declaration.name, null)
     }
     override fun <R> visit(assignment: Expression.Assignment) : Any? {
+        val distance = locals[assignment]
         val value = evaluate(assignment.right)
-        env.assign(assignment.name, value)
+        if(distance != null) {
+            env.assignAt(distance, assignment.name, value)
+        } else {
+            globals.assign(assignment.name, value)
+        }
         return value
     }
 
@@ -137,12 +206,41 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
     override fun <R> visit(loop: Statement.While) {
 
         while(isTruthy( evaluate(loop.expr))) {
+
             execute(loop.body)
         }
     }
 
+    override fun <R> visit(call: Expression.Call): Any? {
+        val callee : Any = evaluate(call.callee) ?: piekLite.error(call.paren.line,"Undefined function" )
+        val listResolved = mutableListOf<Any?>()
+        for (arguments in call.args) {
+            listResolved.add(evaluate(arguments))
+        }
 
-    private fun executeBlock(listOfStatements: List<Statement>, currentEnv: Env ) {
+
+        if(callee !is Callee) {
+            throw RuntimeError("$callee cannot be called", call.paren)
+        }
+        if(callee.arity() != listResolved.size ) {
+            throw RuntimeError("Expected ${callee.arity()} but got ${listResolved.size} arguments", call.paren)
+        }
+        return callee.call(this, listResolved)
+    }
+    override fun <R> visit(function: Statement.Function): Any? {
+        val task = Callable(function, env)
+        env.define(function.fnName, task)
+
+
+        return null
+    }
+
+    override fun <R> visit(arg: Statement.Return): Any? {
+        val value = if (arg.value != null) evaluate(arg.value) else null
+        throw Return(value)
+    }
+
+    fun executeBlock(listOfStatements: List<Statement>, currentEnv: Env ) {
         val previous = this.env
         try {
             this.env = currentEnv
@@ -154,7 +252,6 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
             this.env = previous
         }
     }
-
     private fun evaluate(expression: Expression): Any? {
         return expression.accept(this)
     }
@@ -256,15 +353,16 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
     private fun execute(statement: Statement) {
         statement.accept(this)
     }
-
-    fun interpret(listOfStatements: List<Statement>) {
-         try {
-            for (declaration in listOfStatements) {
-                execute(declaration)
-            }
-        } catch (error: RuntimeError) {
-            piekLite.error(error)
+    fun resolve(expr: Expression, depth: Int) {
+        locals[expr] = depth
+    }
+    private fun lookUpVariable(name: Token, variable: Expression.Variable): Any? {
+        val distance: Int? = locals[variable]
+        if(distance != null) {
+            return env.getAt(distance, name.lexeme)
         }
+        return globals.get(name)
+
     }
 
 

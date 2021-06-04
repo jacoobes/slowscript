@@ -50,10 +50,14 @@ class ASTPrinter : Expression.Visitor<String> {
     }
 
     override fun <R> visit(assignment: Expression.Assignment): Any? {
-        TODO("Not yet implemented")
+        return parenthesize<String>(assignment.name.lexeme, assignment)
     }
 
     override fun <R> visit(logical: Expression.Logical): Any? {
+        TODO("Not yet implemented")
+    }
+
+    override fun <R> visit(call: Expression.Call): Any? {
         TODO("Not yet implemented")
     }
 }
