@@ -1,5 +1,5 @@
 package compiler.Statement
-import compiler.Interpreter.RuntimeError
+import compiler.interpreter.RuntimeError
 import tokens.Token
 
 class Env(private val enclosed : Env? = null) {
@@ -36,11 +36,8 @@ class Env(private val enclosed : Env? = null) {
         }
 
         fun assign(identifier: Token, reassignVal: Any?) {
-
-
             if(values.containsKey(identifier.lexeme)) {
                 values[identifier.lexeme] = reassignVal
-
                 return
             }
 

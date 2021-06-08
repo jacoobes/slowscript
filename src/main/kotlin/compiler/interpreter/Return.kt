@@ -1,4 +1,4 @@
-package compiler.Interpreter
+package compiler.interpreter
 
 import java.lang.RuntimeException
 

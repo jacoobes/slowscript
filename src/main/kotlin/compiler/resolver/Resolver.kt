@@ -1,15 +1,29 @@
-package compiler.Resolver
+package compiler.resolver
 
+import com.sun.org.apache.bcel.internal.generic.NEW
 import compiler.Expression
 import compiler.Statement.Statement
 import compiler.piekLite
 import tokens.Token
 import java.util.*
 
-class Resolver(private val interpreter: compiler.Interpreter.InterVisitor) : Statement.StateVisitor<Unit>,
+class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Statement.StateVisitor<Unit>,
     Expression.Visitor<Unit> {
+
+    private enum class FunctionType {
+        NONE,
+        Function,
+        METHOD,
+        NEW
+    }
+    private enum class ClassType {
+        CLASS,
+        NOCLASS
+    }
+
     private val scopes = Stack<HashMap<String, Boolean>>()
     private var currentFn = FunctionType.NONE
+    private var currentClass = ClassType.NOCLASS
 
     private fun resolve(statement: Statement) {
         statement.accept(this)
@@ -26,8 +40,11 @@ class Resolver(private val interpreter: compiler.Interpreter.InterVisitor) : Sta
     }
 
     override fun <R> visit(arg: Statement.Return) {
-        if(currentFn == FunctionType.NONE) {
+        if (currentFn == FunctionType.NONE) {
             piekLite.error(arg.name, "Cannot return at top level")
+        }
+        if(currentFn == FunctionType.NEW) {
+            piekLite.error(arg.name, "Cannot return inside an new object function")
         }
         arg.value?.let {
             resolve(it)
@@ -55,11 +72,12 @@ class Resolver(private val interpreter: compiler.Interpreter.InterVisitor) : Sta
 
         resolveFunction(function, FunctionType.Function)
     }
+
     private fun resolveFunction(function: Statement.Function, type: FunctionType) {
         val enclosing = currentFn
         currentFn = type
         beginScope()
-        for(params in function.parameters) {
+        for (params in function.parameters) {
             declare(params)
             define(params)
         }
@@ -134,6 +152,36 @@ class Resolver(private val interpreter: compiler.Interpreter.InterVisitor) : Sta
         resolveLocal(variable, variable.name)
     }
 
+    override fun <R> visit(classDec: Statement.ClassDec) {
+        currentClass = ClassType.CLASS
+        declare(classDec.name)
+        define(classDec.name)
+
+        classDec.superClass?.let {
+            if (classDec.name.lexeme == classDec.superClass.name.lexeme) {
+                piekLite.error(classDec.name, "Cannot inherit from self")
+            } else {
+                resolve(it)
+            }
+        }
+
+        beginScope()
+
+        //assigning instance to true, meaning it is declared and defined as local variable
+        scopes.peek()["instance"]  = true
+
+
+    if(classDec.methods != null) {
+        for (methods in classDec.methods) {
+            val declaration = if(methods.fnName.lexeme == "object") FunctionType.NEW else FunctionType.METHOD
+                resolveFunction(methods, declaration)
+            }
+        }
+
+        endScope()
+        currentClass = ClassType.NOCLASS
+    }
+
     private fun resolveLocal(variable: Expression, name: Token) {
         var i = scopes.size - 1
         while (i >= 0) {
@@ -166,10 +214,27 @@ class Resolver(private val interpreter: compiler.Interpreter.InterVisitor) : Sta
         scopes.pop()
     }
 
+    override fun <R> visit(get: Expression.Get) {
+        resolve(get.obj)
+    }
+
+    override fun <R> visit(set: Expression.Set){
+        resolve(set.value)
+        resolve(set.expr)
+    }
+
+    override fun <R> visit(instance: Expression.Instance) {
+        if(currentClass == ClassType.NOCLASS){
+            piekLite.error(instance.inst, "Cannot use \"instance\" outside of classes")
+            return
+        }
+        resolveLocal(instance, instance.inst)
+    }
+
+    override fun <R> visit(supe: Expression.Supe): Any? {
+        TODO("Not yet implemented")
+    }
+
 
 }
 
-private enum class FunctionType {
-    NONE,
-    Function
-}

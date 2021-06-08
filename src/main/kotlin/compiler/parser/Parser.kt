@@ -1,14 +1,15 @@
-package compiler.Parser
+package compiler.parser
 
 
 import compiler.Expression
-import compiler.Interpreter.RuntimeError
+import compiler.interpreter.RuntimeError
 
 
 import compiler.Statement.Statement
 import compiler.piekLite
-
 import tokens.TOKEN_TYPES
+
+import tokens.TOKEN_TYPES.*
 import tokens.Token
 import java.lang.RuntimeException
 
@@ -33,37 +34,54 @@ class Parser(private val tokens: List<Token>) {
 
     private fun declaration(): Statement {
         try {
-            if (matchAndAdvance(TOKEN_TYPES.IMMUTABLE_VARIABLE, TOKEN_TYPES.MUTABLE_VARIABLE)) {
-                return variableDecl()
-            }
-            if(matchAndAdvance(TOKEN_TYPES.TASK)) return task()
+            if(matchAndAdvance(CLASS)) return classDec()
+            if(matchAndAdvance(TASK)) return task("task")
+            if (matchAndAdvance(IMMUTABLE_VARIABLE, MUTABLE_VARIABLE))  return variableDecl()
             return statements()
         } catch (runtimeErr: RuntimeError) {
             synchronize()
         }
         throw ParseError.error(peek().line, "No top level declaration found")
     }
-    private fun task() : Statement {
-        val fnName = consume(TOKEN_TYPES.IDENTIFIER, "No function name provided!")
-        consume(TOKEN_TYPES.LEFT_PAREN, "( expected after ${fnName.lexeme}")
-        val params = mutableListOf<Token>()
-        if(!check(TOKEN_TYPES.RIGHT_PAREN)) {
-            do {
-                params.add(consume(TOKEN_TYPES.IDENTIFIER, "Parameters can only be alphanumeric"),)
-            } while (matchAndAdvance(TOKEN_TYPES.COMMA))
+    private fun classDec() : Statement {
+        val methods = mutableListOf<Statement.Function>()
+
+        val className = consume(IDENTIFIER, "Expected class name after declaration")
+        val identifier = if(matchAndAdvance(FROM)) {
+            consume(IDENTIFIER, "No superclass name found")
+            Expression.Variable(previous())
+        } else null
+
+        consume(LEFT_BRACE, "{ expected after class declaration")
+        while (!isAtEnd() && !check(RIGHT_BRACE)) {
+            methods.add(task("method"))
         }
-       consume(TOKEN_TYPES.RIGHT_PAREN, "Closing \")\" expected after parameters")
-       consume(TOKEN_TYPES.LEFT_BRACE, "{ expected after )")
+        consume(RIGHT_BRACE, "} expected")
+        return Statement.ClassDec(className, methods, identifier)
+
+    }
+
+    private fun task(kind: String) : Statement.Function {
+        val fnName = consume(IDENTIFIER, "No $kind name provided!")
+        consume(LEFT_PAREN, "( expected after ${fnName.lexeme}")
+        val params = mutableListOf<Token>()
+        if(!check(RIGHT_PAREN)) {
+            do {
+                params.add(consume(IDENTIFIER, "Parameters can only be alphanumeric"))
+            } while (matchAndAdvance(COMMA))
+        }
+       consume(RIGHT_PAREN, "Closing \")\" expected after parameters")
+       consume(LEFT_BRACE, "{ expected after )")
 
         return Statement.Function(fnName, params, block())
 
     }
 
     private fun variableDecl(): Statement {
-        consume(TOKEN_TYPES.IDENTIFIER, "No identifier for variable has been found")
+        consume(IDENTIFIER, "No identifier for variable has been found")
         val tokenName = previous()
         val value: Expression?
-        if (matchAndAdvance(TOKEN_TYPES.ASSIGNMENT)) {
+        if (matchAndAdvance(ASSIGNMENT)) {
             value = expression()
             return Statement.Declaration(tokenName, value)
         }
@@ -72,21 +90,23 @@ class Parser(private val tokens: List<Token>) {
     }
     
     private fun statements(): Statement {
-        if(matchAndAdvance(TOKEN_TYPES.DISPLAY)) return printStatement()
-        if(matchAndAdvance(TOKEN_TYPES.LEFT_BRACE)) return Statement.Block(block())
-        if(matchAndAdvance(TOKEN_TYPES.IF)) return ifStatement()
-        if(matchAndAdvance(TOKEN_TYPES.WHILE)) return whileLoop()
-        if(matchAndAdvance(TOKEN_TYPES.LOOP)) return forLoop()
-        if(matchAndAdvance(TOKEN_TYPES.RETURN)) return returnStatement()
-        return expressionStatement()
+        return when {
+            matchAndAdvance(DISPLAY) -> printStatement()
+            matchAndAdvance(LEFT_BRACE) -> Statement.Block(block())
+            matchAndAdvance(IF) -> ifStatement()
+            matchAndAdvance(WHILE) -> whileLoop()
+            matchAndAdvance(LOOP) -> forLoop()
+            matchAndAdvance(RETURN) -> returnStatement()
+            else -> expressionStatement()
+        }
     }
 
     private fun printStatement(): Statement {
 
 
-        if (matchAndAdvance(TOKEN_TYPES.LEFT_PAREN)) {
+        if (matchAndAdvance(LEFT_PAREN)) {
             val value = expression()
-            consume(TOKEN_TYPES.RIGHT_PAREN, "Expected ) after value to print")
+            consume(RIGHT_PAREN, "Expected ) after value to print")
             return Statement.Print(value)
         }
 
@@ -97,46 +117,45 @@ class Parser(private val tokens: List<Token>) {
     private fun block() : MutableList<Statement> {
         return mutableListOf<Statement>().apply {
             //loop until it finds right brace or until hits end token
-            while(!check(TOKEN_TYPES.RIGHT_BRACE) && !isAtEnd() ) {
+            while(!check(RIGHT_BRACE) && !isAtEnd() ) {
                 add(declaration())
-
             }
 
-            consume(TOKEN_TYPES.RIGHT_BRACE, "unclosed scope, missing closing }")
+            consume(RIGHT_BRACE, "unclosed scope, missing closing }")
         }
     }
 
 
     private fun ifStatement() : Statement {
-        consume(TOKEN_TYPES.LEFT_PAREN, "No ( was found for expected if statement")
+        consume(LEFT_PAREN, "No ( was found for expected if statement")
         val condition = expression()
-        consume(TOKEN_TYPES.RIGHT_PAREN, "No ) was found for expected if statement")
+        consume(RIGHT_PAREN, "No ) was found for expected if statement")
         val thenBranch = statements()
         var elseStatement: Statement? = null
-        if(matchAndAdvance(TOKEN_TYPES.ELSE)) {
+        if(matchAndAdvance(ELSE)) {
             elseStatement = statements()
         }
         return Statement.If(condition, thenBranch, elseStatement)
     }
     private fun whileLoop() : Statement {
-        consume(TOKEN_TYPES.LEFT_PAREN, "No ( was found for expected while loop")
+        consume(LEFT_PAREN, "No ( was found for expected while loop")
         val condition = expression()
-        consume(TOKEN_TYPES.RIGHT_PAREN, "No ) was found for expected while loop")
+        consume(RIGHT_PAREN, "No ) was found for expected while loop")
         val body = statements()
         return Statement.While(condition, body)
     }
 
     private fun forLoop(): Statement {
-        consume(TOKEN_TYPES.LEFT_PAREN, " No ( found for expected loop")
+        consume(LEFT_PAREN, " No ( found for expected loop")
         val init: Statement? = when {
-            matchAndAdvance(TOKEN_TYPES.MUTABLE_VARIABLE) -> variableDecl().also { advance() }
-            matchAndAdvance(TOKEN_TYPES.AS) -> null
+            matchAndAdvance(MUTABLE_VARIABLE) -> variableDecl().also { advance() }
+            matchAndAdvance(AS) -> null
             else -> expressionStatement().also { advance() }
         }
-        val condition: Expression = if (!check(TOKEN_TYPES.COLON)) expression() else Expression.Literal(true)
-        consume(TOKEN_TYPES.COLON, "No colon detected after condition")
-        val increment: Expression? = if (!check(TOKEN_TYPES.RIGHT_PAREN)) expression() else null
-        consume(TOKEN_TYPES.RIGHT_PAREN, "Enclosing ) expected")
+        val condition: Expression = if (!check(COLON)) expression() else Expression.Literal(true)
+        consume(COLON, "No colon detected after condition")
+        val increment: Expression? = if (!check(RIGHT_PAREN)) expression() else null
+        consume(RIGHT_PAREN, "Enclosing ) expected")
 
 
         return statements().let {
@@ -160,9 +179,9 @@ class Parser(private val tokens: List<Token>) {
 
     private fun returnStatement(): Statement {
         val returnName = previous()
-        val value: Expression? = if (!check(TOKEN_TYPES.SQUIGGLY)) expression() else null
+        val value: Expression? = if (!check(SQUIGGLY)) expression() else null
 
-        consume(TOKEN_TYPES.SEMICOLON, "No ; detected following returned expression")
+        consume(SEMICOLON, "No ; detected following returned expression")
         return Statement.Return(returnName, value)
     }
 
@@ -180,12 +199,13 @@ class Parser(private val tokens: List<Token>) {
 
     private fun assignment() : Expression {
         val expr = ternary()
-        if(matchAndAdvance(TOKEN_TYPES.ASSIGNMENT)) {
+        if(matchAndAdvance(ASSIGNMENT)) {
             val equals = previous()
             val value = assignment()
             if(expr is Expression.Variable) {
-                val name = expr.name
-                return Expression.Assignment(name, value)
+                return Expression.Assignment(expr.name, value)
+            } else if(expr is Expression.Get) {
+                return Expression.Set(expr.obj, expr.name, value)
             }
             piekLite.error(equals, "Invalid assignment target")
         }
@@ -194,14 +214,14 @@ class Parser(private val tokens: List<Token>) {
 
     private fun ternary(): Expression {
         var ternary = or()
-        while (matchAndAdvance(TOKEN_TYPES.QUESTION)) {
+        while (matchAndAdvance(QUESTION)) {
             val question = previous().apply {
                 if (lexeme != "?") ParseError.error(line, "Expected ? character for expected ternary, not $lexeme")
             }
 
             val firstOption = or()
 
-            if (matchAndAdvance(TOKEN_TYPES.COLON)) {
+            if (matchAndAdvance(COLON)) {
                 val colon = previous().apply {
                     if (lexeme != ":") ParseError.error(line, "Expected : character for expected ternary, not $lexeme")
                 }
@@ -213,7 +233,7 @@ class Parser(private val tokens: List<Token>) {
     }
     private fun or() : Expression {
         var expr = and()
-        while(matchAndAdvance(TOKEN_TYPES.OR)) {
+        while(matchAndAdvance(OR)) {
         val token = previous()
         val rightSide = and()
             expr =  Expression.Logical(expr, token, rightSide)
@@ -222,7 +242,7 @@ class Parser(private val tokens: List<Token>) {
     }
     private fun and() : Expression {
         var expr = equality()
-        while(matchAndAdvance(TOKEN_TYPES.AND)) {
+        while(matchAndAdvance(AND)) {
             val token = previous()
             val rightSide = equality()
             expr = Expression.Logical(expr, token, rightSide)
@@ -233,7 +253,7 @@ class Parser(private val tokens: List<Token>) {
 
     private fun equality(): Expression {
         var equality = comparison()
-        while (matchAndAdvance(TOKEN_TYPES.NOT_EQUAL, TOKEN_TYPES.EQUAL_EQUAL)) {
+        while (matchAndAdvance(NOT_EQUAL, EQUAL_EQUAL)) {
             val token = previous()
             val secondComparison = comparison()
             equality = Expression.Binary(equality, token, secondComparison)
@@ -245,10 +265,10 @@ class Parser(private val tokens: List<Token>) {
     private fun comparison(): Expression {
         var left = term()
         while (matchAndAdvance(
-                TOKEN_TYPES.LESS_THAN_OR_EQUAL,
-                TOKEN_TYPES.GREAT_THAN_OR_EQUAL,
-                TOKEN_TYPES.LEFT_TRIANGLE,
-                TOKEN_TYPES.RIGHT_TRIANGLE
+                LESS_THAN_OR_EQUAL,
+                GREAT_THAN_OR_EQUAL,
+                LEFT_TRIANGLE,
+                RIGHT_TRIANGLE
             )
         ) {
             val token = previous()
@@ -260,7 +280,7 @@ class Parser(private val tokens: List<Token>) {
 
     private fun term(): Expression {
         var left = factor()
-        while (matchAndAdvance(TOKEN_TYPES.PLUS, TOKEN_TYPES.MINUS)) {
+        while (matchAndAdvance(PLUS, MINUS)) {
             val token = previous()
             val right = factor()
             left = Expression.Binary(left, token, right)
@@ -271,7 +291,7 @@ class Parser(private val tokens: List<Token>) {
 
     private fun factor(): Expression {
         var left = unary()
-        while (matchAndAdvance(TOKEN_TYPES.MULT, TOKEN_TYPES.DIVIDE, TOKEN_TYPES.MODULUS)) {
+        while (matchAndAdvance(MULT, DIVIDE, MODULUS)) {
             val token = previous()
             val right = unary()
             left = Expression.Binary(left, token, right)
@@ -282,7 +302,7 @@ class Parser(private val tokens: List<Token>) {
 
     private fun unary(): Expression {
 
-        if (matchAndAdvance(TOKEN_TYPES.MINUS, TOKEN_TYPES.NOT)) {
+        if (matchAndAdvance(MINUS, NOT)) {
             return Expression.Unary(previous(), unary())
         }
         return callee()
@@ -291,22 +311,25 @@ class Parser(private val tokens: List<Token>) {
     private fun callee() : Expression {
        var expr = primary()
        while (true) {
-           if(matchAndAdvance(TOKEN_TYPES.LEFT_PAREN)) {
-               expr = finishCall(expr)
-           } else {
-               break
+           expr = when {
+               matchAndAdvance(LEFT_PAREN) -> finishCall(expr)
+               matchAndAdvance(DOT) -> {
+                   val name: Token = consume(IDENTIFIER, "Expect property name after \".\".")
+                   Expression.Get(expr, name)
+               }
+               else -> break
            }
        }
         return expr
     }
     private fun finishCall(expression: Expression) : Expression {
         val listOfArgs = mutableListOf<Expression>()
-        if(!check(TOKEN_TYPES.RIGHT_PAREN)) {
+        if(!check(RIGHT_PAREN)) {
             do {
                 listOfArgs.add(expression())
-            } while (matchAndAdvance(TOKEN_TYPES.COMMA))
+            } while (matchAndAdvance(COMMA))
         }
-        val rightParen = consume(TOKEN_TYPES.RIGHT_PAREN, "Closing right parenthesis expected")
+        val rightParen = consume(RIGHT_PAREN, "Closing right parenthesis expected")
         return Expression.Call(expression, rightParen, listOfArgs)
     }
 
@@ -315,17 +338,24 @@ class Parser(private val tokens: List<Token>) {
 
         //returns Expression given a token type
         return when {
-            matchAndAdvance(TOKEN_TYPES.TRUE) -> Expression.Literal(true)
-            matchAndAdvance(TOKEN_TYPES.NULL) -> Expression.Literal(null)
-            matchAndAdvance(TOKEN_TYPES.FALSE) -> Expression.Literal(false)
-            matchAndAdvance(TOKEN_TYPES.NaN) -> Expression.Literal(Double.NaN)
-            matchAndAdvance(TOKEN_TYPES.NUMBER, TOKEN_TYPES.STRING) -> Expression.Literal(previous().literalValue)
-            matchAndAdvance(TOKEN_TYPES.LEFT_PAREN) -> {
+            matchAndAdvance(TRUE) -> Expression.Literal(true)
+            matchAndAdvance(NULL) -> Expression.Literal(null)
+            matchAndAdvance(FALSE) -> Expression.Literal(false)
+            matchAndAdvance(NaN) -> Expression.Literal(Double.NaN)
+            matchAndAdvance(INSTANCE) -> Expression.Instance(previous())
+            matchAndAdvance(NUMBER, STRING) -> Expression.Literal(previous().literalValue)
+            matchAndAdvance(LEFT_PAREN) -> {
                 val expression: Expression = expression()
-                consume(TOKEN_TYPES.RIGHT_PAREN, "expected ) after expression")
+                consume(RIGHT_PAREN, "expected ) after expression")
                 Expression.Grouping(expression)
             }
-            matchAndAdvance(TOKEN_TYPES.IDENTIFIER) -> {
+            matchAndAdvance(SUPER) -> {
+                val expression = previous()
+                consume(DOT, "No \".\" found after super call")
+                val method = consume(IDENTIFIER, "No method found after super call!")
+                Expression.Supe(expression, method )
+            }
+            matchAndAdvance(IDENTIFIER) -> {
                 Expression.Variable(previous())
             }
             else -> throw error("${peek().lexeme}, unexpected expression, [line : ${peek().line}]")

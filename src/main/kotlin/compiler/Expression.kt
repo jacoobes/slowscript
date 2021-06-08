@@ -2,6 +2,7 @@ package compiler
 
 import tokens.*
 import java.lang.StringBuilder
+import java.sql.Statement
 
 
 abstract class Expression {
@@ -16,6 +17,10 @@ abstract class Expression {
         fun <R> visit(assignment: Expression.Assignment): Any?
         fun <R> visit(logical: Expression.Logical): Any?
         fun <R> visit(call: Expression.Call): Any?
+        fun <R> visit(get: Expression.Get): Any?
+        fun <R> visit(set: Expression.Set): Any?
+        fun <R> visit(instance: Expression.Instance): Any?
+        fun <R> visit(supe: Expression.Supe): Any?
     }
 
 
@@ -41,6 +46,15 @@ abstract class Expression {
 
 
     class Unary(val prefix: Token, val expression: Expression) : Expression() {
+        override fun <R> accept(visitor: Visitor<R>): Any? {
+
+            return visitor.visit<R>(this)
+
+        }
+
+    }
+
+    class Instance (val inst: Token) : Expression() {
         override fun <R> accept(visitor: Visitor<R>): Any? {
 
             return visitor.visit<R>(this)
@@ -105,6 +119,25 @@ abstract class Expression {
 
             return visitor.visit<R>(this)
 
+        }
+
+    }
+
+    class Get(val obj: Expression, val name: Token) : Expression() {
+        override fun <R> accept(visitor: Visitor<R>): Any? {
+            return visitor.visit<R>(this)
+        }
+    }
+
+    class Set(val expr: Expression, val name: Token, val value: Expression) : Expression() {
+        override fun <R> accept(visitor: Visitor<R>): Any? {
+            return visitor.visit<R>(this)
+        }
+    }
+
+    class Supe(val supe: Token, val method: Token) : Expression() {
+        override fun <R> accept(visitor: Visitor<R>): Any? {
+            return visitor.visit<R>(this)
         }
 
     }

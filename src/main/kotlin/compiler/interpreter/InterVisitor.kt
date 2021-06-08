@@ -1,4 +1,4 @@
-package compiler.Interpreter
+package compiler.interpreter
 
 import compiler.Expression
 import compiler.Statement.Env
@@ -218,7 +218,6 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
             listResolved.add(evaluate(arguments))
         }
 
-
         if(callee !is Callee) {
             throw RuntimeError("$callee cannot be called", call.paren)
         }
@@ -227,19 +226,59 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         }
         return callee.call(this, listResolved)
     }
-    override fun <R> visit(function: Statement.Function): Any? {
-        val task = Callable(function, env)
-        env.define(function.fnName, task)
+    override fun <R> visit(function: Statement.Function): R? {
 
+        val task = Callable(function, env, false)
+        env.define(function.fnName, task)
 
         return null
     }
 
-    override fun <R> visit(arg: Statement.Return): Any? {
+    override fun <R> visit(arg: Statement.Return): R? {
         val value = if (arg.value != null) evaluate(arg.value) else null
         throw Return(value)
     }
+    override fun <R> visit(classDec: Statement.ClassDec) {
 
+        val superClass: Entity? = if(classDec.superClass != null) evaluate(classDec.superClass).run {
+            if(this !is Entity){
+                throw RuntimeError("Superclass must be a class", classDec.name)
+            }
+            this
+        } else null
+
+        env.define(classDec.name, null)
+
+        if(classDec.methods != null) {
+            var allMethods = hashMapOf<String, Callable>()
+            for(methods in classDec.methods) {
+             allMethods = hashMapOf<String, Callable>().apply {
+                    this[methods.fnName.lexeme] = Callable(methods, env, methods.fnName.lexeme == "object")
+                }
+            }
+            val klass = Entity(classDec.name.lexeme, superClass, allMethods)
+
+            env.assign(classDec.name, klass)
+            return
+        }
+
+        env.assign(classDec.name, Entity(classDec.name.lexeme,  superClass, null) )
+
+    }
+    override fun <R> visit(get: Expression.Get): Any? {
+        val value = evaluate(get.obj)
+        if(value is InstanceOf) {
+            return value.get(get.name)
+        }
+        throw RuntimeError("Only instances have properties", get.name)
+    }
+    override fun <R> visit(instance: Expression.Instance): Any? {
+        return lookUpVariable(instance.inst, instance)
+    }
+
+    override fun <R> visit(supe: Expression.Supe): Any? {
+        TODO("Not yet implemented")
+    }
     fun executeBlock(listOfStatements: List<Statement>, currentEnv: Env ) {
         val previous = this.env
         try {
@@ -356,13 +395,25 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
     fun resolve(expr: Expression, depth: Int) {
         locals[expr] = depth
     }
-    private fun lookUpVariable(name: Token, variable: Expression.Variable): Any? {
+    private fun lookUpVariable(name: Token, variable: Expression): Any? {
         val distance: Int? = locals[variable]
         if(distance != null) {
             return env.getAt(distance, name.lexeme)
         }
         return globals.get(name)
 
+    }
+
+    override fun <R> visit(set: Expression.Set): Any {
+        val property = evaluate(set.expr)
+        if(property !is InstanceOf) {
+            throw RuntimeError("Cannot assign to a non property of object!", set.name)
+        }
+        val value = evaluate(set.value)
+        value?.let {
+            property.set(set.name, value)
+        } ?: throw RuntimeError("Cannot assign null values to a property", set.name)
+        return value
     }
 
 

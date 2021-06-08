@@ -1,6 +1,5 @@
 package compiler.Statement
 
-import compiler.Expression
 import tokens.Token
 
 
@@ -17,6 +16,8 @@ abstract class Statement {
         fun <R> visit(loop: While): Any?
         fun <R> visit(function: Function): Any?
         fun <R> visit(arg: Return): Any?
+        fun <R> visit(classDec: ClassDec): Any?
+
 
 
     }
@@ -86,6 +87,14 @@ abstract class Statement {
         }
 
     }
+
+    class ClassDec(val name: Token, val methods: List<Function>?, val superClass: compiler.Expression.Variable?): Statement() {
+        override fun <R> accept(visitor: StateVisitor<R>): Any? {
+            return visitor.visit<R>(this)
+        }
+
+    }
+
 
 
 

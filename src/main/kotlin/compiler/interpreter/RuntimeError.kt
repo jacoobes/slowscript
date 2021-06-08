@@ -1,4 +1,4 @@
-package compiler.Interpreter
+package compiler.interpreter
 
 import tokens.Token
 import java.lang.RuntimeException

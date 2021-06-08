@@ -60,4 +60,20 @@ class ASTPrinter : Expression.Visitor<String> {
     override fun <R> visit(call: Expression.Call): Any? {
         TODO("Not yet implemented")
     }
+
+    override fun <R> visit(get: Expression.Get): Any? {
+        TODO("Not yet implemented")
+    }
+
+    override fun <R> visit(set: Expression.Set): Any? {
+        TODO("Not yet implemented")
+    }
+
+    override fun <R> visit(instance: Expression.Instance): Any? {
+        TODO("Not yet implemented")
+    }
+
+    override fun <R> visit(supe: Expression.Supe): Any? {
+        TODO("Not yet implemented")
+    }
 }

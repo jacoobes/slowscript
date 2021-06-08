@@ -1,10 +1,10 @@
 package compiler
 
 
-import compiler.Interpreter.InterVisitor
-import compiler.Interpreter.RuntimeError
-import compiler.Parser.Parser
-import compiler.Resolver.Resolver
+import compiler.interpreter.InterVisitor
+import compiler.interpreter.RuntimeError
+import compiler.parser.Parser
+import compiler.resolver.Resolver
 import tokens.TOKEN_TYPES
 import kotlin.system.exitProcess
 import java.io.File
@@ -14,8 +14,8 @@ import tokens.Token
 class piekLite {
 
     companion object {
-        private var hadError = false;
-        private var hadRuntimeError = false;
+        private var hadError = false
+        private var hadRuntimeError = false
         private val interpreter = InterVisitor()
         private val resolver = Resolver(interpreter)
         private val timer = Stopwatch()
@@ -23,7 +23,7 @@ class piekLite {
 
             if(args.size != 1) {
                 println("Usage: piekL [script]")
-                exitProcess(64);
+                exitProcess(64)
 
             }
                 timer.start()
@@ -58,12 +58,12 @@ class piekLite {
 
 
         fun error (line: Int, message: String, where: String ) {
-            println(Error("[line $line] Error $where: $message"));
+            println(Error("[line $line] Error $where: $message"))
             hadError = true
         }
 
         fun error(line: Int, message: String,) {
-            println(Error("[line $line] Error : $message"));
+            println(Error("[line $line] Error : $message"))
             hadError = true
         }
         fun error(token:Token, message: String)  {
@@ -101,7 +101,9 @@ class piekLite {
                 "NaN" to TOKEN_TYPES.NaN,
                 "log" to TOKEN_TYPES.DISPLAY,
                 "as" to TOKEN_TYPES.AS,
-                "STOP" to TOKEN_TYPES.STOP
+                "STOP" to TOKEN_TYPES.STOP,
+                "instance" to TOKEN_TYPES.INSTANCE,
+                "init" to TOKEN_TYPES.INIT_BLOCK
             )
         }
 

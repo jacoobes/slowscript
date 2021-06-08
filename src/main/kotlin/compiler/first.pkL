@@ -1,10 +1,14 @@
-
-task a() {
-    var a = 10
-
-    task b() {
-        return a;
+class Person {
+    object(name, age) {
+        instance.name = name
+        instance.age = age
     }
-    return b;
+    say() {
+        log("Hi ")
+    }
 }
-log(a()())
+
+class Jane from Person {
+}
+
+    var jane = Jane().say()

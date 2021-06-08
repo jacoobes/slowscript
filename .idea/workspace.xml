@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="Loops and Conditionals work &#10;fixed big scope bug.">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/Callable.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/Callee.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/Return.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Resolver/Resolver.kt" afterDir="false" />
+    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="Resolver check">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Entity.kt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/InstanceOf.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$Binary.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$Binary.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$Unary.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$Unary.class" afterDir="false" />
@@ -21,13 +19,17 @@
       <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/piekLite.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/piekLite.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/tokens/TOKEN_TYPES.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/tokens/TOKEN_TYPES.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Expression.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Expression.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/InterVisitor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/InterVisitor.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Parser/Parser.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Parser/Parser.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/Callable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Callable.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/Callee.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Callee.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/InterVisitor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/InterVisitor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/Return.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Return.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/RuntimeError.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/RuntimeError.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Parser/Parser.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/parser/Parser.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/PiekLite.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/PiekLite.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Resolver/Resolver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/resolver/Resolver.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Statement/Env.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Statement/Env.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Statement/Statement.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Statement/Statement.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/first.pkL" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/first.pkL" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/main.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/tokenCreator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/tokenCreator.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/utils/ASTPrinter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/utils/ASTPrinter.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/tokens/TOKEN_TYPES.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/tokens/TOKEN_TYPES.kt" afterDir="false" />
@@ -76,7 +78,7 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/Interpreter/InterVisitor.kt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/InterVisitor.kt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/Expression.kt" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/LICENSE" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/PiekLite.kt" root0="FORCE_HIGHLIGHTING" />
@@ -96,11 +98,13 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="full.screen.before.presentation.mode" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -298,7 +302,14 @@
       <option name="project" value="LOCAL" />
       <updated>1622321614135</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="Resolver check">
+      <created>1622784453557</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1622784453557</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -338,7 +349,8 @@
     <MESSAGE value="Interpreter should be finished. Testing needed" />
     <MESSAGE value="Basic variable declarations down, need to fix some bugs" />
     <MESSAGE value="Loops and Conditionals work &#10;fixed big scope bug." />
-    <option name="LAST_COMMIT_MESSAGE" value="Loops and Conditionals work &#10;fixed big scope bug." />
+    <MESSAGE value="Resolver check" />
+    <option name="LAST_COMMIT_MESSAGE" value="Resolver check" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
