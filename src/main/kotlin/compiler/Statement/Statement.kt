@@ -88,7 +88,7 @@ abstract class Statement {
 
     }
 
-    class ClassDec(val name: Token, val methods: List<Function>?, val superClass: compiler.Expression.Variable?): Statement() {
+    class ClassDec(val name: Token, val methods: List<Function>, val superClass: compiler.Expression.Variable?): Statement() {
         override fun <R> accept(visitor: StateVisitor<R>): Any? {
             return visitor.visit<R>(this)
         }

@@ -162,6 +162,8 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
                 piekLite.error(classDec.name, "Cannot inherit from self")
             } else {
                 resolve(it)
+                beginScope()
+                scopes.peek()["super"] = true
             }
         }
 
@@ -170,15 +172,16 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
         //assigning instance to true, meaning it is declared and defined as local variable
         scopes.peek()["instance"]  = true
 
-
-    if(classDec.methods != null) {
         for (methods in classDec.methods) {
             val declaration = if(methods.fnName.lexeme == "object") FunctionType.NEW else FunctionType.METHOD
                 resolveFunction(methods, declaration)
             }
-        }
+
 
         endScope()
+
+        if(classDec.superClass != null) endScope()
+
         currentClass = ClassType.NOCLASS
     }
 
@@ -231,8 +234,8 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
         resolveLocal(instance, instance.inst)
     }
 
-    override fun <R> visit(supe: Expression.Supe): Any? {
-        TODO("Not yet implemented")
+    override fun <R> visit(expr: Expression.Supe) {
+        resolveLocal(expr, expr.supe)
     }
 
 

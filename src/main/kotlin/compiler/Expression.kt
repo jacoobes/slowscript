@@ -20,7 +20,7 @@ abstract class Expression {
         fun <R> visit(get: Expression.Get): Any?
         fun <R> visit(set: Expression.Set): Any?
         fun <R> visit(instance: Expression.Instance): Any?
-        fun <R> visit(supe: Expression.Supe): Any?
+        fun <R> visit(expr: Expression.Supe): Any?
     }
 
 

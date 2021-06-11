@@ -1,14 +1,13 @@
-class Person {
-    object(name, age) {
-        instance.name = name
-        instance.age = age
+class Doughnut {
+    cook() {
+        log("Fry until golden brown")
     }
-    say() {
-        log("Hi ")
-    }
+
 }
 
-class Jane from Person {
+class BostonCream from Doughnut {
+    cook() {
+        super.cook()
+        log("Fill with white cream")
+    }
 }
-
-    var jane = Jane().say()

@@ -244,26 +244,28 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
             if(this !is Entity){
                 throw RuntimeError("Superclass must be a class", classDec.name)
             }
+
             this
         } else null
 
         env.define(classDec.name, null)
 
-        if(classDec.methods != null) {
+
+
+
             var allMethods = hashMapOf<String, Callable>()
-            for(methods in classDec.methods) {
-             allMethods = hashMapOf<String, Callable>().apply {
+            for (methods in classDec.methods) {
+                allMethods = hashMapOf<String, Callable>().apply {
                     this[methods.fnName.lexeme] = Callable(methods, env, methods.fnName.lexeme == "object")
                 }
             }
             val klass = Entity(classDec.name.lexeme, superClass, allMethods)
 
-            env.assign(classDec.name, klass)
-            return
+        if(classDec.superClass != null) {
+            env
         }
 
-        env.assign(classDec.name, Entity(classDec.name.lexeme,  superClass, null) )
-
+        env.assign(classDec.name, klass)
     }
     override fun <R> visit(get: Expression.Get): Any? {
         val value = evaluate(get.obj)
@@ -276,8 +278,8 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         return lookUpVariable(instance.inst, instance)
     }
 
-    override fun <R> visit(supe: Expression.Supe): Any? {
-        TODO("Not yet implemented")
+    override fun <R> visit(expr: Expression.Supe): Any {
+        return "a"
     }
     fun executeBlock(listOfStatements: List<Statement>, currentEnv: Env ) {
         val previous = this.env

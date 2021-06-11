@@ -73,7 +73,7 @@ class ASTPrinter : Expression.Visitor<String> {
         TODO("Not yet implemented")
     }
 
-    override fun <R> visit(supe: Expression.Supe): Any? {
+    override fun <R> visit(expr: Expression.Supe): Any? {
         TODO("Not yet implemented")
     }
 }

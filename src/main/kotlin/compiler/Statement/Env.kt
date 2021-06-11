@@ -2,7 +2,7 @@ package compiler.Statement
 import compiler.interpreter.RuntimeError
 import tokens.Token
 
-class Env(private val enclosed : Env? = null) {
+class Env(val enclosed : Env? = null) {
     private var values: HashMap<String, Any?> = HashMap()
 
         fun define(name: Token, value: Any?) {
