@@ -3,9 +3,9 @@ package compiler.interpreter
 import compiler.Expression
 import compiler.Statement.Env
 import compiler.piekLite
-import tokens.TOKEN_TYPES
+import compiler.tokens.TOKEN_TYPES
 import compiler.Statement.Statement
-import tokens.Token
+import compiler.tokens.Token
 import java.lang.RuntimeException
 import kotlin.system.exitProcess
 
@@ -65,9 +65,7 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
 
     fun interpret(listOfStatements: List<Statement>) {
         try {
-            for (declaration in listOfStatements) {
-                execute(declaration)
-            }
+            listOfStatements.forEach { execute(it) }
         } catch (error: RuntimeError) {
             piekLite.error(error)
         }
@@ -240,31 +238,30 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
     }
     override fun <R> visit(classDec: Statement.ClassDec) {
 
-        val superClass: Entity? = if(classDec.superClass != null) evaluate(classDec.superClass).run {
-            if(this !is Entity){
-                throw RuntimeError("Superclass must be a class", classDec.name)
-            }
+        val superClass = if(classDec.superClass != null) evaluate(classDec.superClass) else null
 
-            this
-        } else null
+        if(superClass !is Entity?) {
+            throw RuntimeError("Cannot inherit from non class ${classDec.superClass}", classDec.name)
+        }
+
 
         env.define(classDec.name, null)
 
-
-
-
-            var allMethods = hashMapOf<String, Callable>()
-            for (methods in classDec.methods) {
-                allMethods = hashMapOf<String, Callable>().apply {
-                    this[methods.fnName.lexeme] = Callable(methods, env, methods.fnName.lexeme == "object")
-                }
-            }
-            val klass = Entity(classDec.name.lexeme, superClass, allMethods)
-
-        if(classDec.superClass != null) {
-            env
+        if(superClass != null) {
+            env = Env(env)
+            env.define("super", superClass)
         }
 
+            val allMethods = classDec.methods.associate {
+                Pair(it.fnName.lexeme,  Callable(it, env, it.fnName.lexeme == "object") ) } as HashMap
+
+            val klass = Entity(classDec.name.lexeme, superClass, allMethods)
+
+        if(superClass != null) {
+            env.enclosed?.also {
+                env = it
+            }
+        }
         env.assign(classDec.name, klass)
     }
     override fun <R> visit(get: Expression.Get): Any? {
@@ -279,7 +276,21 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
     }
 
     override fun <R> visit(expr: Expression.Supe): Any {
-        return "a"
+        val distance = locals[expr] ?: 0
+
+        val superKlass = env.getAt(distance, "super")
+        val instanceOf = env.getAt(distance - 1, "instance")
+        if(superKlass == null) {
+            throw RuntimeError("Superclass cannot be null", expr.supe)
+        }
+        val method : Callable;
+        if(superKlass is Entity) {
+            if(instanceOf is InstanceOf) {
+                method = superKlass.findMethod(expr.method.lexeme) ?: throw RuntimeError("No method found on super class", expr.method)
+               return method.bind(instanceOf)
+            }
+        }
+       throw RuntimeError("Superclass is not callable on ${expr.method}", expr.supe )
     }
     fun executeBlock(listOfStatements: List<Statement>, currentEnv: Env ) {
         val previous = this.env

@@ -1,6 +1,6 @@
 package compiler.Statement
 
-import tokens.Token
+import compiler.tokens.Token
 
 
 

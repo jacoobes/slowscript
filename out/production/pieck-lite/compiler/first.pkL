@@ -1,3 +1,5 @@
+
+
 class Doughnut {
     cook() {
         log("Fry until golden brown")
@@ -11,3 +13,5 @@ class BostonCream from Doughnut {
         log("Fill with white cream")
     }
 }
+
+BostonCream().cook()

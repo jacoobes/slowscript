@@ -7,10 +7,10 @@ import compiler.interpreter.RuntimeError
 
 import compiler.Statement.Statement
 import compiler.piekLite
-import tokens.TOKEN_TYPES
+import compiler.tokens.TOKEN_TYPES
 
-import tokens.TOKEN_TYPES.*
-import tokens.Token
+import compiler.tokens.TOKEN_TYPES.*
+import compiler.tokens.Token
 import java.lang.RuntimeException
 
 

@@ -1,7 +1,7 @@
 package compiler
 
-import tokens.TOKEN_TYPES
-import tokens.Token
+import compiler.tokens.TOKEN_TYPES
+import compiler.tokens.Token
 import java.io.BufferedReader
 
 fun tokenCreator (file: BufferedReader)  : List<Token> {

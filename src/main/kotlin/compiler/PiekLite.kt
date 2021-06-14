@@ -5,11 +5,11 @@ import compiler.interpreter.InterVisitor
 import compiler.interpreter.RuntimeError
 import compiler.parser.Parser
 import compiler.resolver.Resolver
-import tokens.TOKEN_TYPES
+import compiler.tokens.TOKEN_TYPES
 import kotlin.system.exitProcess
 import java.io.File
 import compiler.utils.Stopwatch
-import tokens.Token
+import compiler.tokens.Token
 
 class piekLite {
 

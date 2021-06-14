@@ -1,7 +1,5 @@
 package compiler.interpreter
 
-import compiler.Statement.Env
-import compiler.Statement.Statement
 import java.lang.RuntimeException
 
 open class Entity (val name: String, private val superclass: Entity?, private val allMethods: HashMap<String, Callable>) : Callee {

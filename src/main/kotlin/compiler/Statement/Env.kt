@@ -1,6 +1,6 @@
 package compiler.Statement
 import compiler.interpreter.RuntimeError
-import tokens.Token
+import compiler.tokens.Token
 
 class Env(val enclosed : Env? = null) {
     private var values: HashMap<String, Any?> = HashMap()

@@ -1,10 +1,9 @@
 package compiler.resolver
 
-import com.sun.org.apache.bcel.internal.generic.NEW
 import compiler.Expression
 import compiler.Statement.Statement
 import compiler.piekLite
-import tokens.Token
+import compiler.tokens.Token
 import java.util.*
 
 class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Statement.StateVisitor<Unit>,
@@ -18,7 +17,8 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
     }
     private enum class ClassType {
         CLASS,
-        NOCLASS
+        NOCLASS,
+        SUBCLASS
     }
 
     private val scopes = Stack<HashMap<String, Boolean>>()
@@ -159,12 +159,13 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
 
         classDec.superClass?.let {
             if (classDec.name.lexeme == classDec.superClass.name.lexeme) {
-                piekLite.error(classDec.name, "Cannot inherit from self")
-            } else {
+               return piekLite.error(classDec.name, "Cannot inherit from self")
+            }
+                currentClass = ClassType.SUBCLASS
                 resolve(it)
                 beginScope()
                 scopes.peek()["super"] = true
-            }
+
         }
 
         beginScope()
@@ -235,7 +236,12 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
     }
 
     override fun <R> visit(expr: Expression.Supe) {
-        resolveLocal(expr, expr.supe)
+        when(currentClass) {
+            ClassType.NOCLASS -> piekLite.error(expr.supe, "Cannot use super outside of a class")
+            ClassType.CLASS -> piekLite.error(expr.supe, "Cannot use super in a class with no super class")
+            else -> resolveLocal(expr, expr.supe)
+        }
+
     }
 
 

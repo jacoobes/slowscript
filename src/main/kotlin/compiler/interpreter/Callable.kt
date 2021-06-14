@@ -17,7 +17,7 @@ open class Callable(private val declaration: Statement.Function, private val clo
             if(isInitializer) return closure.getAt(0, "instance")
             return returnStmt.value
         }
-        if(isInitializer) return closure.getAt(0, "instance")
+
         return null
     }
 

@@ -4,18 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="Classes functional and inheritance 45% ish">
+    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="Working on super keyowrd">
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$Binary.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$Binary.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$Unary.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$Unary.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$grouping.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$grouping.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$literal.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$literal.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$ternary.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$ternary.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/first.pkL" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/first.pkL" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Expression.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Expression.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Statement/Env.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Statement/Env.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Statement/Statement.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Statement/Statement.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/first.pkL" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/first.pkL" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Callable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Callable.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Entity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Entity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/InterVisitor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/InterVisitor.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/resolver/Resolver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/resolver/Resolver.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/utils/ASTPrinter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/utils/ASTPrinter.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +87,7 @@
     <property name="full.screen.before.presentation.mode" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Project" />
-    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.proportion" value="0.18313752" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
     <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />

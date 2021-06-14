@@ -1,6 +1,6 @@
 package compiler.interpreter
 
-import tokens.Token
+import compiler.tokens.Token
 
 class InstanceOf(private val clase : Entity) {
     private val properties = HashMap<String, Any>()

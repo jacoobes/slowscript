@@ -1,4 +1,4 @@
-package tokens
+package compiler.tokens
 
 data class Token(val type : TOKEN_TYPES, val lexeme: String, val line: Int) {
     var literalValue : Any? = null

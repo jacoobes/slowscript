@@ -1,4 +1,4 @@
-package tokens
+package compiler.tokens
 
 enum class TOKEN_TYPES {
 
