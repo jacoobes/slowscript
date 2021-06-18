@@ -1,12 +1,7 @@
 import compiler.piekLite
 
 
-fun main(args : Array<String>) {
-
-    piekLite.run(args)
-
-
-}
+fun main(args : Array<String>) = piekLite.run(args)
 
 
 

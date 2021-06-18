@@ -13,7 +13,8 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
         NONE,
         Function,
         METHOD,
-        NEW
+        NEW,
+        INIT
     }
     private enum class ClassType {
         CLASS,
@@ -40,6 +41,9 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
     }
 
     override fun <R> visit(arg: Statement.Return) {
+        if(currentFn == FunctionType.INIT) {
+            piekLite.error(arg.name.line, "Cannot ${arg.name.lexeme} in init block")
+        }
         if (currentFn == FunctionType.NONE) {
             piekLite.error(arg.name, "Cannot return at top level")
         }
@@ -169,6 +173,14 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
         }
 
         beginScope()
+
+        if(classDec.init != null) {
+            currentFn = FunctionType.INIT
+            beginScope()
+            resolve(classDec.init.executeBlock)
+            endScope()
+            currentFn = FunctionType.NONE
+        }
 
         //assigning instance to true, meaning it is declared and defined as local variable
         scopes.peek()["instance"]  = true

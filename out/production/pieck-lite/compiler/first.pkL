@@ -1,17 +1,7 @@
 
 
-class Doughnut {
-    cook() {
-        log("Fry until golden brown")
-    }
-
+loop (var i = 0 as i < 1000 : i = i + 1) {
+     var a = 10
+     log(a)
 }
 
-class BostonCream from Doughnut {
-    cook() {
-        super.cook()
-        log("Fill with white cream")
-    }
-}
-
-BostonCream().cook()

@@ -63,7 +63,7 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
 
     while (!isAtEnd()) {
         start = index
-        var char = advance()
+        val char = advance()
 
         when {
 
@@ -136,9 +136,8 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
                 }
             }
 
-            char == '"' -> {
-                string()
-            }
+            char == '"' -> string()
+
 
             char.isDigit() -> {
 

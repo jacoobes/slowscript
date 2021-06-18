@@ -4,6 +4,7 @@ import compiler.Statement.Statement
 
 interface Callee {
 
-    fun call(interpreter : InterVisitor, arguments: List<Any?>) : Any?
+    fun call(interpreter : InterVisitor, arguments: List<Any?> = emptyList()) : Any?
+
     fun arity() : Int
 }

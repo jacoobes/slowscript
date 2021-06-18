@@ -7,6 +7,7 @@ import compiler.tokens.TOKEN_TYPES
 import compiler.Statement.Statement
 import compiler.tokens.Token
 import java.lang.RuntimeException
+import kotlin.math.roundToInt
 import kotlin.system.exitProcess
 
 
@@ -59,7 +60,6 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
 
 
     })
-
 
     }
 
@@ -219,6 +219,7 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         if(callee !is Callee) {
             throw RuntimeError("$callee cannot be called", call.paren)
         }
+
         if(callee.arity() != listResolved.size ) {
             throw RuntimeError("Expected ${callee.arity()} but got ${listResolved.size} arguments", call.paren)
         }
@@ -244,8 +245,15 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
             throw RuntimeError("Cannot inherit from non class ${classDec.superClass}", classDec.name)
         }
 
-
         env.define(classDec.name, null)
+
+        if(classDec.init != null) {
+            env = Env(env)
+            env.define(classDec.init.name, classDec.init.executeBlock)
+            env.enclosed?.also {
+                env = it
+            }
+        }
 
         if(superClass != null) {
             env = Env(env)
@@ -255,7 +263,7 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
             val allMethods = classDec.methods.associate {
                 Pair(it.fnName.lexeme,  Callable(it, env, it.fnName.lexeme == "object") ) } as HashMap
 
-            val klass = Entity(classDec.name.lexeme, superClass, allMethods)
+            val klass = Entity(classDec.name.lexeme, superClass, allMethods, classDec.init)
 
         if(superClass != null) {
             env.enclosed?.also {

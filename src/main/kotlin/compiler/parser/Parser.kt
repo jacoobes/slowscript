@@ -6,6 +6,7 @@ import compiler.interpreter.RuntimeError
 
 
 import compiler.Statement.Statement
+import compiler.interpreter.Init
 import compiler.piekLite
 import compiler.tokens.TOKEN_TYPES
 
@@ -53,11 +54,18 @@ class Parser(private val tokens: List<Token>) {
         } else null
 
         consume(LEFT_BRACE, "{ expected after class declaration")
+
+       val init = if(matchAndAdvance(INIT_BLOCK)) {
+            val name = previous()
+            consume(LEFT_BRACE, "{ expected after init block")
+            Init(name, Statement.Block(block()))
+        } else null
+
         while (!isAtEnd() && !check(RIGHT_BRACE)) {
             methods.add(task("method"))
         }
         consume(RIGHT_BRACE, "} expected")
-        return Statement.ClassDec(className, methods, identifier)
+        return Statement.ClassDec(className, methods, identifier, init)
 
     }
 
@@ -412,7 +420,20 @@ class Parser(private val tokens: List<Token>) {
 
 
     private fun synchronize() {
-
+        while (!isAtEnd()) {
+            if(previous().type == SEMICOLON) return
+            when(peek().type) {
+                CLASS -> return
+                TASK -> return
+                MUTABLE_VARIABLE -> return
+                LOOP -> return
+                WHILE -> return
+                IF -> return
+                RETURN -> return
+                DISPLAY -> return
+            }
+            advance()
+        }
     }
 
     //parser

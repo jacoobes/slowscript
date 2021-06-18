@@ -29,9 +29,9 @@ class piekLite {
                 timer.start()
                 runFile(args[0])
                 println()
-                println("${timer.elapsedTime} ms elapsed")
                 timer.stop()
-
+//                File("src/main/kotlin/compiler/utils/loopBenchMarks/Benchmarks")
+//                    .appendText("${timer.elapsedTime} ms elapsed - loop with 1000 elements - loop variables are doubles \n")
 
         }
 
@@ -41,6 +41,7 @@ class piekLite {
             if(!hadError) {
                 File(path).bufferedReader().run {
                     val statements = Parser(tokenCreator(this)).parse()
+
                     statements.let {
 
                         if (hadError)  exitProcess(65)
