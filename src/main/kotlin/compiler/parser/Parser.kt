@@ -13,7 +13,7 @@ import compiler.tokens.TOKEN_TYPES
 import compiler.tokens.TOKEN_TYPES.*
 import compiler.tokens.Token
 import java.lang.RuntimeException
-
+import kotlin.text.StringBuilder
 
 
 /**
@@ -22,6 +22,12 @@ import java.lang.RuntimeException
 
 class Parser(private val tokens: List<Token>) {
     private var current = 0
+
+
+
+    init {
+  //  println(tokens)
+    }
 
     private open class ParseError : RuntimeException() {
         companion object {
@@ -187,7 +193,7 @@ class Parser(private val tokens: List<Token>) {
 
     private fun returnStatement(): Statement {
         val returnName = previous()
-        val value: Expression? = if (!check(SQUIGGLY)) expression() else null
+        val value: Expression? = if (!check(SEMICOLON)) expression() else null
 
         consume(SEMICOLON, "No ; detected following returned expression")
         return Statement.Return(returnName, value)
@@ -447,3 +453,4 @@ class Parser(private val tokens: List<Token>) {
 
     }
 }
+

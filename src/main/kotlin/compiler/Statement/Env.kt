@@ -29,8 +29,6 @@ class Env(val enclosed : Env? = null) {
             if(enclosed != null) {
                 return enclosed.get(name)
             }
-
-
              throw RuntimeError("Undefined variable ${name.lexeme}", name)
 
         }

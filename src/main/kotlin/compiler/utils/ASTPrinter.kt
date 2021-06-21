@@ -3,6 +3,8 @@ package compiler.utils
 import compiler.Expression
 import java.lang.StringBuilder
 
+//First Type of "Interpreter" in that it prints out all expressions, (does not truly evaluate it)
+
 class ASTPrinter : Expression.Visitor<String> {
 
     fun print(expression: Expression): Any? {
@@ -76,4 +78,6 @@ class ASTPrinter : Expression.Visitor<String> {
     override fun <R> visit(expr: Expression.Supe): Any? {
         TODO("Not yet implemented")
     }
+
+
 }

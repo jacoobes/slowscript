@@ -7,7 +7,6 @@ import compiler.tokens.TOKEN_TYPES
 import compiler.Statement.Statement
 import compiler.tokens.Token
 import java.lang.RuntimeException
-import kotlin.math.roundToInt
 import kotlin.system.exitProcess
 
 
@@ -15,6 +14,11 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
     private val globals = Env()
     private val locals = HashMap<Expression, Int>()
     private var env = globals
+
+    /*
+    * Visitor Pattern implementation to evaluate Expressions and Statements
+    *
+    * */
 
     init {
         globals.define("clockMS", object : Callee {
@@ -317,12 +321,12 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
     }
 
     private fun isTruthy(unary: Any?): Boolean {
-      if(unary == null) return false
-      if(unary is Double) {
-          if(unary.isNaN()) return false
+    return when(unary) {
+          null -> false
+          is Double -> !unary.isNaN()
+          is Boolean -> unary
+          else -> true
       }
-      if(unary is Boolean) return unary
-      return true
     }
 
 
@@ -330,7 +334,6 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         if (left is Double && right is Double) {
             return left + right
         }
-
         if ((left is String && right is String)) {
             return "$left$right"
         }

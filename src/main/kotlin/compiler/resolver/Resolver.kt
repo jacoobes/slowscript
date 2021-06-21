@@ -18,13 +18,13 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
     }
     private enum class ClassType {
         CLASS,
-        NOCLASS,
+        NO_CLASS,
         SUBCLASS
     }
 
     private val scopes = Stack<HashMap<String, Boolean>>()
     private var currentFn = FunctionType.NONE
-    private var currentClass = ClassType.NOCLASS
+    private var currentClass = ClassType.NO_CLASS
 
     private fun resolve(statement: Statement) {
         statement.accept(this)
@@ -195,7 +195,7 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
 
         if(classDec.superClass != null) endScope()
 
-        currentClass = ClassType.NOCLASS
+        currentClass = ClassType.NO_CLASS
     }
 
     private fun resolveLocal(variable: Expression, name: Token) {
@@ -240,7 +240,7 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
     }
 
     override fun <R> visit(instance: Expression.Instance) {
-        if(currentClass == ClassType.NOCLASS){
+        if(currentClass == ClassType.NO_CLASS){
             piekLite.error(instance.inst, "Cannot use \"instance\" outside of classes")
             return
         }
@@ -249,12 +249,13 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
 
     override fun <R> visit(expr: Expression.Supe) {
         when(currentClass) {
-            ClassType.NOCLASS -> piekLite.error(expr.supe, "Cannot use super outside of a class")
+            ClassType.NO_CLASS -> piekLite.error(expr.supe, "Cannot use super outside of a class")
             ClassType.CLASS -> piekLite.error(expr.supe, "Cannot use super in a class with no super class")
             else -> resolveLocal(expr, expr.supe)
         }
 
     }
+
 
 
 }

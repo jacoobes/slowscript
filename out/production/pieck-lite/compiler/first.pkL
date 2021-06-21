@@ -1,7 +1,21 @@
+class Test {
+
+    object(name, grade) {
+        instance.name = name
+        instance.grade = grade
+    }
 
 
-loop (var i = 0 as i < 1000 : i = i + 1) {
-     var a = 10
-     log(a)
+
 }
 
+class Quiz from Test {
+    object(name, grade, bob) {
+        instance.name = name
+        instance.grade = grade
+        instance.bob = bob
+    }
+
+}
+
+Quiz("Math" , "grade", "no")

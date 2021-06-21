@@ -19,6 +19,7 @@ abstract class Expression {
         fun <R> visit(set: Expression.Set): Any?
         fun <R> visit(instance: Expression.Instance): Any?
         fun <R> visit(expr: Expression.Supe): Any?
+
     }
 
 
@@ -116,9 +117,7 @@ abstract class Expression {
         override fun <R> accept(visitor: Visitor<R>): Any? {
 
             return visitor.visit<R>(this)
-
         }
-
     }
 
     class Get(val obj: Expression, val name: Token) : Expression() {
@@ -139,6 +138,10 @@ abstract class Expression {
         }
 
     }
+
+
+
+
 
 
     abstract fun <R> accept(visitor: Visitor<R>): Any?

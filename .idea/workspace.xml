@@ -4,31 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="Base compiler finished.">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Init.kt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/utils/loopBenchMarks/Benchmarks" afterDir="false" />
+    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="Init Blocks :check:">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/MainKt.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/MainKt.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$Binary.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$Binary.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$Unary.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$Unary.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$grouping.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$grouping.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$literal.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$literal.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$ternary.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression$ternary.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/Expression.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/first.pkL" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/first.pkL" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/piekLite$Companion.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/piekLite$Companion.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/tokens/TOKEN_TYPES.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/tokens/Token.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/PiekLite.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/PiekLite.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Statement/Statement.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Statement/Statement.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Expression.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Expression.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Statement/Env.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Statement/Env.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/first.pkL" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/first.pkL" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Callee.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Callee.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Entity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Entity.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/InterVisitor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/InterVisitor.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/main.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/parser/Parser.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/parser/Parser.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/resolver/Resolver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/resolver/Resolver.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/tokenCreator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/tokenCreator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/tokens/TOKEN_TYPES.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/tokens/TOKEN_TYPES.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/utils/ASTPrinter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/utils/ASTPrinter.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +92,7 @@
     <property name="project.structure.proportion" value="0.18313752" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.project.gradle" />
+    <property name="settings.editor.selected.configurable" value="project.propCompiler" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -313,7 +305,14 @@
       <option name="project" value="LOCAL" />
       <updated>1623685873233</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="Init Blocks :check:">
+      <created>1624038063030</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1624038063030</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -355,7 +354,8 @@
     <MESSAGE value="Loops and Conditionals work &#10;fixed big scope bug." />
     <MESSAGE value="Resolver check" />
     <MESSAGE value="Base compiler finished." />
-    <option name="LAST_COMMIT_MESSAGE" value="Base compiler finished." />
+    <MESSAGE value="Init Blocks :check:" />
+    <option name="LAST_COMMIT_MESSAGE" value="Init Blocks :check:" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
