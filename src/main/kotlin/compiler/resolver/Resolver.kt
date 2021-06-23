@@ -141,7 +141,7 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
     }
 
     override fun <R> visit(expression: Expression.Unary) {
-        resolve(expression.expression)
+        resolve(expression.value)
     }
 
     override fun <R> visit(logical: Expression.Logical) {

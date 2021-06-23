@@ -13,7 +13,6 @@ import compiler.tokens.TOKEN_TYPES
 import compiler.tokens.TOKEN_TYPES.*
 import compiler.tokens.Token
 import java.lang.RuntimeException
-import kotlin.text.StringBuilder
 
 
 /**
@@ -22,12 +21,6 @@ import kotlin.text.StringBuilder
 
 class Parser(private val tokens: List<Token>) {
     private var current = 0
-
-
-
-    init {
-  //  println(tokens)
-    }
 
     private open class ParseError : RuntimeException() {
         companion object {
@@ -213,6 +206,7 @@ class Parser(private val tokens: List<Token>) {
 
     private fun assignment() : Expression {
         val expr = ternary()
+
         if(matchAndAdvance(ASSIGNMENT)) {
             val equals = previous()
             val value = assignment()
@@ -294,6 +288,7 @@ class Parser(private val tokens: List<Token>) {
 
     private fun term(): Expression {
         var left = factor()
+
         while (matchAndAdvance(PLUS, MINUS)) {
             val token = previous()
             val right = factor()
@@ -305,21 +300,30 @@ class Parser(private val tokens: List<Token>) {
 
     private fun factor(): Expression {
         var left = unary()
+
+        if(matchAndAdvance(INCREMENT, DECREMENT)) {
+            val token = previous()
+            left = Expression.Unary(token, left)
+
+        }
+
         while (matchAndAdvance(MULT, DIVIDE, MODULUS)) {
             val token = previous()
             val right = unary()
             left = Expression.Binary(left, token, right)
         }
+
         return left
 
     }
 
     private fun unary(): Expression {
 
-        if (matchAndAdvance(MINUS, NOT)) {
-            return Expression.Unary(previous(), unary())
-        }
-        return callee()
+       return if (matchAndAdvance(MINUS, NOT)) {
+             Expression.Unary(previous(), unary())
+        }  else {
+           callee()
+       }
     }
 
     private fun callee() : Expression {

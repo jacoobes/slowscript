@@ -44,7 +44,7 @@ abstract class Expression {
     }
 
 
-    class Unary(val prefix: Token, val expression: Expression) : Expression() {
+    class Unary(val prefix: Token, val value: Expression) : Expression() {
         override fun <R> accept(visitor: Visitor<R>): Any? {
 
             return visitor.visit<R>(this)

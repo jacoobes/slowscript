@@ -1,21 +1,5 @@
-class Test {
-
-    object(name, grade) {
-        instance.name = name
-        instance.grade = grade
-    }
-
-
-
+var i = 0
+loop (as i < 10 : i++) {
+    log(i)
 }
 
-class Quiz from Test {
-    object(name, grade, bob) {
-        instance.name = name
-        instance.grade = grade
-        instance.bob = bob
-    }
-
-}
-
-Quiz("Math" , "grade", "no")

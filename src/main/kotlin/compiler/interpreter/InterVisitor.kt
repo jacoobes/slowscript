@@ -7,6 +7,7 @@ import compiler.tokens.TOKEN_TYPES
 import compiler.Statement.Statement
 import compiler.tokens.Token
 import java.lang.RuntimeException
+import kotlin.math.exp
 import kotlin.system.exitProcess
 
 
@@ -76,10 +77,10 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
     }
 
 
-    override fun <R> visit(expression: Expression.Unary): Any? {
-        val unary: Any? = evaluate(expression.expression)
+    override fun <R> visit(expr: Expression.Unary): Any? {
+        val unary: Any? = evaluate(expr.value)
 
-        return when (expression.prefix.type) {
+        return when (expr.prefix.type) {
             TOKEN_TYPES.MINUS -> {
                 if (unary is Double) {
                     return -unary
@@ -92,9 +93,32 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
                 }
                 false
             }
+            TOKEN_TYPES.DECREMENT -> {
+                evaluateCompoundUnary(true, expr, expr)
+            }
+            TOKEN_TYPES.INCREMENT -> {
+                evaluateCompoundUnary(false, unary, expr)
+
+            }
             else -> null
         }
 
+    }
+    private fun evaluateCompoundUnary(isNegated: Boolean = true, value: Any?, expr: Expression.Unary  ) : Double {
+        if(value !is Double) throw RuntimeError("Value is not a number! on ", expr.prefix)
+        val unary = if(isNegated) value - 1 else value + 1
+        if(expr.value is Expression.Variable) {
+
+            val distance = locals[expr.value]
+            if(distance != null) {
+                env.assignAt(distance, expr.value.name, unary)
+            } else {
+                globals.assign(expr.value.name, unary)
+            }
+            return unary
+        }
+
+        throw RuntimeError("Not a valid operand for decrement operator -- on ", expr.prefix)
     }
 
     override fun <R> visit(expression: Expression.Ternary): Any? {
@@ -141,6 +165,7 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
             else -> null
         }
     }
+
 
     override fun <R> visit(expression: Expression.Literal): Any? {
         return expression.value
@@ -304,6 +329,8 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         }
        throw RuntimeError("Superclass is not callable on ${expr.method}", expr.supe )
     }
+
+
     fun executeBlock(listOfStatements: List<Statement>, currentEnv: Env ) {
         val previous = this.env
         try {

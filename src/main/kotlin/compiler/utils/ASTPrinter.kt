@@ -35,7 +35,7 @@ class ASTPrinter : Expression.Visitor<String> {
     }
 
     override fun <R> visit(expression: Expression.Unary): String {
-        return parenthesize<String>(expression.prefix.lexeme, expression.expression)
+        return parenthesize<String>(expression.prefix.lexeme, expression.value)
     }
 
     override fun <R> visit(expression: Expression.Literal): String {

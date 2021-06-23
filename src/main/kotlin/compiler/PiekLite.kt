@@ -19,6 +19,7 @@ class piekLite {
         private val interpreter = InterVisitor()
         private val resolver = Resolver(interpreter)
         private val timer = Stopwatch()
+
         fun run( args : Array<String>) {
 
             if(args.size != 1) {
