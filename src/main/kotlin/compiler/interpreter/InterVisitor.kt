@@ -3,8 +3,10 @@ package compiler.interpreter
 import compiler.Expression
 import compiler.Statement.Env
 import compiler.piekLite
-import compiler.tokens.TOKEN_TYPES
+import compiler.tokens.TOKEN_TYPES.*
+
 import compiler.Statement.Statement
+import compiler.tokens.TOKEN_TYPES
 import compiler.tokens.Token
 import java.lang.RuntimeException
 import kotlin.math.exp
@@ -81,22 +83,22 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         val unary: Any? = evaluate(expr.value)
 
         return when (expr.prefix.type) {
-            TOKEN_TYPES.MINUS -> {
+            MINUS -> {
                 if (unary is Double) {
                     return -unary
                 }
                 null
             }
-            TOKEN_TYPES.NOT -> {
+           NOT -> {
                 if (!isTruthy(unary)) {
                     return true
                 }
                 false
             }
-            TOKEN_TYPES.DECREMENT -> {
+           DECREMENT -> {
                 evaluateCompoundUnary(true, expr, expr)
             }
-            TOKEN_TYPES.INCREMENT -> {
+            INCREMENT -> {
                 evaluateCompoundUnary(false, unary, expr)
 
             }
@@ -132,40 +134,53 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
 
         return when (expression.operator.type) {
 
-            TOKEN_TYPES.PLUS -> {
-                add(left, right)
-            }
-            TOKEN_TYPES.MINUS -> {
-                subtract(left, right)
-            }
-            TOKEN_TYPES.MODULUS -> {
-                mod(left, right)
-            }
-            TOKEN_TYPES.DIVIDE -> {
-                divide(left, right)
-            }
-            TOKEN_TYPES.RIGHT_TRIANGLE -> {
-                greaterThan(left, right, expression)
-            }
-            TOKEN_TYPES.LEFT_TRIANGLE -> {
-                lessThan(left, right, expression)
-            }
-            TOKEN_TYPES.GREAT_THAN_OR_EQUAL -> {
-                greaterOrEqual(left, right, expression)
-            }
-            TOKEN_TYPES.LESS_THAN_OR_EQUAL -> {
-                lesserOrEqual(left, right, expression)
-            }
-            TOKEN_TYPES.EQUAL_EQUAL -> {
-                isEqual(left, right)
-            }
-            TOKEN_TYPES.NOT_EQUAL -> {
-                !isEqual(left, right)
-            }
+            PLUS -> add(left, right)
+            PLUS_EQUALS ->  eqAssign(left, right, expression, PLUS_EQUALS)
+            MINUS_EQUALS -> eqAssign(left, right, expression, MINUS_EQUALS)
+            MULT_EQUAL -> eqAssign(left, right, expression, MULT_EQUAL)
+            DIV_EQUALS -> eqAssign(left, right, expression, DIV_EQUALS)
+            MOD_EQUALS -> eqAssign(left, right, expression, MOD_EQUALS)
+            MINUS ->  subtract(left, right)
+            MODULUS -> mod(left, right)
+            DIVIDE -> divide(left, right)
+            RIGHT_TRIANGLE -> greaterThan(left, right, expression)
+            LEFT_TRIANGLE -> lessThan(left, right, expression)
+            GREAT_THAN_OR_EQUAL -> greaterOrEqual(left, right, expression)
+            LESS_THAN_OR_EQUAL -> lesserOrEqual(left, right, expression)
+            EQUAL_EQUAL -> isEqual(left, right)
+            NOT_EQUAL -> !isEqual(left, right)
             else -> null
         }
     }
+    private fun eqAssign(left: Any?, right: Any?, expression: Expression.Binary, tokenType : TOKEN_TYPES) : Double {
+        if(left == null || right == null) throw RuntimeError("Cannot add null", expression.operator)
+        if(left is Double && right is Double)  {
 
+            val value = when(tokenType) {
+                PLUS_EQUALS -> left + right
+                MINUS_EQUALS -> left - right
+                MULT_EQUAL -> left * right
+                DIV_EQUALS -> left / right
+                MOD_EQUALS -> left % right
+                else -> throw RuntimeException("Incorrect token sign")
+            }
+
+        if(expression.left is Expression.Variable) {
+            val distanceInStack: Int? = locals[expression.left]
+
+            if (distanceInStack != null) {
+                env.assignAt(distanceInStack, expression.left.name, value)
+            } else {
+                globals.assign(expression.left.name, value)
+            }
+            return value
+
+            }
+            throw RuntimeError("${expression.left} is not a variable that can be assigned", expression.operator)
+        }
+
+        throw RuntimeError("Expected two numbers and got ${left::class.simpleName} and ${right::class.simpleName}", expression.operator)
+    }
 
     override fun <R> visit(expression: Expression.Literal): Any? {
         return expression.value
@@ -219,7 +234,7 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
     override fun <R> visit(logical: Expression.Logical): Any? {
         val leftSide = evaluate(logical.left)
 
-        if(logical.operator.type === TOKEN_TYPES.OR) {
+        if(logical.operator.type === OR) {
             if(isTruthy(leftSide)) return leftSide
        } else {
             if(!isTruthy(leftSide)) {

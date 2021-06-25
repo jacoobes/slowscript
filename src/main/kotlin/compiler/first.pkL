@@ -1,5 +1,3 @@
-var i = 0
-loop (as i < 10 : i++) {
-    log(i)
-}
 
+
+log(responseTo("What is your height?", "number"))

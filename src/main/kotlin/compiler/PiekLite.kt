@@ -31,11 +31,11 @@ class piekLite {
                 runFile(args[0])
                 println()
                 timer.stop()
+                println("${timer.elapsedTime} ms elapsed")
 //                File("src/main/kotlin/compiler/utils/loopBenchMarks/Benchmarks")
 //                    .appendText("${timer.elapsedTime} ms elapsed - loop with 1000 elements - loop variables are doubles \n")
 
         }
-
 
         private fun runFile(path: String) {
 
@@ -56,7 +56,6 @@ class piekLite {
                 }
 
             }
-
 
 
         fun error (line: Int, message: String, where: String ) {

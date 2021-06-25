@@ -31,6 +31,9 @@ class Parser(private val tokens: List<Token>) {
         }
 
     }
+    init {
+    //    println(tokens)
+    }
 
     private fun declaration(): Statement {
         try {
@@ -289,7 +292,7 @@ class Parser(private val tokens: List<Token>) {
     private fun term(): Expression {
         var left = factor()
 
-        while (matchAndAdvance(PLUS, MINUS)) {
+        while (matchAndAdvance(PLUS, MINUS, PLUS_EQUALS, MINUS_EQUALS)) {
             val token = previous()
             val right = factor()
             left = Expression.Binary(left, token, right)
@@ -307,7 +310,7 @@ class Parser(private val tokens: List<Token>) {
 
         }
 
-        while (matchAndAdvance(MULT, DIVIDE, MODULUS)) {
+        while (matchAndAdvance(MULT, DIVIDE, MODULUS, MULT_EQUAL, DIV_EQUALS, MODULUS, MOD_EQUALS)) {
             val token = previous()
             val right = unary()
             left = Expression.Binary(left, token, right)
