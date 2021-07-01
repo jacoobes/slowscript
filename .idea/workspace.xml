@@ -4,15 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="i++ i-- :check:">
+    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="Compound Assignment operators">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/first.pkL" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/first.pkL" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/pieck-lite/compiler/piekLite$Companion.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/pieck-lite/compiler/piekLite$Companion.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/PiekLite.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/PiekLite.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Expression.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Expression.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/first.pkL" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/first.pkL" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/InterVisitor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/InterVisitor.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/parser/Parser.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/parser/Parser.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/utils/loopBenchMarks/Benchmarks" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/tokenCreator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/tokenCreator.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,11 +56,15 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/Statement/Env.kt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/InterVisitor.kt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/Expression.kt" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/tokenCreator.kt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/first.pkL" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/LICENSE" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/PiekLite.kt" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/main.kt" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/parser/Parser.kt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/main.kt" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1qx6NkZiRa4fj1iZt9nkswFQv84" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -318,7 +320,14 @@
       <option name="project" value="LOCAL" />
       <updated>1624480736130</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Compound Assignment operators">
+      <created>1624643755303</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1624643755303</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -363,7 +372,8 @@
     <MESSAGE value="Init Blocks :check:" />
     <MESSAGE value="Block Comments :Check:" />
     <MESSAGE value="i++ i-- :check:" />
-    <option name="LAST_COMMIT_MESSAGE" value="i++ i-- :check:" />
+    <MESSAGE value="Compound Assignment operators" />
+    <option name="LAST_COMMIT_MESSAGE" value="Compound Assignment operators" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -1,3 +1,10 @@
+class Any {
+    object(joe, bo) {
+        instance.joe = joe
+        instance.bo = bo
+    }
 
+}
+var test = Any(1,2)
 
-log(responseTo("What is your height?", "number"))
+log(test.joe)

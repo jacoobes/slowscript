@@ -58,14 +58,11 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
                 "boolean" -> readLine().toString().toBoolean()
                 else -> throw RuntimeException("Invalid argument for second parameter")
             }
-
         }
 
         override fun arity(): Int {
             return 2
         }
-
-
     })
 
     }
@@ -133,14 +130,9 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         val right: Any? = evaluate(expression.right)
 
         return when (expression.operator.type) {
-
             PLUS -> add(left, right)
-            PLUS_EQUALS ->  eqAssign(left, right, expression, PLUS_EQUALS)
-            MINUS_EQUALS -> eqAssign(left, right, expression, MINUS_EQUALS)
-            MULT_EQUAL -> eqAssign(left, right, expression, MULT_EQUAL)
-            DIV_EQUALS -> eqAssign(left, right, expression, DIV_EQUALS)
-            MOD_EQUALS -> eqAssign(left, right, expression, MOD_EQUALS)
             MINUS ->  subtract(left, right)
+            MULT -> multiply(left, right)
             MODULUS -> mod(left, right)
             DIVIDE -> divide(left, right)
             RIGHT_TRIANGLE -> greaterThan(left, right, expression)
@@ -149,10 +141,17 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
             LESS_THAN_OR_EQUAL -> lesserOrEqual(left, right, expression)
             EQUAL_EQUAL -> isEqual(left, right)
             NOT_EQUAL -> !isEqual(left, right)
+            PLUS_EQUALS ->  eqAssign(expression, PLUS_EQUALS)
+            MINUS_EQUALS -> eqAssign(expression, MINUS_EQUALS)
+            MULT_EQUAL -> eqAssign(expression, MULT_EQUAL)
+            DIV_EQUALS -> eqAssign(expression, DIV_EQUALS)
+            MOD_EQUALS -> eqAssign(expression, MOD_EQUALS)
             else -> null
         }
     }
-    private fun eqAssign(left: Any?, right: Any?, expression: Expression.Binary, tokenType : TOKEN_TYPES) : Double {
+    private fun eqAssign(expression: Expression.Binary, tokenType : TOKEN_TYPES) : Double {
+        val left = evaluate(expression.left)
+        val right = evaluate(expression.right)
         if(left == null || right == null) throw RuntimeError("Cannot add null", expression.operator)
         if(left is Double && right is Double)  {
 
@@ -166,13 +165,9 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
             }
 
         if(expression.left is Expression.Variable) {
-            val distanceInStack: Int? = locals[expression.left]
 
-            if (distanceInStack != null) {
-                env.assignAt(distanceInStack, expression.left.name, value)
-            } else {
-                globals.assign(expression.left.name, value)
-            }
+            locals[expression.left]?.let { env.assignAt(it, expression.left.name, value) } ?: globals.assign(expression.left.name, value)
+
             return value
 
             }
@@ -207,13 +202,11 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         declaration.expr?.let { env.define(declaration.name,evaluate(it)) } ?: env.define(declaration.name, null)
     }
     override fun <R> visit(assignment: Expression.Assignment) : Any? {
-        val distance = locals[assignment]
         val value = evaluate(assignment.right)
-        if(distance != null) {
-            env.assignAt(distance, assignment.name, value)
-        } else {
-            globals.assign(assignment.name, value)
-        }
+        locals[assignment]?. let {
+            env.assignAt(it, assignment.name, value)
+        } ?: globals.assign(assignment.name, value)
+
         return value
     }
 
@@ -378,6 +371,13 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         }
         if ((left is String && right is String)) {
             return "$left$right"
+        }
+        return Double.NaN
+    }
+
+    private fun multiply(left: Any?, right: Any?) : Any {
+        if(left is Double && right is Double) {
+            return left * right
         }
         return Double.NaN
     }

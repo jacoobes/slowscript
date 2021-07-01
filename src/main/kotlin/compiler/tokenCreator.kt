@@ -47,9 +47,7 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
 
     fun string() {
 
-        while (peek() != '"' && !isAtEnd()) {
-            advance()
-        }
+        while (peek() != '"' && !isAtEnd())  advance()
         if (isAtEnd()) {
             piekLite.error(line, "Incomplete string")
         }
@@ -102,16 +100,20 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
             }
 
             char == '+' -> {
-                if (match('=')) addComplexToken(PLUS_EQUALS)
-                else if (match('+')) addComplexToken(INCREMENT)
-                else token.add(Token(PLUS, char.toString(), line))
+                when {
+                    match('=') -> addComplexToken(PLUS_EQUALS)
+                    match('+') -> addComplexToken(INCREMENT)
+                    else -> token.add(Token(PLUS, char.toString(), line))
+                }
             }
 
             char == '-' -> {
-                if (match('=')) addComplexToken(MINUS_EQUALS)
-                else if(match('>')) addComplexToken(ARROW)
-                else if (match('-')) addComplexToken(DECREMENT)
-                else token.add(Token(MINUS, char.toString(), line))
+                when {
+                    match('=') -> addComplexToken(MINUS_EQUALS)
+                    match('>') -> addComplexToken(ARROW)
+                    match('-') -> addComplexToken(DECREMENT)
+                    else -> token.add(Token(MINUS, char.toString(), line))
+                }
             }
             char == '%' -> {
                 if (match('=')) addComplexToken(MOD_EQUALS)

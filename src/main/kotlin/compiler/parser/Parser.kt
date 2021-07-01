@@ -294,7 +294,7 @@ class Parser(private val tokens: List<Token>) {
 
         while (matchAndAdvance(PLUS, MINUS, PLUS_EQUALS, MINUS_EQUALS)) {
             val token = previous()
-            val right = factor()
+            val right = term()
             left = Expression.Binary(left, token, right)
         }
         return left
@@ -312,7 +312,7 @@ class Parser(private val tokens: List<Token>) {
 
         while (matchAndAdvance(MULT, DIVIDE, MODULUS, MULT_EQUAL, DIV_EQUALS, MODULUS, MOD_EQUALS)) {
             val token = previous()
-            val right = unary()
+            val right = factor()
             left = Expression.Binary(left, token, right)
         }
 

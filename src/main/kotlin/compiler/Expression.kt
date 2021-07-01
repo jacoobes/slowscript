@@ -34,21 +34,14 @@ abstract class Expression {
 
     class Assignment(val name: Token, val right: Expression) : Expression() {
         override fun <R> accept(visitor: Visitor<R>): Any? {
-
             return visitor.visit<R>(this)
-
-
         }
-
 
     }
 
-
     class Unary(val prefix: Token, val value: Expression) : Expression() {
         override fun <R> accept(visitor: Visitor<R>): Any? {
-
             return visitor.visit<R>(this)
-
         }
 
     }
