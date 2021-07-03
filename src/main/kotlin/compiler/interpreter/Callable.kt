@@ -1,6 +1,7 @@
 package compiler.interpreter
 
 import compiler.Statement.*
+import compiler.env.Env
 
 
 open class Callable(private val declaration: Statement.Function, private val closure : Env, private val isInitializer: Boolean) : Callee {

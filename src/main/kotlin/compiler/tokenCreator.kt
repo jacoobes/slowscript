@@ -49,7 +49,7 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
 
         while (peek() != '"' && !isAtEnd())  advance()
         if (isAtEnd()) {
-            piekLite.error(line, "Incomplete string")
+            LRN.error(line, "Incomplete string")
         }
         advance()
         val cut = src.substring(start + 1, index - 1)
@@ -178,7 +178,7 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
                         if(isAtEnd()) break
                     }
 
-                    val type = piekLite.reservedKeywords().let {
+                    val type = LRN.reservedKeywords().let {
                         val word = src.substring(start, index)
                         it.getOrElse(word) { IDENTIFIER }
                     }
@@ -186,7 +186,7 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
                     addComplexToken(type)
 
                 } else {
-                    piekLite.error(line, "Unexpected character", char.toString())
+                    LRN.error(line, "Unexpected character", char.toString())
 
                 }
 

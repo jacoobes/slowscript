@@ -1,5 +1,6 @@
 package compiler.interpreter
 
+import compiler.env.Entity
 import compiler.tokens.Token
 
 class InstanceOf(private val clase : Entity) {

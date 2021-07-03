@@ -1,8 +1,10 @@
-package compiler.interpreter
+package compiler.env
 
+import compiler.interpreter.*
 import java.lang.RuntimeException
 
-open class Entity (val name: String, private val superclass: Entity?, private val allMethods: HashMap<String, Callable>, private val init: Init?) : Callee {
+open class Entity (val name: String, private val superclass: Entity?, private val allMethods: HashMap<String, Callable>, private val init: Init?) :
+    Callee {
 
     override fun call(interpreter: InterVisitor, arguments: List<Any?>): InstanceOf {
         init?.call(interpreter, arguments)

@@ -2,7 +2,7 @@ package compiler.resolver
 
 import compiler.Expression
 import compiler.Statement.Statement
-import compiler.piekLite
+import compiler.LRN
 import compiler.tokens.Token
 import java.util.*
 
@@ -42,13 +42,13 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
 
     override fun <R> visit(arg: Statement.Return) {
         if(currentFn == FunctionType.INIT) {
-            piekLite.error(arg.name.line, "Cannot ${arg.name.lexeme} in init block")
+            LRN.error(arg.name.line, "Cannot ${arg.name.lexeme} in init block")
         }
         if (currentFn == FunctionType.NONE) {
-            piekLite.error(arg.name, "Cannot return at top level")
+            LRN.error(arg.name, "Cannot return at top level")
         }
         if(currentFn == FunctionType.NEW) {
-            piekLite.error(arg.name, "Cannot return inside an new object function")
+            LRN.error(arg.name, "Cannot return inside an new object function")
         }
         arg.value?.let {
             resolve(it)
@@ -140,8 +140,8 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
         resolve(expression.right)
     }
 
-    override fun <R> visit(expression: Expression.Unary) {
-        resolve(expression.value)
+    override fun <R> visit(expr: Expression.Unary) {
+        resolve(expr.value)
     }
 
     override fun <R> visit(logical: Expression.Logical) {
@@ -151,7 +151,7 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
 
     override fun <R> visit(variable: Expression.Variable) {
         if (scopes.isNotEmpty() && scopes.peek()[variable.name.lexeme] == false) {
-            piekLite.error(variable.name, "Variable has not been properly defined")
+            LRN.error(variable.name, "Variable has not been properly defined")
         }
         resolveLocal(variable, variable.name)
     }
@@ -161,9 +161,14 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
         declare(classDec.name)
         define(classDec.name)
 
+        /*
+        *  If there is a super class, being a new scope and add the "super" keyword to true
+        *  If a variable in the scope is set to true, it is declared and defined automatically
+        */
+
         classDec.superClass?.let {
             if (classDec.name.lexeme == classDec.superClass.name.lexeme) {
-               return piekLite.error(classDec.name, "Cannot inherit from self")
+               return LRN.error(classDec.name, "Cannot inherit from self!")
             }
                 currentClass = ClassType.SUBCLASS
                 resolve(it)
@@ -182,7 +187,6 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
             currentFn = FunctionType.NONE
         }
 
-        //assigning instance to true, meaning it is declared and defined as local variable
         scopes.peek()["instance"]  = true
 
         for (methods in classDec.methods) {
@@ -216,7 +220,7 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
     private fun declare(name: Token) {
         if (scopes.isEmpty()) return
         if (scopes.peek().containsKey(name.lexeme)) {
-            piekLite.error(name, "A variable has already been declared ")
+            LRN.error(name, "A variable has already been declared ")
         }
         scopes.peek()[name.lexeme] = false
     }
@@ -241,7 +245,7 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
 
     override fun <R> visit(instance: Expression.Instance) {
         if(currentClass == ClassType.NO_CLASS){
-            piekLite.error(instance.inst, "Cannot use \"instance\" outside of classes")
+            LRN.error(instance.inst, "Cannot use \"instance\" outside of classes")
             return
         }
         resolveLocal(instance, instance.inst)
@@ -249,8 +253,8 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
 
     override fun <R> visit(expr: Expression.Supe) {
         when(currentClass) {
-            ClassType.NO_CLASS -> piekLite.error(expr.supe, "Cannot use super outside of a class")
-            ClassType.CLASS -> piekLite.error(expr.supe, "Cannot use super in a class with no super class")
+            ClassType.NO_CLASS -> LRN.error(expr.supe, "Cannot use super outside of a class")
+            ClassType.CLASS -> LRN.error(expr.supe, "Cannot use super in a class with no super class")
             else -> resolveLocal(expr, expr.supe)
         }
 

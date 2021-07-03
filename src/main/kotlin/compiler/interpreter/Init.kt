@@ -1,6 +1,6 @@
 package compiler.interpreter
 
-import compiler.Statement.Env
+import compiler.env.Env
 import compiler.Statement.Statement
 import compiler.tokens.Token
 

@@ -7,7 +7,7 @@ abstract class Expression {
 
     interface Visitor<R> {
         fun <R> visit(expression: Expression.Binary): Any?
-        fun <R> visit(expression: Expression.Unary): Any?
+        fun <R> visit(expr: Expression.Unary): Any?
         fun <R> visit(expression: Expression.Ternary): Any?
         fun <R> visit(expression: Expression.Grouping): Any?
         fun <R> visit(expression: Expression.Literal): Any?

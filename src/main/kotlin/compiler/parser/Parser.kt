@@ -7,7 +7,7 @@ import compiler.interpreter.RuntimeError
 
 import compiler.Statement.Statement
 import compiler.interpreter.Init
-import compiler.piekLite
+import compiler.LRN
 import compiler.tokens.TOKEN_TYPES
 
 import compiler.tokens.TOKEN_TYPES.*
@@ -25,14 +25,11 @@ class Parser(private val tokens: List<Token>) {
     private open class ParseError : RuntimeException() {
         companion object {
             fun error(line: Int, message: String): ParseError {
-                piekLite.error(line, message)
+                LRN.error(line, message)
                 return ParseError()
             }
         }
 
-    }
-    init {
-    //    println(tokens)
     }
 
     private fun declaration(): Statement {
@@ -218,7 +215,7 @@ class Parser(private val tokens: List<Token>) {
             } else if(expr is Expression.Get) {
                 return Expression.Set(expr.obj, expr.name, value)
             }
-            piekLite.error(equals, "Invalid assignment target")
+            LRN.error(equals, "Invalid assignment target")
         }
         return expr
     }
@@ -449,7 +446,7 @@ class Parser(private val tokens: List<Token>) {
         }
     }
 
-    //parser
+
     fun parse(): List<Statement> {
         val declaration = mutableListOf<Statement>()
 

@@ -1,10 +1,7 @@
-class Any {
-    object(joe, bo) {
-        instance.joe = joe
-        instance.bo = bo
-    }
+var stringRepeat = ""
+loop ( var i = 0 as i < 10 : i++ ) {
+
+    stringRepeat += "a"
 
 }
-var test = Any(1,2)
-
-log(test.joe)
+log(stringRepeat)

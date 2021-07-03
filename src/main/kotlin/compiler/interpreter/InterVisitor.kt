@@ -1,11 +1,12 @@
 package compiler.interpreter
 
 import compiler.Expression
-import compiler.Statement.Env
-import compiler.piekLite
+import compiler.env.Env
+import compiler.LRN
 import compiler.tokens.TOKEN_TYPES.*
 
 import compiler.Statement.Statement
+import compiler.env.Entity
 import compiler.tokens.TOKEN_TYPES
 import compiler.tokens.Token
 import java.lang.RuntimeException
@@ -19,21 +20,22 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
     private var env = globals
 
     /*
+    * Interpreter - 2021
     * Visitor Pattern implementation to evaluate Expressions and Statements
     *
     * */
 
     init {
+        /**
+         * These are native functions that work on the global scope.
+         * They all implement the Callee interface, which is the base for all callable expressions
+         */
         globals.define("clockMS", object : Callee {
-            override fun call(interpreter: InterVisitor, arguments: List<Any?>) : Any {
-                return System.currentTimeMillis().toDouble() / 1000
-            }
-            override fun arity(): Int {
-                return 0
-            }
-            override fun toString(): String {
-                return "native function"
-            }
+            override fun call(interpreter: InterVisitor, arguments: List<Any?>) : Double = (System.currentTimeMillis().toDouble() / 1000)
+
+            override fun arity(): Int = 0
+            override fun toString(): String = "clockMS -> native function"
+
 
         })
       globals.define("endProcess", object : Callee {
@@ -41,12 +43,12 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
               if(arguments[0] is Double) {
                   exitProcess(arguments[0].toString().dropLast(2).toInt() )
               }
-              throw RuntimeException("Expected number for exit code")
+              throw RuntimeException("Expected number for exit code, got ${arguments[0]}")
           }
 
-          override fun arity(): Int {
-              return 1
-          }
+          override fun arity(): Int = 1
+          override fun toString(): String = "endProcess -> native function"
+
 
       })
     globals.define("responseTo", object : Callee {
@@ -56,13 +58,13 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
                 "string" -> readLine()
                 "number" ->  readLine().toString().toDouble()
                 "boolean" -> readLine().toString().toBoolean()
-                else -> throw RuntimeException("Invalid argument for second parameter")
+                else -> throw RuntimeException("Invalid argument ${arguments[1]} for second parameter")
             }
         }
-
         override fun arity(): Int {
             return 2
         }
+        override fun toString(): String = "responseTo -> native function"
     })
 
     }
@@ -71,7 +73,7 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         try {
             listOfStatements.forEach { execute(it) }
         } catch (error: RuntimeError) {
-            piekLite.error(error)
+            LRN.error(error)
         }
     }
 
@@ -81,24 +83,11 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
 
         return when (expr.prefix.type) {
             MINUS -> {
-                if (unary is Double) {
-                    return -unary
-                }
-                null
+                if (unary is Double) { -unary } else null
             }
-           NOT -> {
-                if (!isTruthy(unary)) {
-                    return true
-                }
-                false
-            }
-           DECREMENT -> {
-                evaluateCompoundUnary(true, expr, expr)
-            }
-            INCREMENT -> {
-                evaluateCompoundUnary(false, unary, expr)
-
-            }
+           NOT ->  !isTruthy(unary)
+           DECREMENT -> evaluateCompoundUnary(true, expr, expr)
+           INCREMENT ->  evaluateCompoundUnary(false, unary, expr)
             else -> null
         }
 
@@ -108,12 +97,10 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         val unary = if(isNegated) value - 1 else value + 1
         if(expr.value is Expression.Variable) {
 
-            val distance = locals[expr.value]
-            if(distance != null) {
-                env.assignAt(distance, expr.value.name, unary)
-            } else {
-                globals.assign(expr.value.name, unary)
-            }
+            locals[expr.value]?.let {
+                env.assignAt(it, expr.value.name, unary)
+            } ?: globals.assign(expr.value.name, unary)
+
             return unary
         }
 
@@ -149,33 +136,43 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
             else -> null
         }
     }
-    private fun eqAssign(expression: Expression.Binary, tokenType : TOKEN_TYPES) : Double {
+
+
+    private fun eqAssign(expression: Expression.Binary, tokenType : TOKEN_TYPES) : Any {
         val left = evaluate(expression.left)
         val right = evaluate(expression.right)
         if(left == null || right == null) throw RuntimeError("Cannot add null", expression.operator)
+
+        if(left is String && right is String && tokenType == PLUS_EQUALS) {
+            val value = left + right
+            if(expression.left is Expression.Variable) {
+                locals[expression.left]?.let { env.assignAt(it, expression.left.name, value) } ?: globals.assign(expression.left.name, value)
+                return value
+            }
+            throw RuntimeError("${expression.left} is not a variable that can be assigned", expression.operator)
+        }
+
         if(left is Double && right is Double)  {
 
             val value = when(tokenType) {
-                PLUS_EQUALS -> left + right
+                PLUS_EQUALS -> left  + right
                 MINUS_EQUALS -> left - right
-                MULT_EQUAL -> left * right
-                DIV_EQUALS -> left / right
+                MULT_EQUAL -> left  * right
+                DIV_EQUALS -> left  / right
                 MOD_EQUALS -> left % right
                 else -> throw RuntimeException("Incorrect token sign")
             }
 
         if(expression.left is Expression.Variable) {
-
             locals[expression.left]?.let { env.assignAt(it, expression.left.name, value) } ?: globals.assign(expression.left.name, value)
-
             return value
-
             }
             throw RuntimeError("${expression.left} is not a variable that can be assigned", expression.operator)
         }
 
         throw RuntimeError("Expected two numbers and got ${left::class.simpleName} and ${right::class.simpleName}", expression.operator)
     }
+
 
     override fun <R> visit(expression: Expression.Literal): Any? {
         return expression.value
@@ -247,11 +244,8 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
     }
 
     override fun <R> visit(call: Expression.Call): Any? {
-        val callee : Any = evaluate(call.callee) ?: piekLite.error(call.paren.line,"Undefined function" )
-        val listResolved = mutableListOf<Any?>()
-        for (arguments in call.args) {
-            listResolved.add(evaluate(arguments))
-        }
+        val callee : Any = evaluate(call.callee) ?: LRN.error(call.paren.line,"Undefined function" )
+        val listResolved = call.args.map { evaluate(it)  }
 
         if(callee !is Callee) {
             throw RuntimeError("$callee cannot be called", call.paren)
@@ -328,7 +322,7 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         if(superKlass == null) {
             throw RuntimeError("Superclass cannot be null", expr.supe)
         }
-        val method : Callable;
+        val method : Callable
         if(superKlass is Entity) {
             if(instanceOf is InstanceOf) {
                 method = superKlass.findMethod(expr.method.lexeme) ?: throw RuntimeError("No method found on super class", expr.method)
@@ -339,7 +333,7 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
     }
 
 
-    fun executeBlock(listOfStatements: List<Statement>, currentEnv: Env ) {
+    fun executeBlock(listOfStatements: List<Statement>, currentEnv: Env) {
         val previous = this.env
         try {
             this.env = currentEnv
@@ -486,3 +480,5 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
 
 
 }
+
+

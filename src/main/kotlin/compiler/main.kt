@@ -1,7 +1,9 @@
-import compiler.piekLite
+import compiler.LRN
 
 
-fun main(args : Array<String>) = piekLite.run(args)
+fun main(args : Array<String>) {
+    LRN.run(args)
+}
 
 
 

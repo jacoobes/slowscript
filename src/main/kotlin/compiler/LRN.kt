@@ -11,7 +11,7 @@ import java.io.File
 import compiler.utils.Stopwatch
 import compiler.tokens.Token
 
-class piekLite {
+class LRN {
 
     companion object {
         private var hadError = false
