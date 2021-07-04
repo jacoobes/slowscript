@@ -15,7 +15,7 @@ open class Callable(private val declaration: Statement.Function, private val clo
             interpreter.executeBlock(declaration.body, functionEnv)
         } catch (returnStmt : Return) {
 
-            if(isInitializer) return closure.getAt(0, "instance")
+            if(isInitializer) return closure.getAt(0, "this")
             return returnStmt.value
         }
 
@@ -32,7 +32,7 @@ open class Callable(private val declaration: Statement.Function, private val clo
 
     fun bind(instance : InstanceOf) : Callable {
         val instanceEnv = Env(closure)
-        instanceEnv.define("instance", instance )
+        instanceEnv.define("this", instance )
         return Callable(declaration, instanceEnv, isInitializer)
     }
 

@@ -1,7 +1,9 @@
-var stringRepeat = ""
-loop ( var i = 0 as i < 10 : i++ ) {
-
-    stringRepeat += "a"
-
+class test {
+    object (name, date, lol ) {
+        this.name = name
+        this.date = date
+        this.lol = lol
+    }
 }
-log(stringRepeat)
+
+log ( test(10, 20 ,30).name )

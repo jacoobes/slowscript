@@ -187,7 +187,7 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
             currentFn = FunctionType.NONE
         }
 
-        scopes.peek()["instance"]  = true
+        scopes.peek()["this"]  = true
 
         for (methods in classDec.methods) {
             val declaration = if(methods.fnName.lexeme == "object") FunctionType.NEW else FunctionType.METHOD

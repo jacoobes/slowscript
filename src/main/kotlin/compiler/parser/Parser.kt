@@ -433,14 +433,7 @@ class Parser(private val tokens: List<Token>) {
         while (!isAtEnd()) {
             if(previous().type == SEMICOLON) return
             when(peek().type) {
-                CLASS -> return
-                TASK -> return
-                MUTABLE_VARIABLE -> return
-                LOOP -> return
-                WHILE -> return
-                IF -> return
-                RETURN -> return
-                DISPLAY -> return
+                CLASS, TASK, MUTABLE_VARIABLE, LOOP, WHILE, IF, RETURN, DISPLAY -> return
             }
             advance()
         }

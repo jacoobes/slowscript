@@ -318,7 +318,7 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         val distance = locals[expr] ?: 0
 
         val superKlass = env.getAt(distance, "super")
-        val instanceOf = env.getAt(distance - 1, "instance")
+        val instanceOf = env.getAt(distance - 1, "this")
         if(superKlass == null) {
             throw RuntimeError("Superclass cannot be null", expr.supe)
         }

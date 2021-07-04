@@ -25,15 +25,13 @@ class LRN {
             if(args.size != 1) {
                 println("Usage: piekL [script]")
                 exitProcess(64)
-
             }
+
                 timer.start()
                 runFile(args[0])
                 println()
                 timer.stop()
                 println("${timer.elapsedTime} ms elapsed")
-//                File("src/main/kotlin/compiler/utils/loopBenchMarks/Benchmarks")
-//                    .appendText("${timer.elapsedTime} ms elapsed - loop with 1000 elements - loop variables are doubles \n")
 
         }
 
@@ -103,7 +101,7 @@ class LRN {
                 "log" to TOKEN_TYPES.DISPLAY,
                 "as" to TOKEN_TYPES.AS,
                 "STOP" to TOKEN_TYPES.STOP,
-                "instance" to TOKEN_TYPES.INSTANCE,
+                "this" to TOKEN_TYPES.INSTANCE,
                 "init" to TOKEN_TYPES.INIT_BLOCK
             )
         }
