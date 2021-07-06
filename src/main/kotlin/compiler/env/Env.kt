@@ -1,68 +1,71 @@
 package compiler.env
+
 import compiler.interpreter.RuntimeError
 import compiler.tokens.Token
 
-class Env(val enclosed : Env? = null) {
+class Env(val enclosed: Env? = null) {
     private var values: HashMap<String, Any?> = HashMap()
 
-        fun define(name: Token, value: Any?) {
-            if (values.containsKey(name.lexeme)) {
-                println("WARNING: variable has already been declared as ${name.lexeme} in the same scope. The current value of ${name.lexeme} remains the same.")
-                return
-            }
-
-            values[name.lexeme] = value
-        }
-        fun define(name: String, value: Any) {
-            if (values.containsKey(name)) {
-                println("WARNING: variable has already been declared as $name in the same scope. The current value of $name remains the same.")
-                return
-            }
-
-            values[name] = value
-        }
-        fun get(name: Token): Any? {
-
-            if (values.containsKey(name.lexeme)) {
-                return values[name.lexeme]
-            }
-            if(enclosed != null) {
-                return enclosed.get(name)
-            }
-             throw RuntimeError("Undefined variable ${name.lexeme}", name)
-
+    fun define(name: Token, value: Any?) {
+        if (values.containsKey(name.lexeme)) {
+            println("WARNING: variable has already been declared as ${name.lexeme} in the same scope. The current value of ${name.lexeme} remains the same.")
+            return
         }
 
-        fun assign(identifier: Token, reassignVal: Any?) {
-            if(values.containsKey(identifier.lexeme)) {
-                values[identifier.lexeme] = reassignVal
-                return
-            }
+        values[name.lexeme] = value
+    }
 
-            if(enclosed != null) {
-                enclosed.assign(identifier,reassignVal)
-                return
-            }
-            throw RuntimeError("Variable ${identifier.lexeme} has not been declared!", identifier)
+    fun define(name: String, value: Any) {
+        if (values.containsKey(name)) {
+            println("WARNING: variable has already been declared as $name in the same scope. The current value of $name remains the same.")
+            return
         }
 
-        fun getAt(distance: Int, lexeme: String): Any? {
-            return ancestor(distance).values[lexeme]
+        values[name] = value
+    }
+
+    fun get(name: Token): Any? {
+
+        if (values.containsKey(name.lexeme)) {
+            return values[name.lexeme]
         }
-        fun assignAt(distance: Int, name: Token, value: Any?) {
-            ancestor(distance).values[name.lexeme] = value
+        if (enclosed != null) {
+            return enclosed.get(name)
+        }
+        throw RuntimeError("Undefined variable ${name.lexeme}", name)
+
+    }
+
+    fun assign(identifier: Token, reassignVal: Any?) {
+        if (values.containsKey(identifier.lexeme)) {
+            values[identifier.lexeme] = reassignVal
+            return
         }
 
-        private fun ancestor(distance: Int): Env {
-            var environment : Env = this
-            var i = 0
-            while( i < distance) {
-                environment = environment.enclosed!!
-                    i++
-            }
-            return environment
+        if (enclosed != null) {
+            enclosed.assign(identifier, reassignVal)
+            return
         }
+        throw RuntimeError("Variable ${identifier.lexeme} has not been declared!", identifier)
+    }
 
+    fun getAt(distance: Int, lexeme: String): Any? {
+        return ancestor(distance).values[lexeme]
+    }
+
+    fun assignAt(distance: Int, name: Token, value: Any?) {
+        ancestor(distance).values[name.lexeme] = value
+    }
+
+    private fun ancestor(distance: Int): Env {
+        var environment: Env = this
+        var i = 0
+        while (i < distance) {
+            environment = environment.enclosed!!
+            i++
+        }
+        return environment
+    }
 
 
 }

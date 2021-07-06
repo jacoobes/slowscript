@@ -1,10 +1,11 @@
 package compiler
+
 import compiler.tokens.TOKEN_TYPES
 import compiler.tokens.TOKEN_TYPES.*
 import compiler.tokens.Token
 import java.io.BufferedReader
 
-fun tokenCreator (file: BufferedReader)  : List<Token> {
+fun tokenCreator(file: BufferedReader): List<Token> {
 
     val src: String = file.readText()
 
@@ -19,7 +20,7 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
     val isAtEnd = { index >= src.length; }
     val advance = { src.elementAt(index++) }
 
-    val match = fun (expected: Char): Boolean {
+    val match = fun(expected: Char): Boolean {
         if (isAtEnd()) return false
         if (src.elementAt(index) != expected) return false
 
@@ -27,7 +28,7 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
         return true
     }
 
-    val addComplexToken = fun (type: TOKEN_TYPES) {
+    val addComplexToken = fun(type: TOKEN_TYPES) {
         val text: String = src.substring(start, index)
         token.add(Token(type, text, line))
     }
@@ -36,7 +37,7 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
         token.add(Token(type, value, literalValue, line))
     }
 
-    fun peek()  = if (isAtEnd()) 0.toChar() else src.elementAt(index)
+    fun peek() = if (isAtEnd()) 0.toChar() else src.elementAt(index)
 
 
     fun peekNext(): Char {
@@ -47,9 +48,9 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
 
     fun string() {
 
-        while (peek() != '"' && !isAtEnd())  advance()
+        while (peek() != '"' && !isAtEnd()) advance()
         if (isAtEnd()) {
-            LRN.error(line, "Incomplete string")
+            Sscript.error(line, "Incomplete string")
         }
         advance()
         val cut = src.substring(start + 1, index - 1)
@@ -74,10 +75,10 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
             char == '?' -> token.add(Token(QUESTION, char.toString(), line))
 
             char == '#' -> {
-                    while (!match('#') && !isAtEnd()) {
-                        advance()
+                while (!match('#') && !isAtEnd()) {
+                    advance()
 
-                    }
+                }
             }
 
             char == '!' -> {
@@ -126,12 +127,10 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
             }
 
             char == '/' -> {
-                if (match('/')) {
-                    while (peek() != '\n' && !isAtEnd()) advance()
-                } else if (match('=')) {
-                    addComplexToken(DIV_EQUALS)
-                }  else {
-                    token.add(Token(DIVIDE, char.toString(), line))
+                when {
+                    match('/') -> while (peek() != '\n' && !isAtEnd()) advance()
+                    match('=') -> addComplexToken(DIV_EQUALS)
+                    else -> token.add(Token(DIVIDE, char.toString(), line))
                 }
             }
 
@@ -140,7 +139,7 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
                 else token.add(Token(AMPER, char.toString(), line))
             }
             char == '|' -> {
-                if(match('|')) addComplexToken(OR)
+                if (match('|')) addComplexToken(OR)
                 else token.add(Token(LINE, char.toString(), line))
             }
 
@@ -151,14 +150,14 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
 
                 while (peek().isDigit()) {
                     advance()
-                    if(isAtEnd()) break
+                    if (isAtEnd()) break
                 }
 
                 if (peek() == '.' && peekNext().isDigit()) {
                     advance()
                     while (src.elementAt(index).isDigit()) {
                         advance()
-                        if(isAtEnd()) break
+                        if (isAtEnd()) break
                     }
                 }
 
@@ -175,10 +174,10 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
                 if (char.isLetter()) {
                     while (peek().isLetterOrDigit()) {
                         advance()
-                        if(isAtEnd()) break
+                        if (isAtEnd()) break
                     }
 
-                    val type = LRN.reservedKeywords().let {
+                    val type = Sscript.reservedKeywords().let {
                         val word = src.substring(start, index)
                         it.getOrElse(word) { IDENTIFIER }
                     }
@@ -186,7 +185,7 @@ fun tokenCreator (file: BufferedReader)  : List<Token> {
                     addComplexToken(type)
 
                 } else {
-                    LRN.error(line, "Unexpected character", char.toString())
+                    Sscript.error(line, "Unexpected character", char.toString())
 
                 }
 

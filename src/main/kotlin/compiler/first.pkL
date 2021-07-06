@@ -1,9 +1,0 @@
-class test {
-    object (name, date, lol ) {
-        this.name = name
-        this.date = date
-        this.lol = lol
-    }
-}
-
-log ( test(10, 20 ,30).name )

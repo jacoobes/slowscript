@@ -1,14 +1,15 @@
 package compiler.interpreter
 
 import compiler.env.Env
-import compiler.Statement.Statement
+import compiler.inputTypes.Statement
 import compiler.tokens.Token
 
 
-class Init(val name: Token,  val executeBlock : Statement.Block) : Callee {
+class Init(val name: Token, val executeBlock: Statement.Block) : Callee {
     private val closure = Env()
 
-    override fun call(interpreter: InterVisitor, arguments: List<Any?>)  = interpreter.executeBlock(executeBlock.statementList, closure)
+    override fun call(interpreter: InterVisitor, arguments: List<Any?>) =
+        interpreter.executeBlock(executeBlock.statementList, closure)
 
     override fun arity(): Int = 0
 

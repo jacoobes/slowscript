@@ -4,12 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="Fixed arguments not being detected.&#10;added strings to compound assignment">
+    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="Switched &quot;instance&quot; to this">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/first.spt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/LRN.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/LRN.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Expression.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/inputTypes/Expression.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/LRN.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Sscript.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Statement/Statement.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/inputTypes/Statement.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/first.pkL" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Callable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Callable.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Callee.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Callee.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Init.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Init.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/InterVisitor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/InterVisitor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/main.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/parser/Parser.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/parser/Parser.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/resolver/Resolver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/resolver/Resolver.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/tokenCreator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/tokenCreator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/utils/ASTPrinter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/utils/ASTPrinter.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,15 +65,15 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/env/Env.kt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/inputTypes/Expression.kt" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/InterVisitor.kt" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/Expression.kt" root0="SKIP_INSPECTION" />
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/tokenCreator.kt" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/first.pkL" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/LICENSE" root0="SKIP_INSPECTION" />
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/LRN.kt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/parser/Parser.kt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/env/Env.kt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/Sscript.kt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/tokenCreator.kt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/first.spt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/main.kt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/LICENSE" root0="SKIP_INSPECTION" />
   </component>
   <component name="ProjectId" id="1qx6NkZiRa4fj1iZt9nkswFQv84" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -95,6 +105,7 @@
       <recent name="C:\Users\jacob\OneDrive\Desktop\Projects\piekLite\src\main\kotlin" />
     </key>
     <key name="MoveKotlinTopLevelDeclarationsDialog.RECENTS_KEY">
+      <recent name="compiler.inputTypes" />
       <recent name="compiler.env" />
       <recent name="compiler.utils" />
       <recent name="Compiler" />
@@ -126,7 +137,8 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="MainKt" />
       <module name="LRN" />
-      <option name="PROGRAM_PARAMETERS" value="src/main/kotlin/compiler/first.pkL" />
+      <option name="PROGRAM_PARAMETERS" value="src/main/kotlin/compiler/first.spt" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -341,7 +353,14 @@
       <option name="project" value="LOCAL" />
       <updated>1625354798333</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Switched &quot;instance&quot; to this">
+      <created>1625357417995</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1625357417995</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -389,7 +408,8 @@
     <MESSAGE value="Compound Assignment operators" />
     <MESSAGE value="Had to fix LR parsing of compound assignment. should work now.&#10;also just realized i never implemented multiplication; fixed" />
     <MESSAGE value="Fixed arguments not being detected.&#10;added strings to compound assignment" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed arguments not being detected.&#10;added strings to compound assignment" />
+    <MESSAGE value="Switched &quot;instance&quot; to this" />
+    <option name="LAST_COMMIT_MESSAGE" value="Switched &quot;instance&quot; to this" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

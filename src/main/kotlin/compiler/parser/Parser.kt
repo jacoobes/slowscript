@@ -1,18 +1,14 @@
 package compiler.parser
 
 
-import compiler.Expression
-import compiler.interpreter.RuntimeError
-
-
-import compiler.Statement.Statement
+import compiler.Sscript
+import compiler.inputTypes.Expression
+import compiler.inputTypes.Statement
 import compiler.interpreter.Init
-import compiler.LRN
+import compiler.interpreter.RuntimeError
 import compiler.tokens.TOKEN_TYPES
-
 import compiler.tokens.TOKEN_TYPES.*
 import compiler.tokens.Token
-import java.lang.RuntimeException
 
 
 /**
@@ -25,7 +21,7 @@ class Parser(private val tokens: List<Token>) {
     private open class ParseError : RuntimeException() {
         companion object {
             fun error(line: Int, message: String): ParseError {
-                LRN.error(line, message)
+                Sscript.error(line, message)
                 return ParseError()
             }
         }
@@ -34,27 +30,29 @@ class Parser(private val tokens: List<Token>) {
 
     private fun declaration(): Statement {
         try {
-            if(matchAndAdvance(CLASS)) return classDec()
-            if(matchAndAdvance(TASK)) return task("task")
-            if (matchAndAdvance(IMMUTABLE_VARIABLE, MUTABLE_VARIABLE))  return variableDecl()
+            if (matchAndAdvance(CLASS)) return classDec()
+            if (matchAndAdvance(TASK)) return task("task")
+            if (matchAndAdvance(MUTABLE_VARIABLE)) return variableDecl(false)
+            if (matchAndAdvance(IMMUTABLE_VARIABLE)) return variableDecl(true)
             return statements()
         } catch (runtimeErr: RuntimeError) {
             synchronize()
         }
         throw ParseError.error(peek().line, "No top level declaration found")
     }
-    private fun classDec() : Statement {
+
+    private fun classDec(): Statement {
         val methods = mutableListOf<Statement.Function>()
 
         val className = consume(IDENTIFIER, "Expected class name after declaration")
-        val identifier = if(matchAndAdvance(FROM)) {
+        val identifier = if (matchAndAdvance(FROM)) {
             consume(IDENTIFIER, "No superclass name found")
             Expression.Variable(previous())
         } else null
 
         consume(LEFT_BRACE, "{ expected after class declaration")
 
-       val init = if(matchAndAdvance(INIT_BLOCK)) {
+        val init = if (matchAndAdvance(INIT_BLOCK)) {
             val name = previous()
             consume(LEFT_BRACE, "{ expected after init block")
             Init(name, Statement.Block(block()))
@@ -68,23 +66,23 @@ class Parser(private val tokens: List<Token>) {
 
     }
 
-    private fun task(kind: String) : Statement.Function {
+    private fun task(kind: String): Statement.Function {
         val fnName = consume(IDENTIFIER, "No $kind name provided!")
         consume(LEFT_PAREN, "( expected after ${fnName.lexeme}")
         val params = mutableListOf<Token>()
-        if(!check(RIGHT_PAREN)) {
+        if (!check(RIGHT_PAREN)) {
             do {
                 params.add(consume(IDENTIFIER, "Parameters can only be alphanumeric"))
             } while (matchAndAdvance(COMMA))
         }
-       consume(RIGHT_PAREN, "Closing \")\" expected after parameters")
-       consume(LEFT_BRACE, "{ expected after )")
+        consume(RIGHT_PAREN, "Closing \")\" expected after parameters")
+        consume(LEFT_BRACE, "{ expected after )")
 
         return Statement.Function(fnName, params, block())
 
     }
 
-    private fun variableDecl(): Statement {
+    private fun variableDecl(isImmutable: Boolean): Statement {
         consume(IDENTIFIER, "No identifier for variable has been found")
         val tokenName = previous()
         val value: Expression?
@@ -93,9 +91,9 @@ class Parser(private val tokens: List<Token>) {
             return Statement.Declaration(tokenName, value)
         }
 
-        return  Statement.Declaration(tokenName, null)
+        return Statement.Declaration(tokenName, null)
     }
-    
+
     private fun statements(): Statement {
         return when {
             matchAndAdvance(DISPLAY) -> printStatement()
@@ -121,10 +119,10 @@ class Parser(private val tokens: List<Token>) {
 
     }
 
-    private fun block() : MutableList<Statement> {
+    private fun block(): MutableList<Statement> {
         return mutableListOf<Statement>().apply {
             //loop until it finds right brace or until hits end token
-            while(!check(RIGHT_BRACE) && !isAtEnd() ) {
+            while (!check(RIGHT_BRACE) && !isAtEnd()) {
                 add(declaration())
             }
 
@@ -133,18 +131,19 @@ class Parser(private val tokens: List<Token>) {
     }
 
 
-    private fun ifStatement() : Statement {
+    private fun ifStatement(): Statement {
         consume(LEFT_PAREN, "No ( was found for expected if statement")
         val condition = expression()
         consume(RIGHT_PAREN, "No ) was found for expected if statement")
         val thenBranch = statements()
         var elseStatement: Statement? = null
-        if(matchAndAdvance(ELSE)) {
+        if (matchAndAdvance(ELSE)) {
             elseStatement = statements()
         }
         return Statement.If(condition, thenBranch, elseStatement)
     }
-    private fun whileLoop() : Statement {
+
+    private fun whileLoop(): Statement {
         consume(LEFT_PAREN, "No ( was found for expected while loop")
         val condition = expression()
         consume(RIGHT_PAREN, "No ) was found for expected while loop")
@@ -155,7 +154,7 @@ class Parser(private val tokens: List<Token>) {
     private fun forLoop(): Statement {
         consume(LEFT_PAREN, " No ( found for expected loop")
         val init: Statement? = when {
-            matchAndAdvance(MUTABLE_VARIABLE) -> variableDecl().also { advance() }
+            matchAndAdvance(MUTABLE_VARIABLE) -> variableDecl(false).also { advance() }
             matchAndAdvance(AS) -> null
             else -> expressionStatement().also { advance() }
         }
@@ -167,17 +166,17 @@ class Parser(private val tokens: List<Token>) {
 
         return statements().let {
             var block = it
-            if(increment != null) {
-             block = Statement.Block(
+            if (increment != null) {
+                block = Statement.Block(
                     listOf(
                         it,
                         Statement.Expression(increment)
                     )
                 )
             }
-           var body : Statement = Statement.While(condition, block)
+            var body: Statement = Statement.While(condition, block)
 
-            if(init != null) {
+            if (init != null) {
                 body = Statement.Block(listOf(init, body))
             }
             body
@@ -204,18 +203,19 @@ class Parser(private val tokens: List<Token>) {
     }
 
 
-    private fun assignment() : Expression {
+    private fun assignment(): Expression {
         val expr = ternary()
 
-        if(matchAndAdvance(ASSIGNMENT)) {
+        if (matchAndAdvance(ASSIGNMENT)) {
             val equals = previous()
             val value = assignment()
-            if(expr is Expression.Variable) {
+            if (expr is Expression.Variable) {
+
                 return Expression.Assignment(expr.name, value)
-            } else if(expr is Expression.Get) {
+            } else if (expr is Expression.Get) {
                 return Expression.Set(expr.obj, expr.name, value)
             }
-            LRN.error(equals, "Invalid assignment target")
+            Sscript.error(equals, "Invalid assignment target")
         }
         return expr
     }
@@ -239,18 +239,20 @@ class Parser(private val tokens: List<Token>) {
         }
         return ternary
     }
-    private fun or() : Expression {
+
+    private fun or(): Expression {
         var expr = and()
-        while(matchAndAdvance(OR)) {
-        val token = previous()
-        val rightSide = and()
-            expr =  Expression.Logical(expr, token, rightSide)
+        while (matchAndAdvance(OR)) {
+            val token = previous()
+            val rightSide = and()
+            expr = Expression.Logical(expr, token, rightSide)
         }
         return expr
     }
-    private fun and() : Expression {
+
+    private fun and(): Expression {
         var expr = equality()
-        while(matchAndAdvance(AND)) {
+        while (matchAndAdvance(AND)) {
             val token = previous()
             val rightSide = equality()
             expr = Expression.Logical(expr, token, rightSide)
@@ -301,7 +303,7 @@ class Parser(private val tokens: List<Token>) {
     private fun factor(): Expression {
         var left = unary()
 
-        if(matchAndAdvance(INCREMENT, DECREMENT)) {
+        if (matchAndAdvance(INCREMENT, DECREMENT)) {
             val token = previous()
             left = Expression.Unary(token, left)
 
@@ -319,30 +321,31 @@ class Parser(private val tokens: List<Token>) {
 
     private fun unary(): Expression {
 
-       return if (matchAndAdvance(MINUS, NOT)) {
-             Expression.Unary(previous(), unary())
-        }  else {
-           callee()
-       }
+        return if (matchAndAdvance(MINUS, NOT)) {
+            Expression.Unary(previous(), unary())
+        } else {
+            callee()
+        }
     }
 
-    private fun callee() : Expression {
-       var expr = primary()
-       while (true) {
-           expr = when {
-               matchAndAdvance(LEFT_PAREN) -> finishCall(expr)
-               matchAndAdvance(DOT) -> {
-                   val name: Token = consume(IDENTIFIER, "Expect property name after \".\".")
-                   Expression.Get(expr, name)
-               }
-               else -> break
-           }
-       }
+    private fun callee(): Expression {
+        var expr = primary()
+        while (true) {
+            expr = when {
+                matchAndAdvance(LEFT_PAREN) -> finishCall(expr)
+                matchAndAdvance(DOT) -> {
+                    val name: Token = consume(IDENTIFIER, "Expect property name after \".\".")
+                    Expression.Get(expr, name)
+                }
+                else -> break
+            }
+        }
         return expr
     }
-    private fun finishCall(expression: Expression) : Expression {
+
+    private fun finishCall(expression: Expression): Expression {
         val listOfArgs = mutableListOf<Expression>()
-        if(!check(RIGHT_PAREN)) {
+        if (!check(RIGHT_PAREN)) {
             do {
                 listOfArgs.add(expression())
             } while (matchAndAdvance(COMMA))
@@ -371,7 +374,7 @@ class Parser(private val tokens: List<Token>) {
                 val expression = previous()
                 consume(DOT, "No \".\" found after super call")
                 val method = consume(IDENTIFIER, "No method found after super call!")
-                Expression.Supe(expression, method )
+                Expression.Supe(expression, method)
             }
             matchAndAdvance(IDENTIFIER) -> {
                 Expression.Variable(previous())
@@ -431,8 +434,8 @@ class Parser(private val tokens: List<Token>) {
 
     private fun synchronize() {
         while (!isAtEnd()) {
-            if(previous().type == SEMICOLON) return
-            when(peek().type) {
+            if (previous().type == SEMICOLON) return
+            when (peek().type) {
                 CLASS, TASK, MUTABLE_VARIABLE, LOOP, WHILE, IF, RETURN, DISPLAY -> return
             }
             advance()
@@ -443,9 +446,9 @@ class Parser(private val tokens: List<Token>) {
     fun parse(): List<Statement> {
         val declaration = mutableListOf<Statement>()
 
-            while (!isAtEnd()) {
-               declaration.add(declaration())
-            }
+        while (!isAtEnd()) {
+            declaration.add(declaration())
+        }
         return declaration
 
     }

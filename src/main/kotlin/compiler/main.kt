@@ -1,8 +1,8 @@
-import compiler.LRN
+import compiler.Sscript
 
 
-fun main(args : Array<String>) {
-    LRN.run(args)
+fun main(args: Array<String>) {
+    Sscript.run(args)
 }
 
 

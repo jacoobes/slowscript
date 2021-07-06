@@ -1,8 +1,8 @@
 package compiler.resolver
 
-import compiler.Expression
-import compiler.Statement.Statement
-import compiler.LRN
+import compiler.Sscript
+import compiler.inputTypes.Expression
+import compiler.inputTypes.Statement
 import compiler.tokens.Token
 import java.util.*
 
@@ -16,6 +16,7 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
         NEW,
         INIT
     }
+
     private enum class ClassType {
         CLASS,
         NO_CLASS,
@@ -40,22 +41,22 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
         }
     }
 
-    override fun <R> visit(arg: Statement.Return) {
-        if(currentFn == FunctionType.INIT) {
-            LRN.error(arg.name.line, "Cannot ${arg.name.lexeme} in init block")
+    override fun visit(arg: Statement.Return) {
+        if (currentFn == FunctionType.INIT) {
+            Sscript.error(arg.name.line, "Cannot ${arg.name.lexeme} in init block")
         }
         if (currentFn == FunctionType.NONE) {
-            LRN.error(arg.name, "Cannot return at top level")
+            Sscript.error(arg.name, "Cannot return at top level")
         }
-        if(currentFn == FunctionType.NEW) {
-            LRN.error(arg.name, "Cannot return inside an new object function")
+        if (currentFn == FunctionType.NEW) {
+            Sscript.error(arg.name, "Cannot return inside an new object function")
         }
         arg.value?.let {
             resolve(it)
         }
     }
 
-    override fun <R> visit(declaration: Statement.Declaration): R? {
+    override fun visit(declaration: Statement.Declaration): Any? {
         declare(declaration.name)
         if (declaration.expr != null) {
             resolve(declaration.expr)
@@ -64,13 +65,13 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
         return null
     }
 
-    override fun <R> visit(block: Statement.Block) {
+    override fun visit(block: Statement.Block) {
         beginScope()
         resolve(block.statementList)
         endScope()
     }
 
-    override fun <R> visit(function: Statement.Function) {
+    override fun visit(function: Statement.Function) {
         declare(function.fnName)
         define(function.fnName)
 
@@ -90,73 +91,73 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
         currentFn = enclosing
     }
 
-    override fun <R> visit(loop: Statement.While) {
+    override fun visit(loop: Statement.While) {
         resolve(loop.expr)
         resolve(loop.body)
     }
 
-    override fun <R> visit(tree: Statement.If) {
+    override fun visit(tree: Statement.If) {
         resolve(tree.ifBranch)
         tree.acted?.let { resolve(it) }
         tree.elseBranch?.let { resolve(it) }
     }
 
-    override fun <R> visit(visitor: Statement.Expression) {
+    override fun visit(visitor: Statement.Expression) {
         resolve(visitor.expr)
     }
 
-    override fun <R> visit(visitor: Statement.Print) {
+    override fun visit(visitor: Statement.Print) {
         resolve(visitor.expr)
     }
 
-    override fun <R> visit(assignment: Expression.Assignment) {
+    override fun visit(assignment: Expression.Assignment) {
         resolve(assignment.right)
         resolveLocal(assignment, assignment.name)
     }
 
-    override fun <R> visit(call: Expression.Call) {
+    override fun visit(call: Expression.Call) {
         resolve(call.callee)
         for (args in call.args) {
             resolve(args)
         }
     }
 
-    override fun <R> visit(expression: Expression.Binary) {
+    override fun visit(expression: Expression.Binary) {
         resolve(expression.right)
         resolve(expression.left)
     }
 
-    override fun <R> visit(expression: Expression.Grouping) {
+    override fun visit(expression: Expression.Grouping) {
         resolve(expression.expression)
     }
 
-    override fun <R> visit(expression: Expression.Literal): Any? {
+    override fun visit(expression: Expression.Literal): Any? {
         return null
     }
 
-    override fun <R> visit(expression: Expression.Ternary) {
+    override fun visit(expression: Expression.Ternary) {
         resolve(expression.left)
         resolve(expression.middle)
         resolve(expression.right)
     }
 
-    override fun <R> visit(expr: Expression.Unary) {
+    override fun visit(expr: Expression.Unary) {
         resolve(expr.value)
     }
 
-    override fun <R> visit(logical: Expression.Logical) {
+    override fun visit(logical: Expression.Logical) {
         resolve(logical.right)
         resolve(logical.left)
     }
 
-    override fun <R> visit(variable: Expression.Variable) {
+    override fun visit(variable: Expression.Variable) {
         if (scopes.isNotEmpty() && scopes.peek()[variable.name.lexeme] == false) {
-            LRN.error(variable.name, "Variable has not been properly defined")
+            Sscript.error(variable.name, "Variable has not been properly defined")
         }
         resolveLocal(variable, variable.name)
     }
 
-    override fun <R> visit(classDec: Statement.ClassDec) {
+    override fun visit(classDec: Statement.ClassDec) {
         currentClass = ClassType.CLASS
         declare(classDec.name)
         define(classDec.name)
@@ -168,18 +169,18 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
 
         classDec.superClass?.let {
             if (classDec.name.lexeme == classDec.superClass.name.lexeme) {
-               return LRN.error(classDec.name, "Cannot inherit from self!")
+                return Sscript.error(classDec.name, "Cannot inherit from self!")
             }
-                currentClass = ClassType.SUBCLASS
-                resolve(it)
-                beginScope()
-                scopes.peek()["super"] = true
+            currentClass = ClassType.SUBCLASS
+            resolve(it)
+            beginScope()
+            scopes.peek()["super"] = true
 
         }
 
         beginScope()
 
-        if(classDec.init != null) {
+        if (classDec.init != null) {
             currentFn = FunctionType.INIT
             beginScope()
             resolve(classDec.init.executeBlock)
@@ -187,17 +188,17 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
             currentFn = FunctionType.NONE
         }
 
-        scopes.peek()["this"]  = true
+        scopes.peek()["this"] = true
 
         for (methods in classDec.methods) {
-            val declaration = if(methods.fnName.lexeme == "object") FunctionType.NEW else FunctionType.METHOD
-                resolveFunction(methods, declaration)
-            }
+            val declaration = if (methods.fnName.lexeme == "object") FunctionType.NEW else FunctionType.METHOD
+            resolveFunction(methods, declaration)
+        }
 
 
         endScope()
 
-        if(classDec.superClass != null) endScope()
+        if (classDec.superClass != null) endScope()
 
         currentClass = ClassType.NO_CLASS
     }
@@ -220,7 +221,7 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
     private fun declare(name: Token) {
         if (scopes.isEmpty()) return
         if (scopes.peek().containsKey(name.lexeme)) {
-            LRN.error(name, "A variable has already been declared ")
+            Sscript.error(name, "A variable has already been declared ")
         }
         scopes.peek()[name.lexeme] = false
     }
@@ -234,32 +235,31 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
         scopes.pop()
     }
 
-    override fun <R> visit(get: Expression.Get) {
+    override fun visit(get: Expression.Get) {
         resolve(get.obj)
     }
 
-    override fun <R> visit(set: Expression.Set){
+    override fun visit(set: Expression.Set) {
         resolve(set.value)
         resolve(set.expr)
     }
 
-    override fun <R> visit(instance: Expression.Instance) {
-        if(currentClass == ClassType.NO_CLASS){
-            LRN.error(instance.inst, "Cannot use \"instance\" outside of classes")
+    override fun visit(instance: Expression.Instance) {
+        if (currentClass == ClassType.NO_CLASS) {
+            Sscript.error(instance.inst, "Cannot use \"instance\" outside of classes")
             return
         }
         resolveLocal(instance, instance.inst)
     }
 
-    override fun <R> visit(expr: Expression.Supe) {
-        when(currentClass) {
-            ClassType.NO_CLASS -> LRN.error(expr.supe, "Cannot use super outside of a class")
-            ClassType.CLASS -> LRN.error(expr.supe, "Cannot use super in a class with no super class")
+    override fun visit(expr: Expression.Supe) {
+        when (currentClass) {
+            ClassType.NO_CLASS -> Sscript.error(expr.supe, "Cannot use super outside of a class")
+            ClassType.CLASS -> Sscript.error(expr.supe, "Cannot use super in a class with no super class")
             else -> resolveLocal(expr, expr.supe)
         }
 
     }
-
 
 
 }

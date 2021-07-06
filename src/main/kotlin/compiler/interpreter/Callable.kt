@@ -1,10 +1,14 @@
 package compiler.interpreter
 
-import compiler.Statement.*
 import compiler.env.Env
+import compiler.inputTypes.Statement
 
 
-open class Callable(private val declaration: Statement.Function, private val closure : Env, private val isInitializer: Boolean) : Callee {
+open class Callable(
+    private val declaration: Statement.Function,
+    private val closure: Env,
+    private val isInitializer: Boolean
+) : Callee {
 
     override fun call(interpreter: InterVisitor, arguments: List<Any?>): Any? {
         val functionEnv = Env(closure)
@@ -13,9 +17,9 @@ open class Callable(private val declaration: Statement.Function, private val clo
         }
         try {
             interpreter.executeBlock(declaration.body, functionEnv)
-        } catch (returnStmt : Return) {
+        } catch (returnStmt: Return) {
 
-            if(isInitializer) return closure.getAt(0, "this")
+            if (isInitializer) return closure.getAt(0, "this")
             return returnStmt.value
         }
 
@@ -30,9 +34,9 @@ open class Callable(private val declaration: Statement.Function, private val clo
         return declaration.fnName.lexeme
     }
 
-    fun bind(instance : InstanceOf) : Callable {
+    fun bind(instance: InstanceOf): Callable {
         val instanceEnv = Env(closure)
-        instanceEnv.define("this", instance )
+        instanceEnv.define("this", instance)
         return Callable(declaration, instanceEnv, isInitializer)
     }
 

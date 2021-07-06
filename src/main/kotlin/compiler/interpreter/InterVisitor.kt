@@ -1,16 +1,13 @@
 package compiler.interpreter
 
-import compiler.Expression
-import compiler.env.Env
-import compiler.LRN
-import compiler.tokens.TOKEN_TYPES.*
-
-import compiler.Statement.Statement
+import compiler.Sscript
 import compiler.env.Entity
+import compiler.env.Env
+import compiler.inputTypes.Expression
+import compiler.inputTypes.Statement
 import compiler.tokens.TOKEN_TYPES
+import compiler.tokens.TOKEN_TYPES.*
 import compiler.tokens.Token
-import java.lang.RuntimeException
-import kotlin.math.exp
 import kotlin.system.exitProcess
 
 
@@ -31,41 +28,44 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
          * They all implement the Callee interface, which is the base for all callable expressions
          */
         globals.define("clockMS", object : Callee {
-            override fun call(interpreter: InterVisitor, arguments: List<Any?>) : Double = (System.currentTimeMillis().toDouble() / 1000)
+            override fun call(interpreter: InterVisitor, arguments: List<Any?>): Double =
+                (System.currentTimeMillis().toDouble() / 1000)
 
             override fun arity(): Int = 0
             override fun toString(): String = "clockMS -> native function"
 
 
         })
-      globals.define("endProcess", object : Callee {
-          override fun call(interpreter: InterVisitor, arguments: List<Any?>): Any? {
-              if(arguments[0] is Double) {
-                  exitProcess(arguments[0].toString().dropLast(2).toInt() )
-              }
-              throw RuntimeException("Expected number for exit code, got ${arguments[0]}")
-          }
-
-          override fun arity(): Int = 1
-          override fun toString(): String = "endProcess -> native function"
-
-
-      })
-    globals.define("responseTo", object : Callee {
-        override fun call(interpreter: InterVisitor, arguments: List<Any?>): Any? {
-          println(arguments[0])
-          return when(arguments[1]) {
-                "string" -> readLine()
-                "number" ->  readLine().toString().toDouble()
-                "boolean" -> readLine().toString().toBoolean()
-                else -> throw RuntimeException("Invalid argument ${arguments[1]} for second parameter")
+        globals.define("endProcess", object : Callee {
+            override fun call(interpreter: InterVisitor, arguments: List<Any?>): Any? {
+                if (arguments[0] is Double) {
+                    exitProcess(arguments[0].toString().dropLast(2).toInt())
+                }
+                throw RuntimeException("Expected number for exit code, got ${arguments[0]}")
             }
-        }
-        override fun arity(): Int {
-            return 2
-        }
-        override fun toString(): String = "responseTo -> native function"
-    })
+
+            override fun arity(): Int = 1
+            override fun toString(): String = "endProcess -> native function"
+
+
+        })
+        globals.define("responseTo", object : Callee {
+            override fun call(interpreter: InterVisitor, arguments: List<Any?>): Any? {
+                println(arguments[0])
+                return when (arguments[1]) {
+                    "string" -> readLine()
+                    "number" -> readLine().toString().toDouble()
+                    "boolean" -> readLine().toString().toBoolean()
+                    else -> throw RuntimeException("Invalid argument ${arguments[1]} for second parameter")
+                }
+            }
+
+            override fun arity(): Int {
+                return 2
+            }
+
+            override fun toString(): String = "responseTo -> native function"
+        })
 
     }
 
@@ -73,29 +73,32 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         try {
             listOfStatements.forEach { execute(it) }
         } catch (error: RuntimeError) {
-            LRN.error(error)
+            Sscript.error(error)
         }
     }
 
 
-    override fun <R> visit(expr: Expression.Unary): Any? {
+    override fun visit(expr: Expression.Unary): Any? {
         val unary: Any? = evaluate(expr.value)
 
         return when (expr.prefix.type) {
             MINUS -> {
-                if (unary is Double) { -unary } else null
+                if (unary is Double) {
+                    -unary
+                } else null
             }
-           NOT ->  !isTruthy(unary)
-           DECREMENT -> evaluateCompoundUnary(true, expr, expr)
-           INCREMENT ->  evaluateCompoundUnary(false, unary, expr)
+            NOT -> !isTruthy(unary)
+            DECREMENT -> evaluateCompoundUnary(true, expr, expr)
+            INCREMENT -> evaluateCompoundUnary(false, unary, expr)
             else -> null
         }
 
     }
-    private fun evaluateCompoundUnary(isNegated: Boolean = true, value: Any?, expr: Expression.Unary  ) : Double {
-        if(value !is Double) throw RuntimeError("Value is not a number! on ", expr.prefix)
-        val unary = if(isNegated) value - 1 else value + 1
-        if(expr.value is Expression.Variable) {
+
+    private fun evaluateCompoundUnary(isNegated: Boolean = true, value: Any?, expr: Expression.Unary): Double {
+        if (value !is Double) throw RuntimeError("Value is not a number! on ", expr.prefix)
+        val unary = if (isNegated) value - 1 else value + 1
+        if (expr.value is Expression.Variable) {
 
             locals[expr.value]?.let {
                 env.assignAt(it, expr.value.name, unary)
@@ -107,18 +110,18 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         throw RuntimeError("Not a valid operand for decrement operator -- on ", expr.prefix)
     }
 
-    override fun <R> visit(expression: Expression.Ternary): Any? {
+    override fun visit(expression: Expression.Ternary): Any? {
         val left: Any? = evaluate(expression.left)
         return evalTernary(left, expression)
     }
 
-    override fun <R> visit(expression: Expression.Binary): Any? {
+    override fun visit(expression: Expression.Binary): Any? {
         val left: Any? = evaluate(expression.left)
         val right: Any? = evaluate(expression.right)
 
         return when (expression.operator.type) {
             PLUS -> add(left, right)
-            MINUS ->  subtract(left, right)
+            MINUS -> subtract(left, right)
             MULT -> multiply(left, right)
             MODULUS -> mod(left, right)
             DIVIDE -> divide(left, right)
@@ -128,7 +131,7 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
             LESS_THAN_OR_EQUAL -> lesserOrEqual(left, right, expression)
             EQUAL_EQUAL -> isEqual(left, right)
             NOT_EQUAL -> !isEqual(left, right)
-            PLUS_EQUALS ->  eqAssign(expression, PLUS_EQUALS)
+            PLUS_EQUALS -> eqAssign(expression, PLUS_EQUALS)
             MINUS_EQUALS -> eqAssign(expression, MINUS_EQUALS)
             MULT_EQUAL -> eqAssign(expression, MULT_EQUAL)
             DIV_EQUALS -> eqAssign(expression, DIV_EQUALS)
@@ -138,96 +141,105 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
     }
 
 
-    private fun eqAssign(expression: Expression.Binary, tokenType : TOKEN_TYPES) : Any {
+    private fun eqAssign(expression: Expression.Binary, tokenType: TOKEN_TYPES): Any {
         val left = evaluate(expression.left)
         val right = evaluate(expression.right)
-        if(left == null || right == null) throw RuntimeError("Cannot add null", expression.operator)
+        if (left == null || right == null) throw RuntimeError("Cannot add null", expression.operator)
 
-        if(left is String && right is String && tokenType == PLUS_EQUALS) {
+        if (left is String && right is String && tokenType == PLUS_EQUALS) {
             val value = left + right
-            if(expression.left is Expression.Variable) {
-                locals[expression.left]?.let { env.assignAt(it, expression.left.name, value) } ?: globals.assign(expression.left.name, value)
+            if (expression.left is Expression.Variable) {
+                locals[expression.left]?.let { env.assignAt(it, expression.left.name, value) } ?: globals.assign(
+                    expression.left.name,
+                    value
+                )
                 return value
             }
             throw RuntimeError("${expression.left} is not a variable that can be assigned", expression.operator)
         }
 
-        if(left is Double && right is Double)  {
+        if (left is Double && right is Double) {
 
-            val value = when(tokenType) {
-                PLUS_EQUALS -> left  + right
+            val value = when (tokenType) {
+                PLUS_EQUALS -> left + right
                 MINUS_EQUALS -> left - right
-                MULT_EQUAL -> left  * right
-                DIV_EQUALS -> left  / right
+                MULT_EQUAL -> left * right
+                DIV_EQUALS -> left / right
                 MOD_EQUALS -> left % right
                 else -> throw RuntimeException("Incorrect token sign")
             }
 
-        if(expression.left is Expression.Variable) {
-            locals[expression.left]?.let { env.assignAt(it, expression.left.name, value) } ?: globals.assign(expression.left.name, value)
-            return value
+            if (expression.left is Expression.Variable) {
+                locals[expression.left]?.let { env.assignAt(it, expression.left.name, value) } ?: globals.assign(
+                    expression.left.name,
+                    value
+                )
+                return value
             }
             throw RuntimeError("${expression.left} is not a variable that can be assigned", expression.operator)
         }
 
-        throw RuntimeError("Expected two numbers and got ${left::class.simpleName} and ${right::class.simpleName}", expression.operator)
+        throw RuntimeError(
+            "Expected two numbers and got ${left::class.simpleName} and ${right::class.simpleName}",
+            expression.operator
+        )
     }
 
 
-    override fun <R> visit(expression: Expression.Literal): Any? {
+    override fun visit(expression: Expression.Literal): Any? {
         return expression.value
     }
 
-    override fun <R> visit(expression: Expression.Grouping): Any? {
+    override fun visit(expression: Expression.Grouping): Any? {
         return evaluate(expression.expression)
     }
 
-    override fun <R> visit(visitor: Statement.Expression) {
+    override fun visit(visitor: Statement.Expression) {
         evaluate(visitor.expr)
     }
 
-    override fun <R> visit(visitor: Statement.Print) {
+    override fun visit(visitor: Statement.Print) {
         val expression = evaluate(visitor.expr)
         println(stringify(expression))
     }
 
-    override fun <R> visit(variable: Expression.Variable): Any? {
+    override fun visit(variable: Expression.Variable): Any? {
         return lookUpVariable(variable.name, variable)
     }
 
-    override fun <R> visit(declaration: Statement.Declaration){
-        declaration.expr?.let { env.define(declaration.name,evaluate(it)) } ?: env.define(declaration.name, null)
+    override fun visit(declaration: Statement.Declaration) {
+        declaration.expr?.let { env.define(declaration.name, evaluate(it)) } ?: env.define(declaration.name, null)
     }
-    override fun <R> visit(assignment: Expression.Assignment) : Any? {
+
+    override fun visit(assignment: Expression.Assignment): Any? {
         val value = evaluate(assignment.right)
-        locals[assignment]?. let {
+        locals[assignment]?.let {
             env.assignAt(it, assignment.name, value)
         } ?: globals.assign(assignment.name, value)
 
         return value
     }
 
-    override fun <R> visit(block: Statement.Block) {
-       executeBlock(block.statementList, Env(this.env))
+    override fun visit(block: Statement.Block) {
+        executeBlock(block.statementList, Env(this.env))
     }
 
-    override fun <R> visit(tree: Statement.If): Any? {
-      return if(isTruthy(evaluate(tree.ifBranch))) {
+    override fun visit(tree: Statement.If): Any? {
+        return if (isTruthy(evaluate(tree.ifBranch))) {
             tree.acted?.let { execute(it) }
-            }
-            else {
-               tree.elseBranch?.let{execute(it)}
-            }
+        } else {
+            tree.elseBranch?.let { execute(it) }
+        }
 
     }
 
-    override fun <R> visit(logical: Expression.Logical): Any? {
+    override fun visit(logical: Expression.Logical): Any? {
         val leftSide = evaluate(logical.left)
 
-        if(logical.operator.type === OR) {
-            if(isTruthy(leftSide)) return leftSide
-       } else {
-            if(!isTruthy(leftSide)) {
+        if (logical.operator.type === OR) {
+            if (isTruthy(leftSide)) return leftSide
+        } else {
+            if (!isTruthy(leftSide)) {
                 return leftSide
             }
         }
@@ -235,28 +247,29 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         return evaluate(logical.right)
     }
 
-    override fun <R> visit(loop: Statement.While) {
+    override fun visit(loop: Statement.While) {
 
-        while(isTruthy( evaluate(loop.expr))) {
+        while (isTruthy(evaluate(loop.expr))) {
 
             execute(loop.body)
         }
     }
 
-    override fun <R> visit(call: Expression.Call): Any? {
-        val callee : Any = evaluate(call.callee) ?: LRN.error(call.paren.line,"Undefined function" )
-        val listResolved = call.args.map { evaluate(it)  }
+    override fun visit(call: Expression.Call): Any? {
+        val callee: Any = evaluate(call.callee) ?: Sscript.error(call.paren.line, "Undefined function")
+        val listResolved = call.args.map { evaluate(it) }
 
-        if(callee !is Callee) {
+        if (callee !is Callee) {
             throw RuntimeError("$callee cannot be called", call.paren)
         }
 
-        if(callee.arity() != listResolved.size ) {
+        if (callee.arity() != listResolved.size) {
             throw RuntimeError("Expected ${callee.arity()} but got ${listResolved.size} arguments", call.paren)
         }
         return callee.call(this, listResolved)
     }
-    override fun <R> visit(function: Statement.Function): R? {
+
+    override fun visit(function: Statement.Function): Any? {
 
         val task = Callable(function, env, false)
         env.define(function.fnName, task)
@@ -264,21 +277,22 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         return null
     }
 
-    override fun <R> visit(arg: Statement.Return): R? {
+    override fun visit(arg: Statement.Return): Any? {
         val value = if (arg.value != null) evaluate(arg.value) else null
         throw Return(value)
     }
-    override fun <R> visit(classDec: Statement.ClassDec) {
 
-        val superClass = if(classDec.superClass != null) evaluate(classDec.superClass) else null
+    override fun visit(classDec: Statement.ClassDec) {
 
-        if(superClass !is Entity?) {
+        val superClass = if (classDec.superClass != null) evaluate(classDec.superClass) else null
+
+        if (superClass !is Entity?) {
             throw RuntimeError("Cannot inherit from non class ${classDec.superClass}", classDec.name)
         }
 
         env.define(classDec.name, null)
 
-        if(classDec.init != null) {
+        if (classDec.init != null) {
             env = Env(env)
             env.define(classDec.init.name, classDec.init.executeBlock)
             env.enclosed?.also {
@@ -286,50 +300,56 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
             }
         }
 
-        if(superClass != null) {
+        if (superClass != null) {
             env = Env(env)
             env.define("super", superClass)
         }
 
-            val allMethods = classDec.methods.associate {
-                Pair(it.fnName.lexeme,  Callable(it, env, it.fnName.lexeme == "object") ) } as HashMap
+        val allMethods = classDec.methods.associate {
+            Pair(it.fnName.lexeme, Callable(it, env, it.fnName.lexeme == "object"))
+        } as HashMap
 
-            val klass = Entity(classDec.name.lexeme, superClass, allMethods, classDec.init)
+        val klass = Entity(classDec.name.lexeme, superClass, allMethods, classDec.init)
 
-        if(superClass != null) {
+        if (superClass != null) {
             env.enclosed?.also {
                 env = it
             }
         }
         env.assign(classDec.name, klass)
     }
-    override fun <R> visit(get: Expression.Get): Any? {
+
+    override fun visit(get: Expression.Get): Any? {
         val value = evaluate(get.obj)
-        if(value is InstanceOf) {
+        if (value is InstanceOf) {
             return value.get(get.name)
         }
         throw RuntimeError("Only instances have properties", get.name)
     }
-    override fun <R> visit(instance: Expression.Instance): Any? {
+
+    override fun visit(instance: Expression.Instance): Any? {
         return lookUpVariable(instance.inst, instance)
     }
 
-    override fun <R> visit(expr: Expression.Supe): Any {
+    override fun visit(expr: Expression.Supe): Any {
         val distance = locals[expr] ?: 0
 
         val superKlass = env.getAt(distance, "super")
         val instanceOf = env.getAt(distance - 1, "this")
-        if(superKlass == null) {
+        if (superKlass == null) {
             throw RuntimeError("Superclass cannot be null", expr.supe)
         }
-        val method : Callable
-        if(superKlass is Entity) {
-            if(instanceOf is InstanceOf) {
-                method = superKlass.findMethod(expr.method.lexeme) ?: throw RuntimeError("No method found on super class", expr.method)
-               return method.bind(instanceOf)
+        val method: Callable
+        if (superKlass is Entity) {
+            if (instanceOf is InstanceOf) {
+                method = superKlass.findMethod(expr.method.lexeme) ?: throw RuntimeError(
+                    "No method found on super class",
+                    expr.method
+                )
+                return method.bind(instanceOf)
             }
         }
-       throw RuntimeError("Superclass is not callable on ${expr.method}", expr.supe )
+        throw RuntimeError("Superclass is not callable on ${expr.method}", expr.supe)
     }
 
 
@@ -337,25 +357,25 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         val previous = this.env
         try {
             this.env = currentEnv
-            for(statement in listOfStatements) {
+            for (statement in listOfStatements) {
                 execute(statement)
             }
-        }
-        finally {
+        } finally {
             this.env = previous
         }
     }
+
     private fun evaluate(expression: Expression): Any? {
         return expression.accept(this)
     }
 
     private fun isTruthy(unary: Any?): Boolean {
-    return when(unary) {
-          null -> false
-          is Double -> !unary.isNaN()
-          is Boolean -> unary
-          else -> true
-      }
+        return when (unary) {
+            null -> false
+            is Double -> !unary.isNaN()
+            is Boolean -> unary
+            else -> true
+        }
     }
 
 
@@ -369,8 +389,8 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         return Double.NaN
     }
 
-    private fun multiply(left: Any?, right: Any?) : Any {
-        if(left is Double && right is Double) {
+    private fun multiply(left: Any?, right: Any?): Any {
+        if (left is Double && right is Double) {
             return left * right
         }
         return Double.NaN
@@ -452,21 +472,23 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
     private fun execute(statement: Statement) {
         statement.accept(this)
     }
+
     fun resolve(expr: Expression, depth: Int) {
         locals[expr] = depth
     }
+
     private fun lookUpVariable(name: Token, variable: Expression): Any? {
         val distance: Int? = locals[variable]
-        if(distance != null) {
+        if (distance != null) {
             return env.getAt(distance, name.lexeme)
         }
         return globals.get(name)
 
     }
 
-    override fun <R> visit(set: Expression.Set): Any {
+    override fun visit(set: Expression.Set): Any {
         val property = evaluate(set.expr)
-        if(property !is InstanceOf) {
+        if (property !is InstanceOf) {
             throw RuntimeError("Cannot assign to a non property of object!", set.name)
         }
         val value = evaluate(set.value)
@@ -475,8 +497,6 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         } ?: throw RuntimeError("Cannot assign null values to a property", set.name)
         return value
     }
-
-
 
 
 }

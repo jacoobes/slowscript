@@ -6,12 +6,12 @@ import compiler.interpreter.RuntimeError
 import compiler.parser.Parser
 import compiler.resolver.Resolver
 import compiler.tokens.TOKEN_TYPES
-import kotlin.system.exitProcess
-import java.io.File
-import compiler.utils.Stopwatch
 import compiler.tokens.Token
+import compiler.utils.Stopwatch
+import java.io.File
+import kotlin.system.exitProcess
 
-class LRN {
+class Sscript {
 
     companion object {
         private var hadError = false
@@ -20,53 +20,54 @@ class LRN {
         private val resolver = Resolver(interpreter)
         private val timer = Stopwatch()
 
-        fun run( args : Array<String>) {
+        fun run(args: Array<String>) {
 
-            if(args.size != 1) {
+            if (args.size != 1) {
                 println("Usage: piekL [script]")
                 exitProcess(64)
             }
 
-                timer.start()
-                runFile(args[0])
-                println()
-                timer.stop()
-                println("${timer.elapsedTime} ms elapsed")
+            timer.start()
+            runFile(args[0])
+            println()
+            timer.stop()
+            println("${timer.elapsedTime} ms elapsed")
 
         }
 
         private fun runFile(path: String) {
 
-            if(!hadError) {
+            if (!hadError) {
                 File(path).bufferedReader().run {
                     val statements = Parser(tokenCreator(this)).parse()
 
                     statements.let {
 
-                        if (hadError)  exitProcess(65)
-                        if(hadRuntimeError) exitProcess(70)
-                            resolver.resolve(it)
-                        if(hadError) return
-                            interpreter.interpret(it)
+                        if (hadError) exitProcess(65)
+                        if (hadRuntimeError) exitProcess(70)
+                        resolver.resolve(it)
+                        if (hadError) return
+                        interpreter.interpret(it)
                     }
-                }
-
                 }
 
             }
 
+        }
 
-        fun error (line: Int, message: String, where: String ) {
+
+        fun error(line: Int, message: String, where: String) {
             println(Error("[line $line] Error $where: $message"))
             hadError = true
         }
 
-        fun error(line: Int, message: String,) {
+        fun error(line: Int, message: String) {
             println(Error("[line $line] Error : $message"))
             hadError = true
         }
-        fun error(token:Token, message: String)  {
-            if(token.type == TOKEN_TYPES.END) {
+
+        fun error(token: Token, message: String) {
+            if (token.type == TOKEN_TYPES.END) {
                 error("line ${token.line} unexpected end of program with ${token.lexeme}")
             } else {
                 error(token.line, "$message ${token.lexeme}")
@@ -81,6 +82,7 @@ class LRN {
                 "class" to TOKEN_TYPES.CLASS,
                 "return" to TOKEN_TYPES.RETURN,
                 "var" to TOKEN_TYPES.MUTABLE_VARIABLE,
+                "val" to TOKEN_TYPES.IMMUTABLE_VARIABLE,
                 "task" to TOKEN_TYPES.TASK,
                 "false" to TOKEN_TYPES.FALSE,
                 "true" to TOKEN_TYPES.TRUE,
@@ -107,7 +109,7 @@ class LRN {
         }
 
         fun error(error: RuntimeError) {
-            println("${error.message} line ${error.token.line}" )
+            println("${error.message} line ${error.token.line}")
             hadRuntimeError = true
         }
 
