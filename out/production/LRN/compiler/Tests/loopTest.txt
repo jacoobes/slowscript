@@ -1,0 +1,20 @@
+var i = 10
+
+while(i < 20) {
+
+  log( i % 5 == 0 ? i : "cheese" )
+
+    i = i + 1
+}
+/////////
+10
+cheese
+cheese
+cheese
+cheese
+15
+cheese
+cheese
+cheese
+cheese
+//////////
