@@ -261,6 +261,10 @@ class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Sta
 
     }
 
+    override fun visit(module: Statement.Module): Any? {
+        TODO("Not yet implemented")
+    }
+
 
 }
 

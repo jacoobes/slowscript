@@ -1,6 +1,7 @@
 package compiler.inputTypes
 
 import compiler.interpreter.Init
+import compiler.tokens.TOKEN_TYPES
 import compiler.tokens.Token
 
 
@@ -17,6 +18,7 @@ abstract class Statement {
         fun visit(function: Function): Any?
         fun visit(arg: Return): Any?
         fun visit(classDec: ClassDec): Any?
+        fun visit(module: Module)
 
 
     }
@@ -98,6 +100,12 @@ abstract class Statement {
         val init: Init?
     ) : Statement() {
         override fun <R> accept(visitor: StateVisitor<R>): Any? {
+            return visitor.visit(this)
+        }
+
+    }
+    class Module(val name: Token, val module: Statement) : Statement() {
+        override fun <R> accept(visitor: StateVisitor<R>){
             return visitor.visit(this)
         }
 

@@ -6,9 +6,11 @@ import compiler.interpreter.RuntimeError
 import compiler.parser.Parser
 import compiler.resolver.Resolver
 import compiler.tokens.TOKEN_TYPES
+import compiler.tokens.TOKEN_TYPES.*
 import compiler.tokens.Token
 import compiler.utils.Stopwatch
 import java.io.File
+import java.io.IOException
 import kotlin.system.exitProcess
 
 class Sscript {
@@ -23,7 +25,7 @@ class Sscript {
         fun run(args: Array<String>) {
 
             if (args.size != 1) {
-                println("Usage: piekL [script]")
+                println("Usage: spt [script]")
                 exitProcess(64)
             }
 
@@ -36,18 +38,20 @@ class Sscript {
         }
 
         private fun runFile(path: String) {
-
+            val mainFile = File(path)
+            if(mainFile.isDirectory || mainFile.name != "main.spt") throw IOException("Main file cannot be found or the path is a directory. Name of file must be main.spt")
             if (!hadError) {
-                File(path).bufferedReader().run {
+
+               mainFile.bufferedReader().run {
                     val statements = Parser(tokenCreator(this)).parse()
 
                     statements.let {
 
                         if (hadError) exitProcess(65)
                         if (hadRuntimeError) exitProcess(70)
-                        resolver.resolve(it)
+                            resolver.resolve(it)
                         if (hadError) return
-                        interpreter.interpret(it)
+                            interpreter.interpret(it)
                     }
                 }
 
@@ -67,7 +71,7 @@ class Sscript {
         }
 
         fun error(token: Token, message: String) {
-            if (token.type == TOKEN_TYPES.END) {
+            if (token.type == END) {
                 error("line ${token.line} unexpected end of program with ${token.lexeme}")
             } else {
                 error(token.line, "$message ${token.lexeme}")
@@ -78,33 +82,34 @@ class Sscript {
         fun reservedKeywords(): HashMap<String, TOKEN_TYPES> {
 
             return hashMapOf(
-                "super" to TOKEN_TYPES.SUPER,
-                "class" to TOKEN_TYPES.CLASS,
-                "return" to TOKEN_TYPES.RETURN,
-                "var" to TOKEN_TYPES.MUTABLE_VARIABLE,
-                "val" to TOKEN_TYPES.IMMUTABLE_VARIABLE,
-                "task" to TOKEN_TYPES.TASK,
-                "false" to TOKEN_TYPES.FALSE,
-                "true" to TOKEN_TYPES.TRUE,
-                "null" to TOKEN_TYPES.NULL,
-                "if" to TOKEN_TYPES.IF,
-                "else" to TOKEN_TYPES.ELSE,
-                "loop" to TOKEN_TYPES.LOOP,
-                "while" to TOKEN_TYPES.WHILE,
-                "of" to TOKEN_TYPES.OF,
-                "from" to TOKEN_TYPES.FROM,
-                "super" to TOKEN_TYPES.SUPER,
-                "this" to TOKEN_TYPES.THIS,
-                "public" to TOKEN_TYPES.PUBLIC,
-                "private" to TOKEN_TYPES.PRIVATE,
-                "protected" to TOKEN_TYPES.PROTECTED,
-                "all" to TOKEN_TYPES.ALL,
-                "NaN" to TOKEN_TYPES.NaN,
-                "log" to TOKEN_TYPES.DISPLAY,
-                "as" to TOKEN_TYPES.AS,
-                "STOP" to TOKEN_TYPES.STOP,
-                "this" to TOKEN_TYPES.INSTANCE,
-                "init" to TOKEN_TYPES.INIT_BLOCK
+                "super" to SUPER,
+                "class" to CLASS,
+                "return" to RETURN,
+                "var" to MUTABLE_VARIABLE,
+                "val" to IMMUTABLE_VARIABLE,
+                "task" to TASK,
+                "false" to FALSE,
+                "true" to TRUE,
+                "null" to NULL,
+                "if" to IF,
+                "else" to ELSE,
+                "loop" to LOOP,
+                "while" to WHILE,
+                "of" to OF,
+                "from" to FROM,
+                "super" to SUPER,
+                "this" to THIS,
+                "public" to PUBLIC,
+                "private" to PRIVATE,
+                "protected" to PROTECTED,
+                "all" to ALL,
+                "NaN" to NaN,
+                "log" to DISPLAY,
+                "as" to AS,
+                "STOP" to STOP,
+                "this" to INSTANCE,
+                "init" to INIT_BLOCK,
+                "module" to MODULE
             )
         }
 

@@ -19,14 +19,14 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
     /*
     * Interpreter - 2021
     * Visitor Pattern implementation to evaluate Expressions and Statements
-    *
-    * */
+    */
 
     init {
         /**
          * These are native functions that work on the global scope.
          * They all implement the Callee interface, which is the base for all callable expressions
          */
+
         globals.define("clockMS", object : Callee {
             override fun call(interpreter: InterVisitor, arguments: List<Any?>): Double =
                 (System.currentTimeMillis().toDouble() / 1000)
@@ -75,6 +75,10 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         } catch (error: RuntimeError) {
             Sscript.error(error)
         }
+    }
+
+    override fun visit(module: Statement.Module)  {
+
     }
 
 
@@ -497,6 +501,8 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         } ?: throw RuntimeError("Cannot assign null values to a property", set.name)
         return value
     }
+
+
 
 
 }

@@ -4,22 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="Switched &quot;instance&quot; to this">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/first.spt" afterDir="false" />
+    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="Reformatted to remove useless generic arguments&#10;cleaned up formatting">
+      <change afterPath="$PROJECT_DIR$/src/main/resources/main.spt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Expression.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/inputTypes/Expression.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/LRN.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Sscript.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Statement/Statement.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/inputTypes/Statement.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/first.pkL" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Callable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Callable.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Callee.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Callee.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Init.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Init.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LRN.iml" beforeDir="false" afterPath="$PROJECT_DIR$/slowscript.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Sscript.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Sscript.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/first.spt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/inputTypes/Expression.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/inputTypes/Expression.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/inputTypes/Statement.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/inputTypes/Statement.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/InterVisitor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/InterVisitor.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/main.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/parser/Parser.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/parser/Parser.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/resolver/Resolver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/resolver/Resolver.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/tokenCreator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/tokenCreator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/tokens/TOKEN_TYPES.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/tokens/TOKEN_TYPES.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/utils/ASTPrinter.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/utils/ASTPrinter.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/kotlin/db.lorem" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +71,7 @@
     <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/env/Env.kt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/Sscript.kt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/tokenCreator.kt" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/first.spt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/resources/main.spt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/main.kt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/LICENSE" root0="SKIP_INSPECTION" />
   </component>
@@ -95,10 +95,11 @@
     <property name="project.structure.proportion" value="0.18313752" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="project.propCompiler" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\jacob\OneDrive\Desktop\Projects\slowscript\src\main\resources" />
       <recent name="C:\Users\jacob\OneDrive\Desktop\Projects\piekLite\src\main\kotlin\compiler\utils\loopBenchMarks" />
       <recent name="C:\Users\jacob\OneDrive\Desktop\Projects\piekLite\src\main\kotlin\compiler" />
       <recent name="C:\Users\jacob\OneDrive\Desktop\Projects\piekLite\src\main\kotlin\Compiler" />
@@ -136,9 +137,8 @@
       <option name="ALTERNATIVE_JRE_PATH" value="corretto-1.8" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="MainKt" />
-      <module name="LRN" />
-      <option name="PROGRAM_PARAMETERS" value="src/main/kotlin/compiler/first.spt" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <module name="slowscript" />
+      <option name="PROGRAM_PARAMETERS" value="src/main/resources/main.spt" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -360,7 +360,14 @@
       <option name="project" value="LOCAL" />
       <updated>1625357417995</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="Reformatted to remove useless generic arguments&#10;cleaned up formatting">
+      <created>1625586129293</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1625586129294</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -409,7 +416,8 @@
     <MESSAGE value="Had to fix LR parsing of compound assignment. should work now.&#10;also just realized i never implemented multiplication; fixed" />
     <MESSAGE value="Fixed arguments not being detected.&#10;added strings to compound assignment" />
     <MESSAGE value="Switched &quot;instance&quot; to this" />
-    <option name="LAST_COMMIT_MESSAGE" value="Switched &quot;instance&quot; to this" />
+    <MESSAGE value="Reformatted to remove useless generic arguments&#10;cleaned up formatting" />
+    <option name="LAST_COMMIT_MESSAGE" value="Reformatted to remove useless generic arguments&#10;cleaned up formatting" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

@@ -30,7 +30,7 @@ class ASTPrinter : Expression.Visitor<String> {
 
     override fun visit(expression: Expression.Ternary): String {
         return parenthesize<String>(
-            "${expression.questionMark.lexeme}${expression.colon.lexeme}",
+            "?:",
             expression.left,
             expression.middle,
             expression.right

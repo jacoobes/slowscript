@@ -83,9 +83,7 @@ abstract class Expression {
 
     class Ternary(
         val left: Expression,
-        val questionMark: Token,
         val middle: Expression,
-        val colon: Token,
         val right: Expression
 
     ) : Expression() {

@@ -27,18 +27,30 @@ class Parser(private val tokens: List<Token>) {
         }
 
     }
-
-    private fun declaration(): Statement {
+    private fun topLvlModule() : Statement {
         try {
-            if (matchAndAdvance(CLASS)) return classDec()
-            if (matchAndAdvance(TASK)) return task("task")
-            if (matchAndAdvance(MUTABLE_VARIABLE)) return variableDecl(false)
-            if (matchAndAdvance(IMMUTABLE_VARIABLE)) return variableDecl(true)
-            return statements()
-        } catch (runtimeErr: RuntimeError) {
+            if(matchAndAdvance(MODULE)) return module()
+            return declaration()
+        } catch (runtime: RuntimeError) {
             synchronize()
         }
-        throw ParseError.error(peek().line, "No top level declaration found")
+        throw ParseError.error(peek().line, "No top level declaration found!")
+    }
+
+    private fun declaration(): Statement {
+
+            if (matchAndAdvance(CLASS)) return classDec()
+            if (matchAndAdvance(TASK)) return task("task")
+            if (matchAndAdvance(MUTABLE_VARIABLE)) return variableDecl()
+            if (matchAndAdvance(IMMUTABLE_VARIABLE)) return variableDecl()
+            return statements()
+
+    }
+    private fun module() : Statement {
+        val moduleName = consume(IDENTIFIER, "No name for declaration module was found")
+        consume(ARROW, "Module not pointing to any statement or expression! use ->")
+        val module = declaration()
+        return Statement.Module(moduleName, module)
     }
 
     private fun classDec(): Statement {
@@ -82,7 +94,7 @@ class Parser(private val tokens: List<Token>) {
 
     }
 
-    private fun variableDecl(isImmutable: Boolean): Statement {
+    private fun variableDecl(): Statement {
         consume(IDENTIFIER, "No identifier for variable has been found")
         val tokenName = previous()
         val value: Expression?
@@ -154,7 +166,7 @@ class Parser(private val tokens: List<Token>) {
     private fun forLoop(): Statement {
         consume(LEFT_PAREN, " No ( found for expected loop")
         val init: Statement? = when {
-            matchAndAdvance(MUTABLE_VARIABLE) -> variableDecl(false).also { advance() }
+            matchAndAdvance(MUTABLE_VARIABLE) -> variableDecl().also { advance() }
             matchAndAdvance(AS) -> null
             else -> expressionStatement().also { advance() }
         }
@@ -223,18 +235,18 @@ class Parser(private val tokens: List<Token>) {
     private fun ternary(): Expression {
         var ternary = or()
         while (matchAndAdvance(QUESTION)) {
-            val question = previous().apply {
+          previous().apply {
                 if (lexeme != "?") ParseError.error(line, "Expected ? character for expected ternary, not $lexeme")
             }
 
             val firstOption = or()
 
             if (matchAndAdvance(COLON)) {
-                val colon = previous().apply {
+                 previous().apply {
                     if (lexeme != ":") ParseError.error(line, "Expected : character for expected ternary, not $lexeme")
                 }
                 val secondOption = or()
-                ternary = Expression.Ternary(ternary, question, firstOption, colon, secondOption)
+                ternary = Expression.Ternary(ternary, firstOption, secondOption)
             }
         }
         return ternary
@@ -436,7 +448,7 @@ class Parser(private val tokens: List<Token>) {
         while (!isAtEnd()) {
             if (previous().type == SEMICOLON) return
             when (peek().type) {
-                CLASS, TASK, MUTABLE_VARIABLE, LOOP, WHILE, IF, RETURN, DISPLAY -> return
+                CLASS, TASK, MUTABLE_VARIABLE, LOOP, WHILE, IF, RETURN, DISPLAY, MODULE -> return
             }
             advance()
         }
@@ -447,7 +459,7 @@ class Parser(private val tokens: List<Token>) {
         val declaration = mutableListOf<Statement>()
 
         while (!isAtEnd()) {
-            declaration.add(declaration())
+            declaration.add(topLvlModule())
         }
         return declaration
 
