@@ -77,11 +77,6 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         }
     }
 
-    override fun visit(module: Statement.Module)  {
-
-    }
-
-
     override fun visit(expr: Expression.Unary): Any? {
         val unary: Any? = evaluate(expr.value)
 

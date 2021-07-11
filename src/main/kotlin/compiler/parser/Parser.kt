@@ -27,31 +27,20 @@ class Parser(private val tokens: List<Token>) {
         }
 
     }
-    private fun topLvlModule() : Statement {
-        try {
-            if(matchAndAdvance(MODULE)) return module()
-            return declaration()
-        } catch (runtime: RuntimeError) {
-            synchronize()
-        }
-        throw ParseError.error(peek().line, "No top level declaration found!")
-    }
 
     private fun declaration(): Statement {
-
+        try {
             if (matchAndAdvance(CLASS)) return classDec()
             if (matchAndAdvance(TASK)) return task("task")
             if (matchAndAdvance(MUTABLE_VARIABLE)) return variableDecl()
-            if (matchAndAdvance(IMMUTABLE_VARIABLE)) return variableDecl()
             return statements()
+        } catch (runtime: RuntimeError) {
+            synchronize()
+        }
+           throw ParseError.error(0, "No top level declaration found!")
 
     }
-    private fun module() : Statement {
-        val moduleName = consume(IDENTIFIER, "No name for declaration module was found")
-        consume(ARROW, "Module not pointing to any statement or expression! use ->")
-        val module = declaration()
-        return Statement.Module(moduleName, module)
-    }
+
 
     private fun classDec(): Statement {
         val methods = mutableListOf<Statement.Function>()
@@ -459,7 +448,7 @@ class Parser(private val tokens: List<Token>) {
         val declaration = mutableListOf<Statement>()
 
         while (!isAtEnd()) {
-            declaration.add(topLvlModule())
+            declaration.add(declaration())
         }
         return declaration
 

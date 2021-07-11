@@ -1,8 +1,7 @@
-package compiler
+package compiler.tokens
 
-import compiler.tokens.TOKEN_TYPES
+import compiler.Sscript
 import compiler.tokens.TOKEN_TYPES.*
-import compiler.tokens.Token
 import java.io.BufferedReader
 
 fun tokenCreator(file: BufferedReader): List<Token> {
@@ -136,11 +135,9 @@ fun tokenCreator(file: BufferedReader): List<Token> {
 
             char == '&' -> {
                 if (match('&')) addComplexToken(AND)
-                else token.add(Token(AMPER, char.toString(), line))
             }
             char == '|' -> {
                 if (match('|')) addComplexToken(OR)
-                else token.add(Token(LINE, char.toString(), line))
             }
 
             char == '"' -> string()

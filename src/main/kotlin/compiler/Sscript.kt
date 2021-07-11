@@ -8,9 +8,8 @@ import compiler.resolver.Resolver
 import compiler.tokens.TOKEN_TYPES
 import compiler.tokens.TOKEN_TYPES.*
 import compiler.tokens.Token
-import compiler.utils.Stopwatch
+import compiler.tokens.tokenCreator
 import java.io.File
-import java.io.IOException
 import kotlin.system.exitProcess
 
 class Sscript {
@@ -20,7 +19,6 @@ class Sscript {
         private var hadRuntimeError = false
         private val interpreter = InterVisitor()
         private val resolver = Resolver(interpreter)
-        private val timer = Stopwatch()
 
         fun run(args: Array<String>) {
 
@@ -29,33 +27,32 @@ class Sscript {
                 exitProcess(64)
             }
 
-            timer.start()
+
             runFile(args[0])
-            println()
-            timer.stop()
-            println("${timer.elapsedTime} ms elapsed")
 
         }
 
         private fun runFile(path: String) {
-            val mainFile = File(path)
-            if(mainFile.isDirectory || mainFile.name != "main.spt") throw IOException("Main file cannot be found or the path is a directory. Name of file must be main.spt")
-            if (!hadError) {
+          val mainFile = File(path)
+              if (!hadError) {
 
-               mainFile.bufferedReader().run {
-                    val statements = Parser(tokenCreator(this)).parse()
+                  mainFile.bufferedReader().run {
+                      val statements = Parser(tokenCreator(this)).parse()
 
-                    statements.let {
+                      statements.let {
 
-                        if (hadError) exitProcess(65)
-                        if (hadRuntimeError) exitProcess(70)
-                            resolver.resolve(it)
-                        if (hadError) return
-                            interpreter.interpret(it)
-                    }
-                }
+                          if (hadError) exitProcess(65)
+                          if (hadRuntimeError) exitProcess(70)
+                          resolver.resolve(it)
+                          if (hadError) return
+                          interpreter.interpret(it)
+                      }
+                  }
 
-            }
+
+
+          }
+
 
         }
 
@@ -86,7 +83,6 @@ class Sscript {
                 "class" to CLASS,
                 "return" to RETURN,
                 "var" to MUTABLE_VARIABLE,
-                "val" to IMMUTABLE_VARIABLE,
                 "task" to TASK,
                 "false" to FALSE,
                 "true" to TRUE,
@@ -95,21 +91,14 @@ class Sscript {
                 "else" to ELSE,
                 "loop" to LOOP,
                 "while" to WHILE,
-                "of" to OF,
                 "from" to FROM,
                 "super" to SUPER,
                 "this" to THIS,
-                "public" to PUBLIC,
-                "private" to PRIVATE,
-                "protected" to PROTECTED,
-                "all" to ALL,
                 "NaN" to NaN,
                 "log" to DISPLAY,
                 "as" to AS,
-                "STOP" to STOP,
                 "this" to INSTANCE,
                 "init" to INIT_BLOCK,
-                "module" to MODULE
             )
         }
 
