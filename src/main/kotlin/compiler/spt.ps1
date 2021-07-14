@@ -1,0 +1,5 @@
+function sptc {
+    param (
+        
+    )
+}

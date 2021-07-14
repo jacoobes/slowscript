@@ -133,12 +133,8 @@ fun tokenCreator(file: BufferedReader): List<Token> {
                 }
             }
 
-            char == '&' -> {
-                if (match('&')) addComplexToken(AND)
-            }
-            char == '|' -> {
-                if (match('|')) addComplexToken(OR)
-            }
+            char == '&' -> if (match('&')) addComplexToken(AND)
+            char == '|' -> if (match('|')) addComplexToken(OR)
 
             char == '"' -> string()
 

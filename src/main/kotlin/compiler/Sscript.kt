@@ -26,8 +26,6 @@ class Sscript {
                 println("Usage: spt [script]")
                 exitProcess(64)
             }
-
-
             runFile(args[0])
 
         }
@@ -48,8 +46,6 @@ class Sscript {
                           interpreter.interpret(it)
                       }
                   }
-
-
 
           }
 

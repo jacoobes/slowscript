@@ -368,6 +368,10 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         return expression.accept(this)
     }
 
+    /**
+     * Null is falsy along with NaN
+     * */
+
     private fun isTruthy(unary: Any?): Boolean {
         return when (unary) {
             null -> false

@@ -4,84 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="Reformatted to remove useless generic arguments&#10;cleaned up formatting">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/testPack/main.spt" afterDir="false" />
+    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="Adding quick documents">
+      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/spt.ps1" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/META-INF/LRN.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/MainKt.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/Sscript$Companion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/Sscript.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/TokenCreatorKt$tokenCreator$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/TokenCreatorKt$tokenCreator$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/TokenCreatorKt$tokenCreator$3.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/TokenCreatorKt$tokenCreator$4.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/TokenCreatorKt$tokenCreator$addComplexToken$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/TokenCreatorKt$tokenCreator$advance$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/TokenCreatorKt$tokenCreator$isAtEnd$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/TokenCreatorKt$tokenCreator$match$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/TokenCreatorKt.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/env/Entity.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/env/Env.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Expression$Assignment.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Expression$Binary.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Expression$Call.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Expression$Get.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Expression$Grouping.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Expression$Instance.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Expression$Literal.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Expression$Logical.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Expression$Set.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Expression$Supe.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Expression$Ternary.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Expression$Unary.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Expression$Variable.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Expression$Visitor.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Expression.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Statement$Block.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Statement$ClassDec.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Statement$Declaration.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Statement$Expression.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Statement$Function.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Statement$If.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Statement$Module.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Statement$Print.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Statement$Return.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Statement$StateVisitor.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Statement$While.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/inputTypes/Statement.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/interpreter/Callable.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/interpreter/Callee$DefaultImpls.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/interpreter/Callee.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/interpreter/Init.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/interpreter/InstanceOf.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/interpreter/InterVisitor$1.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/interpreter/InterVisitor$2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/interpreter/InterVisitor$3.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/interpreter/InterVisitor$WhenMappings.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/interpreter/InterVisitor.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/interpreter/Return.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/interpreter/RuntimeError.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/parser/Parser$ParseError$Companion.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/parser/Parser$ParseError.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/parser/Parser$WhenMappings.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/parser/Parser.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/resolver/Resolver$ClassType.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/resolver/Resolver$FunctionType.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/resolver/Resolver$WhenMappings.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/resolver/Resolver.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/tokens/TOKEN_TYPES.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/tokens/Token.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/utils/ASTPrinter.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/LRN/compiler/utils/Stopwatch.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Sscript.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Sscript.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/inputTypes/Statement.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/inputTypes/Statement.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/InterVisitor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/InterVisitor.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/parser/Parser.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/parser/Parser.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/resolver/Resolver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/resolver/Resolver.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/tokenCreator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/tokens/tokenCreator.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/tokens/TOKEN_TYPES.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/tokens/TOKEN_TYPES.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/main.spt" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/tokens/tokenCreator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/tokens/tokenCreator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/testPack/main.spt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/testPack/main.spt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -159,7 +89,7 @@
     <property name="project.structure.proportion" value="0.18313752" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="run.code.analysis.last.selected.profile" value="pProject Default" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -178,7 +108,7 @@
     </key>
   </component>
   <component name="RunManager" selected="Kotlin.MainKt">
-    <configuration name="C:/Users/jacob/OneDrive/Desktop/Projects/piek" type="GradleRunConfiguration" factoryName="Gradle">
+    <configuration name="C:/Users/jacob/OneDrive/Desktop/Projects/slowscript" type="GradleRunConfiguration" factoryName="Gradle">
       <ExternalSystemSettings>
         <option name="executionName" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -208,7 +138,7 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Gradle.C:/Users/jacob/OneDrive/Desktop/Projects/piek" />
+      <item itemvalue="Gradle.C:/Users/jacob/OneDrive/Desktop/Projects/slowscript" />
       <item itemvalue="Kotlin.MainKt" />
     </list>
   </component>
@@ -445,7 +375,14 @@
       <option name="project" value="LOCAL" />
       <updated>1625960839746</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="Adding quick documents">
+      <created>1626031293718</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1626031293718</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -495,7 +432,8 @@
     <MESSAGE value="Fixed arguments not being detected.&#10;added strings to compound assignment" />
     <MESSAGE value="Switched &quot;instance&quot; to this" />
     <MESSAGE value="Reformatted to remove useless generic arguments&#10;cleaned up formatting" />
-    <option name="LAST_COMMIT_MESSAGE" value="Reformatted to remove useless generic arguments&#10;cleaned up formatting" />
+    <MESSAGE value="Adding quick documents" />
+    <option name="LAST_COMMIT_MESSAGE" value="Adding quick documents" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
