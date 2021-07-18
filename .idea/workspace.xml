@@ -4,11 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="Quick Docs finished, need to clean up code base now">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/testPack/main.spt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/testPack/main.spt" afterDir="false" />
-    </list>
+    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="fixed quick docs links" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -397,7 +393,14 @@
       <option name="project" value="LOCAL" />
       <updated>1626283168516</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="fixed quick docs links">
+      <created>1626625753204</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1626625753204</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -449,7 +452,8 @@
     <MESSAGE value="Reformatted to remove useless generic arguments&#10;cleaned up formatting" />
     <MESSAGE value="Adding quick documents" />
     <MESSAGE value="Quick Docs finished, need to clean up code base now" />
-    <option name="LAST_COMMIT_MESSAGE" value="Quick Docs finished, need to clean up code base now" />
+    <MESSAGE value="fixed quick docs links" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed quick docs links" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

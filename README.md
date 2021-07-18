@@ -195,7 +195,7 @@ declare a variable -> ` var hi = "Hello" ` </br>
  - variables that have not been declared nor defined but accessed throw undefined variable error </br>
  - semicolons are always omitted </br> 
 
-declare function -> `task() {}` </br>
+declare function -> `task name() {}` </br>
  - returns must end in semicolon </br>
  - nested functions are okay (closures) </br>
 
@@ -225,7 +225,7 @@ declare class -> `class T {}` </br>
 extending class -> `class E from T{}` </br>
 constructor -> `object( #parameters#) {}` </br>
 while -> `while(expression) {}` </br>
-loop -> `loop(as:) #infinite loop#`, `loop (var i = 0 as i < 10: i++)  ` </br>
+loop -> `loop(as:) #infinite loop#`, simple loop ->`loop (var i = 0 as i < 10: i++)  ` </br>
 comments -> `// line specific` </br>
 comment blocks -> `# comments #` </br>
 print to terminal -> `log()`
