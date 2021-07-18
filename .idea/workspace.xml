@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="Adding quick documents">
-      <change afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/spt.ps1" afterDir="false" />
+    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="Quick Docs finished, need to clean up code base now">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Sscript.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Sscript.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/InterVisitor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/InterVisitor.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/tokens/tokenCreator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/tokens/tokenCreator.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/testPack/main.spt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/testPack/main.spt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -57,17 +53,17 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/inputTypes/Expression.kt" root0="SKIP_INSPECTION" />
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/InterVisitor.kt" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/parser/Parser.kt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/env/Env.kt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/resources/testPack/main.spt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/InterVisitor.kt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/resolver/Resolver.kt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/inputTypes/Expression.kt" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/LICENSE" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/parser/Parser.kt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/inputTypes/Statement.kt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/Sscript.kt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/tokens/tokenCreator.kt" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/main/resources/testPack/main.spt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/main.kt" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/LICENSE" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/inputTypes/Statement.kt" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/resolver/Resolver.kt" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1qx6NkZiRa4fj1iZt9nkswFQv84" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -127,7 +123,7 @@
       <DebugAllEnabled>false</DebugAllEnabled>
       <method v="2" />
     </configuration>
-    <configuration name="MainKt" type="JetRunConfigurationType" nameIsGenerated="true">
+    <configuration name="MainKt" type="JetRunConfigurationType" temporary="true" nameIsGenerated="true">
       <option name="ALTERNATIVE_JRE_PATH" value="corretto-1.8" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="MainKt" />
@@ -141,6 +137,11 @@
       <item itemvalue="Gradle.C:/Users/jacob/OneDrive/Desktop/Projects/slowscript" />
       <item itemvalue="Kotlin.MainKt" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Kotlin.MainKt" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -382,7 +383,21 @@
       <option name="project" value="LOCAL" />
       <updated>1626031293718</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="Quick Docs finished, need to clean up code base now">
+      <created>1626283115748</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1626283115748</updated>
+    </task>
+    <task id="LOCAL-00035" summary="Quick Docs finished, need to clean up code base now">
+      <created>1626283168516</created>
+      <option name="number" value="00035" />
+      <option name="presentableId" value="LOCAL-00035" />
+      <option name="project" value="LOCAL" />
+      <updated>1626283168516</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -433,7 +448,8 @@
     <MESSAGE value="Switched &quot;instance&quot; to this" />
     <MESSAGE value="Reformatted to remove useless generic arguments&#10;cleaned up formatting" />
     <MESSAGE value="Adding quick documents" />
-    <option name="LAST_COMMIT_MESSAGE" value="Adding quick documents" />
+    <MESSAGE value="Quick Docs finished, need to clean up code base now" />
+    <option name="LAST_COMMIT_MESSAGE" value="Quick Docs finished, need to clean up code base now" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

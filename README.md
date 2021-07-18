@@ -44,7 +44,7 @@ if (ans != 0) {
 }
 ```
 
-###Features
+### Features
 - HashMaps for environments
 - Implementation of Visitor Pattern
 - separate parser and lexer
@@ -70,7 +70,7 @@ if (ans != 0) {
 - return statements
 - ternary operators  
 - loops (loop, while)
-- Kotlin / JS syntax inspiration
+- Kotlin and JS syntax inspiration
 - Object getters and setters
 - multi-line strings
 - NaN and null are falsy
@@ -93,10 +93,12 @@ if (ans != 0) {
 - `typeof` or `instanceof` operators</br>
 - dead code elimination
 - static methods in classes
+- escape characters
+- template literals
 
 <b><ins>As stated above, this language was created to learn language design and is not meant for practical use </b><ins>
 
-#Syntax
+# Syntax
 
 ### keywords 
  -  ``
@@ -229,7 +231,7 @@ comment blocks -> `# comments #` </br>
 print to terminal -> `log()`
  - Automatically appends new line (\n) (equivalent to `println()`) </br>
  
-declare method in class -> `name(#parameters){}`
+declare method in class -> `name(#parameters#){}`
 
 
 
