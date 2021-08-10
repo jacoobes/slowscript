@@ -25,9 +25,7 @@ abstract class Expression {
 
     class Binary(val left: Expression, val operator: Token, val right: Expression) : Expression() {
         override fun <R> accept(visitor: Visitor<R>): Any? {
-
             return visitor.visit(this)
-
         }
 
     }
@@ -48,9 +46,7 @@ abstract class Expression {
 
     class Instance(val inst: Token) : Expression() {
         override fun <R> accept(visitor: Visitor<R>): Any? {
-
             return visitor.visit(this)
-
         }
 
     }
@@ -58,18 +54,14 @@ abstract class Expression {
 
     class Grouping(val expression: Expression) : Expression() {
         override fun <R> accept(visitor: Visitor<R>): Any? {
-
             return visitor.visit(this)
-
         }
 
     }
 
     class Literal(val value: Any?) : Expression() {
         override fun <R> accept(visitor: Visitor<R>): Any? {
-
             return visitor.visit(this)
-
         }
 
     }
@@ -88,25 +80,20 @@ abstract class Expression {
 
     ) : Expression() {
         override fun <R> accept(visitor: Visitor<R>): Any? {
-
             return visitor.visit(this)
-
         }
 
     }
 
     class Logical(val left: Expression, val operator: Token, val right: Expression) : Expression() {
         override fun <R> accept(visitor: Visitor<R>): Any? {
-
             return visitor.visit(this)
-
         }
 
     }
 
     class Call(val callee: Expression, val paren: Token, val args: List<Expression>) : Expression() {
         override fun <R> accept(visitor: Visitor<R>): Any? {
-
             return visitor.visit(this)
         }
     }

@@ -151,6 +151,10 @@ class Parser(private val tokens: List<Token>) {
         val body = statements()
         return Statement.While(condition, body)
     }
+    /**
+     * Instead of having its own node, I took the while loop node and add options.
+     * Desugaring what a "for loop" is
+     * */
 
     private fun forLoop(): Statement {
         consume(LEFT_PAREN, " No ( found for expected loop")
@@ -163,7 +167,6 @@ class Parser(private val tokens: List<Token>) {
         consume(COLON, "No colon detected after condition")
         val increment: Expression? = if (!check(RIGHT_PAREN)) expression() else null
         consume(RIGHT_PAREN, "Enclosing ) expected")
-
 
         return statements().let {
             var block = it
@@ -211,7 +214,6 @@ class Parser(private val tokens: List<Token>) {
             val equals = previous()
             val value = assignment()
             if (expr is Expression.Variable) {
-
                 return Expression.Assignment(expr.name, value)
             } else if (expr is Expression.Get) {
                 return Expression.Set(expr.obj, expr.name, value)

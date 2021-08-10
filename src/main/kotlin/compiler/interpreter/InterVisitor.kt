@@ -61,8 +61,6 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
             }
 
             override fun arity(): Int = 2
-
-
             override fun toString(): String = "responseTo -> native function"
         })
 

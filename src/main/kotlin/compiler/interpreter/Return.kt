@@ -1,3 +1,3 @@
 package compiler.interpreter
 
-class Return(val value: Any?) : RuntimeException(null, null, false, false)
+data class Return(val value: Any?) : RuntimeException(null, null, false, false)

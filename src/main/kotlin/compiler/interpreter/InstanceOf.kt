@@ -5,6 +5,7 @@ import compiler.tokens.Token
 
 class InstanceOf(private val clase: Entity) {
     private val properties = HashMap<String, Any>()
+
     override fun toString(): String {
         return "${clase.name} instance"
     }

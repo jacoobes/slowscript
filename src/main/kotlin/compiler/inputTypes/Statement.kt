@@ -31,27 +31,21 @@ abstract class Statement {
 
     class Print(val expr: compiler.inputTypes.Expression) : Statement() {
         override fun <R> accept(visitor: StateVisitor<R>): Any {
-
             return visitor.visit(this)
-
         }
 
     }
 
     class Expression(val expr: compiler.inputTypes.Expression) : Statement() {
         override fun <R> accept(visitor: StateVisitor<R>): Any? {
-
             return visitor.visit(this)
-
         }
 
     }
 
     class Block(val statementList: List<Statement>) : Statement() {
         override fun <R> accept(visitor: StateVisitor<R>): Any {
-
             return visitor.visit(this)
-
         }
 
     }
@@ -59,9 +53,7 @@ abstract class Statement {
 
     class Declaration(val name: Token, val expr: compiler.inputTypes.Expression?) : Statement() {
         override fun <R> accept(visitor: StateVisitor<R>): Any? {
-
             return visitor.visit(this)
-
         }
 
     }
@@ -69,18 +61,14 @@ abstract class Statement {
     class If(val ifBranch: compiler.inputTypes.Expression, val acted: Statement?, val elseBranch: Statement?) :
         Statement() {
         override fun <R> accept(visitor: StateVisitor<R>): Any? {
-
             return visitor.visit(this)
-
         }
 
     }
 
     class While(val expr: compiler.inputTypes.Expression, val body: Statement) : Statement() {
         override fun <R> accept(visitor: StateVisitor<R>): Any? {
-
             return visitor.visit(this)
-
         }
 
     }
