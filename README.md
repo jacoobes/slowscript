@@ -9,6 +9,7 @@ Made possible with http://craftinginterpreters.com/
 - [Features](#Features)
 - [Quick Docs](#Quick-Docs)
 - [Syntax](#Syntax)
+- [More to come](#A-few-things-I-want-to-complete) 
 
 
 ```txt
