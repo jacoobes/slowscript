@@ -1,7 +1,0 @@
-log( 5 && false) -> false
-log(null && false) -> null
-log(6 && 6) -> 6
-log(null + 1 || 6) -> 6
-log( "ssvsdv" + 1 || 10) -> 10
-log( i % 5 == 0 ? i : "cheese" ) -> 10
-//i == 10

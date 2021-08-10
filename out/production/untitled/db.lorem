@@ -1,9 +1,0 @@
-!NEW = 'Hollo' ("dsvjsdvlsdv");
-
-<STORE> {"chello" : "tomo"} <AS> "map1" <TO> 'Hollo';
-
-<SEND> {1234} <TO> 'Hollo';
-
-<GET> {1234} <FROM> 'Hollo';
-
-<STORE> {"tomrod" : <GET> "map1"} <TO> 'Hollo';
