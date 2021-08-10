@@ -73,7 +73,6 @@ if (ans != 0) {
 - Kotlin and JS syntax inspiration
 - Object getters and setters
 - multi-line strings
-- NaN and null are falsy
 - truthy values  
 - short circuiting evaluation  
 - Native functions :
@@ -231,8 +230,13 @@ comment blocks -> `# comments #` </br>
 print to terminal -> `log()`
  - Automatically appends new line (\n) (equivalent to `println()`) </br>
  
-declare method in class -> `name(#parameters#){}`
-
+declare method in class -> `name(#parameters#){}` </br>
+ternary operators -> `condition expression ? expression evaluated if true : expression evaluated if false`
+ - Cannot compound ternary operators </br>
+ 
+Short Circuiting -> `expression || expression`
+ - Evaluates first truthy values
+ - NaN and null are falsy
 
 
 

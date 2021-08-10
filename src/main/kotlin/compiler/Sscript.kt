@@ -22,7 +22,7 @@ class Sscript {
         fun run(args: Array<String>) {
 
             if (args.size != 1) {
-                println("Usage: Must have one argument that leads to file path. Will ignore any args after the first")
+                println("Usage: Must have one argument that leads to file path")
                 exitProcess(64)
             }
             runFile(args[0])
@@ -46,7 +46,6 @@ class Sscript {
                       }
                   }
           }
-
         }
 
         fun error(line: Int, message: String, where: String) {

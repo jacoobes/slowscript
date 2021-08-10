@@ -153,7 +153,7 @@ class Parser(private val tokens: List<Token>) {
     }
     /**
      * Instead of having its own node, I took the while loop node and add options.
-     * Desugaring what a "for loop" is
+     * De sugaring what a "for loop" is
      * */
 
     private fun forLoop(): Statement {
@@ -444,7 +444,6 @@ class Parser(private val tokens: List<Token>) {
             advance()
         }
     }
-
 
     fun parse(): List<Statement> {
         val declaration = mutableListOf<Statement>()
