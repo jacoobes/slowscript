@@ -5,7 +5,6 @@ import compiler.interpreter.InterVisitor
 import compiler.interpreter.RuntimeError
 import compiler.parser.Parser
 import compiler.resolver.Resolver
-import compiler.tokens.TOKEN_TYPES
 import compiler.tokens.TOKEN_TYPES.*
 import compiler.tokens.Token
 import compiler.tokens.Tokenizer
@@ -42,13 +41,11 @@ class Sscript {
                           if (hadError) exitProcess(65)
                           if (hadRuntimeError) exitProcess(70)
                           resolver.resolve(it)
-                          if (hadError) return
+                          if (hadError) exitProcess(65)
                           interpreter.interpret(it)
                       }
                   }
-
           }
-
 
         }
 
@@ -73,28 +70,28 @@ class Sscript {
 
         val reservedKeywords
                 get() =
-                hashMapOf(
-                "super" to SUPER,
-                "class" to CLASS,
-                "return" to RETURN,
-                "var" to MUTABLE_VARIABLE,
-                "task" to TASK,
-                "false" to FALSE,
-                "true" to TRUE,
-                "null" to NULL,
-                "if" to IF,
-                "else" to ELSE,
-                "loop" to LOOP,
-                "while" to WHILE,
-                "from" to FROM,
-                "super" to SUPER,
-                "this" to THIS,
-                "NaN" to NaN,
-                "log" to DISPLAY,
-                "as" to AS,
-                "this" to INSTANCE,
-                "init" to INIT_BLOCK,
-            )
+                    hashMapOf(
+                    "super" to SUPER,
+                    "class" to CLASS,
+                    "return" to RETURN,
+                    "var" to MUTABLE_VARIABLE,
+                    "task" to TASK,
+                    "false" to FALSE,
+                    "true" to TRUE,
+                    "null" to NULL,
+                    "if" to IF,
+                    "else" to ELSE,
+                    "loop" to LOOP,
+                    "while" to WHILE,
+                    "from" to FROM,
+                    "super" to SUPER,
+                    "this" to THIS,
+                    "NaN" to NaN,
+                    "log" to DISPLAY,
+                    "as" to AS,
+                    "this" to INSTANCE,
+                    "init" to INIT_BLOCK,
+                )
         
 
         fun error(error: RuntimeError) {
