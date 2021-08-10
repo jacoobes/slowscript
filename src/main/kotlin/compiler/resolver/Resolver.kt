@@ -6,6 +6,11 @@ import compiler.inputTypes.Statement
 import compiler.tokens.Token
 import java.util.*
 
+/**
+ * Semantic analysis
+ * - Provides more readable interpreter and binds variable so that they are used once
+ * - Resolves distance of variable's distance in the environment chain and uses that one
+ */
 class Resolver(private val interpreter: compiler.interpreter.InterVisitor) : Statement.StateVisitor<Unit>,
     Expression.Visitor<Unit> {
 

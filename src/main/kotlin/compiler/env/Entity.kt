@@ -2,6 +2,10 @@ package compiler.env
 
 import compiler.interpreter.*
 
+/**
+ * Base class, kinda like Object in Java
+ * Single and only base class for slowScript
+ */
 open class Entity(
     val name: String,
     private val superclass: Entity?,
@@ -9,7 +13,9 @@ open class Entity(
     private val init: Init?
 ) :
     Callee {
-
+    /**
+     * Call and instantiate a new class instance
+     */
     override fun call(interpreter: InterVisitor, arguments: List<Any?>): InstanceOf {
         init?.call(interpreter, arguments)
         val newObj = findMethod("object")

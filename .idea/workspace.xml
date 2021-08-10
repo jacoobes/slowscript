@@ -4,10 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="fixed quick docs links">
+    <list default="true" id="1c8f6a7a-79b2-49fc-8a8c-caa87869392c" name="Default Changelist" comment="added more notes">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/main.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/main.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/spt.ps1" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Sscript.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/Sscript.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Tests/ExpressionsText.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Tests/StatementsTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Tests/VariableTests.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Tests/logicalOpsIfStatements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Tests/loopTest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/Tests/scopetest.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/env/Entity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/env/Entity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/env/Env.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/env/Env.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Callable.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/Callable.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/InterVisitor.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/InterVisitor.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/resolver/Resolver.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/resolver/Resolver.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/tokens/TOKEN_TYPES.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/tokens/TOKEN_TYPES.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/kotlin/compiler/tokens/tokenCreator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/kotlin/compiler/tokens/tokenCreator.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/testPack/main.spt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/testPack/main.spt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,17 +67,17 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/env/Env.kt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/Sscript.kt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/resources/testPack/main.spt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/interpreter/InterVisitor.kt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/resolver/Resolver.kt" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/inputTypes/Expression.kt" root0="SKIP_INSPECTION" />
     <setting file="file://$PROJECT_DIR$/LICENSE" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/parser/Parser.kt" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/inputTypes/Statement.kt" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/Sscript.kt" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/tokens/tokenCreator.kt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/main.kt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/inputTypes/Statement.kt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/tokens/tokenCreator.kt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/inputTypes/Expression.kt" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/env/Env.kt" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/kotlin/compiler/parser/Parser.kt" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1qx6NkZiRa4fj1iZt9nkswFQv84" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -411,7 +425,14 @@
       <option name="project" value="LOCAL" />
       <updated>1626626172400</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="no powershell script cuz idk powershell">
+      <created>1626634839855</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1626634839855</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -464,7 +485,8 @@
     <MESSAGE value="Adding quick documents" />
     <MESSAGE value="Quick Docs finished, need to clean up code base now" />
     <MESSAGE value="fixed quick docs links" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed quick docs links" />
+    <MESSAGE value="no powershell script cuz idk powershell" />
+    <option name="LAST_COMMIT_MESSAGE" value="no powershell script cuz idk powershell" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

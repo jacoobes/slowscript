@@ -60,14 +60,18 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
                 }
             }
 
-            override fun arity(): Int {
-                return 2
-            }
+            override fun arity(): Int = 2
+
 
             override fun toString(): String = "responseTo -> native function"
         })
 
     }
+
+    /**
+     * any visit function overload is determined by parameter and what node it visits
+     * - fun visit(Expression.Binary) visits Binary Nodes
+     */
 
     fun interpret(listOfStatements: List<Statement>) {
         try {
@@ -93,6 +97,7 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         }
 
     }
+
 
     private fun evaluateCompoundUnary(isNegated: Boolean = true, value: Any?, expr: Expression.Unary): Double {
         if (value !is Double) throw RuntimeError("Value is not a number! on ", expr.prefix)
@@ -148,10 +153,8 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         if (left is String && right is String && tokenType == PLUS_EQUALS) {
             val value = left + right
             if (expression.left is Expression.Variable) {
-                locals[expression.left]?.let { env.assignAt(it, expression.left.name, value) } ?: globals.assign(
-                    expression.left.name,
-                    value
-                )
+                locals[expression.left]?.let { env.assignAt(it, expression.left.name, value) }
+                    ?: globals.assign( expression.left.name, value )
                 return value
             }
             throw RuntimeError("${expression.left} is not a variable that can be assigned", expression.operator)
@@ -179,7 +182,7 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
         }
 
         throw RuntimeError(
-            "Expected two numbers and got ${left::class.simpleName} and ${right::class.simpleName}",
+            "Expected two numbers or strings and got ${left::class.simpleName} and ${right::class.simpleName}",
             expression.operator
         )
     }
@@ -491,9 +494,7 @@ class InterVisitor : Expression.Visitor<Any>, Statement.StateVisitor<Unit> {
 
     override fun visit(set: Expression.Set): Any {
         val property = evaluate(set.expr)
-        if (property !is InstanceOf) {
-            throw RuntimeError("Cannot assign to a non property of object!", set.name)
-        }
+        if (property !is InstanceOf) throw RuntimeError("Cannot assign to a non property of object!", set.name)
         val value = evaluate(set.value)
         value?.let {
             property.set(set.name, value)

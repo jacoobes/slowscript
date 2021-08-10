@@ -24,6 +24,9 @@ class Env(val enclosed: Env? = null) {
         values[name] = value
     }
 
+    /**
+     * recursively determines where classes, functions, are, starting at innermost scope
+     */
     fun get(name: Token): Any? {
 
         if (values.containsKey(name.lexeme)) {

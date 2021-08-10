@@ -10,6 +10,10 @@ open class Callable(
     private val isInitializer: Boolean
 ) : Callee {
 
+    /**
+     * function calling;
+     * instantiation of arguments
+     */
     override fun call(interpreter: InterVisitor, arguments: List<Any?>): Any? {
         val functionEnv = Env(closure)
         for ((index, args) in declaration.parameters.withIndex()) {
@@ -34,6 +38,10 @@ open class Callable(
         return declaration.fnName.lexeme
     }
 
+    /**
+     * Binds "this" keyword to the closure environment
+     * - Closure environment => the block scope inside function / class
+     */
     fun bind(instance: InstanceOf): Callable {
         val instanceEnv = Env(closure)
         instanceEnv.define("this", instance)

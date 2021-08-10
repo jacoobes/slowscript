@@ -8,7 +8,7 @@ import compiler.resolver.Resolver
 import compiler.tokens.TOKEN_TYPES
 import compiler.tokens.TOKEN_TYPES.*
 import compiler.tokens.Token
-import compiler.tokens.tokenCreator
+import compiler.tokens.Tokenizer
 import java.io.File
 import kotlin.system.exitProcess
 
@@ -23,7 +23,7 @@ class Sscript {
         fun run(args: Array<String>) {
 
             if (args.size != 1) {
-                println("Usage: spt [script]")
+                println("Usage: Must have one argument that leads to file path. Will ignore any args after the first")
                 exitProcess(64)
             }
             runFile(args[0])
@@ -35,7 +35,7 @@ class Sscript {
               if (!hadError) {
 
                   mainFile.bufferedReader().run {
-                      val statements = Parser(tokenCreator(this)).parse()
+                      val statements = Parser(Tokenizer(this).tokenize()).parse()
 
                       statements.let {
 
@@ -51,7 +51,6 @@ class Sscript {
 
 
         }
-
 
         fun error(line: Int, message: String, where: String) {
             println(Error("[line $line] Error $where: $message"))
@@ -72,9 +71,9 @@ class Sscript {
 
         }
 
-        fun reservedKeywords(): HashMap<String, TOKEN_TYPES> {
-
-            return hashMapOf(
+        val reservedKeywords
+                get() =
+                hashMapOf(
                 "super" to SUPER,
                 "class" to CLASS,
                 "return" to RETURN,
@@ -96,7 +95,7 @@ class Sscript {
                 "this" to INSTANCE,
                 "init" to INIT_BLOCK,
             )
-        }
+        
 
         fun error(error: RuntimeError) {
             println("${error.message} line ${error.token.line}")

@@ -4,190 +4,377 @@ import compiler.Sscript
 import compiler.tokens.TOKEN_TYPES.*
 import java.io.BufferedReader
 
-fun tokenCreator(file: BufferedReader): List<Token> {
+class Tokenizer(file: BufferedReader) {
+    private val src: String = file.use { it.readText() }
 
-    val src: String = file.readText()
+    val tokens = mutableListOf<Token>()
 
-    val token = mutableListOf<Token>()
-
-
-    var index = 0
-    var line = 1
-    var start = 0
+    private var index = 0
+    private var line = 1
+    private var start = 0
 
 
-    val isAtEnd = { index >= src.length; }
-    val advance = { src.elementAt(index++) }
+    private val isAtEnd
+        get() = index >= src.length
 
-    val match = fun(expected: Char): Boolean {
-        if (isAtEnd()) return false
-        if (src.elementAt(index) != expected) return false
+    private val currentChar
+        get() = src.elementAt(index)
+
+    private fun advance() = src.elementAt(index++)
+
+    private fun Char.matches(expected: Char): Boolean {
+        if (isAtEnd) return false
+        if (this != expected) return false
 
         index++
         return true
     }
 
-    val addComplexToken = fun(type: TOKEN_TYPES) {
-        val text: String = src.substring(start, index)
-        token.add(Token(type, text, line))
+    private fun MutableList<Token>.addComplex(type: TOKEN_TYPES) {
+        val text = src.substring(start, index)
+        add(Token(type, text, line))
     }
 
-    fun addComplexToken(type: TOKEN_TYPES, value: String, literalValue: Any?) {
-        token.add(Token(type, value, literalValue, line))
+    private fun MutableList<Token>.addComplex(type: TOKEN_TYPES, value: String, literalValue: Any?) {
+        add(Token(type, value, literalValue, line))
     }
 
-    fun peek() = if (isAtEnd()) 0.toChar() else src.elementAt(index)
-
-
-    fun peekNext(): Char {
-        if (index + 1 >= src.length) return 0.toChar()
-        return src.elementAt(index + 1)
-    }
-
+    private val peek
+        get() = if (isAtEnd) 0.toChar() else currentChar
+    private val peekNext
+        get() = if (index + 1 >= src.length) 0.toChar() else src.elementAt(index + 1)
 
     fun string() {
+        while (peek != '"' && !isAtEnd) advance()
+        if (isAtEnd) Sscript.error(line, "Incomplete string")
 
-        while (peek() != '"' && !isAtEnd()) advance()
-        if (isAtEnd()) {
-            Sscript.error(line, "Incomplete string")
-        }
         advance()
-        val cut = src.substring(start + 1, index - 1)
 
-        addComplexToken(STRING, cut, cut)
+        val cut = src.substring(start + 1, index - 1)
+        tokens.addComplex(STRING, cut, cut)
     }
 
-    while (!isAtEnd()) {
-        start = index
-        val char = advance()
 
-        when {
+    fun tokenize(): MutableList<Token> {
+        while (!isAtEnd) {
+            start = index
+            val char = advance()
 
-            char == '{' -> token.add(Token(LEFT_BRACE, char.toString(), line))
-            char == '}' -> token.add(Token(RIGHT_BRACE, char.toString(), line))
-            char == '(' -> token.add(Token(LEFT_PAREN, char.toString(), line))
-            char == ')' -> token.add(Token(RIGHT_PAREN, char.toString(), line))
-            char == ';' -> token.add(Token(SEMICOLON, char.toString(), line))
-            char == '.' -> token.add(Token(DOT, char.toString(), line))
-            char == ',' -> token.add(Token(COMMA, char.toString(), line))
-            char == ':' -> token.add(Token(COLON, char.toString(), line))
-            char == '?' -> token.add(Token(QUESTION, char.toString(), line))
+            when {
 
-            char == '#' -> {
-                while (!match('#') && !isAtEnd()) {
-                    advance()
+                char == '{' -> tokens.add(Token(LEFT_BRACE, char.toString(), line))
+                char == '}' -> tokens.add(Token(RIGHT_BRACE, char.toString(), line))
+                char == '(' -> tokens.add(Token(LEFT_PAREN, char.toString(), line))
+                char == ')' -> tokens.add(Token(RIGHT_PAREN, char.toString(), line))
+                char == ';' -> tokens.add(Token(SEMICOLON, char.toString(), line))
+                char == '.' -> tokens.add(Token(DOT, char.toString(), line))
+                char == ',' -> tokens.add(Token(COMMA, char.toString(), line))
+                char == ':' -> tokens.add(Token(COLON, char.toString(), line))
+                char == '?' -> tokens.add(Token(QUESTION, char.toString(), line))
 
-                }
-            }
-
-            char == '!' -> {
-                if (match('=')) addComplexToken(NOT_EQUAL)
-                else token.add(Token(NOT, char.toString(), line))
-            }
-
-            char == '<' -> {
-                if (match('=')) addComplexToken(LESS_THAN_OR_EQUAL)
-                else token.add(Token(LEFT_TRIANGLE, char.toString(), line))
-            }
-
-            char == '>' -> {
-                if (match('=')) addComplexToken(GREAT_THAN_OR_EQUAL)
-                else token.add(Token(RIGHT_TRIANGLE, char.toString(), line))
-            }
-            char == '=' -> {
-                if (match('=')) addComplexToken(EQUAL_EQUAL)
-                else token.add(Token(ASSIGNMENT, char.toString(), line))
-            }
-
-            char == '+' -> {
-                when {
-                    match('=') -> addComplexToken(PLUS_EQUALS)
-                    match('+') -> addComplexToken(INCREMENT)
-                    else -> token.add(Token(PLUS, char.toString(), line))
-                }
-            }
-
-            char == '-' -> {
-                when {
-                    match('=') -> addComplexToken(MINUS_EQUALS)
-                    match('>') -> addComplexToken(ARROW)
-                    match('-') -> addComplexToken(DECREMENT)
-                    else -> token.add(Token(MINUS, char.toString(), line))
-                }
-            }
-            char == '%' -> {
-                if (match('=')) addComplexToken(MOD_EQUALS)
-                else token.add(Token(MODULUS, char.toString(), line))
-            }
-
-            char == '*' -> {
-                if (match('=')) addComplexToken(MULT_EQUAL)
-                else token.add(Token(MULT, char.toString(), line))
-            }
-
-            char == '/' -> {
-                when {
-                    match('/') -> while (peek() != '\n' && !isAtEnd()) advance()
-                    match('=') -> addComplexToken(DIV_EQUALS)
-                    else -> token.add(Token(DIVIDE, char.toString(), line))
-                }
-            }
-
-            char == '&' -> if (match('&')) addComplexToken(AND)
-            char == '|' -> if (match('|')) addComplexToken(OR)
-
-            char == '"' -> string()
-
-
-            char.isDigit() -> {
-
-                while (peek().isDigit()) {
-                    advance()
-                    if (isAtEnd()) break
-                }
-
-                if (peek() == '.' && peekNext().isDigit()) {
-                    advance()
-                    while (src.elementAt(index).isDigit()) {
+                char == '#' -> {
+                    while (currentChar.matches('#') && !isAtEnd) {
                         advance()
-                        if (isAtEnd()) break
                     }
                 }
 
-                addComplexToken(NUMBER, src.substring(start, index), src.substring(start, index).toDouble())
+                char == '!' -> {
+                    if (currentChar.matches('=')) tokens.addComplex(NOT_EQUAL)
+                    else tokens.add(Token(NOT, char.toString(), line))
+                }
 
-            }
+                char == '<' -> {
+                    if (currentChar.matches('=')) tokens.addComplex(LESS_THAN_OR_EQUAL)
+                    else tokens.add(Token(LEFT_TRIANGLE, char.toString(), line))
+                }
+
+                char == '>' -> {
+                    if (currentChar.matches('=')) tokens.addComplex(GREAT_THAN_OR_EQUAL)
+                    else tokens.add(Token(RIGHT_TRIANGLE, char.toString(), line))
+                }
+                char == '=' -> {
+                    if (currentChar.matches('=')) tokens.addComplex(EQUAL_EQUAL)
+                    else tokens.add(Token(ASSIGNMENT, char.toString(), line))
+                }
+
+                char == '+' -> {
+                    when {
+                        currentChar.matches('=') -> tokens.addComplex(PLUS_EQUALS)
+                        currentChar.matches('+') -> tokens.addComplex(INCREMENT)
+                        else -> tokens.add(Token(PLUS, char.toString(), line))
+                    }
+                }
+
+                char == '-' -> {
+                    when {
+                        currentChar.matches('=') -> tokens.addComplex(MINUS_EQUALS)
+                        currentChar.matches('>') -> tokens.addComplex(ARROW)
+                        currentChar.matches('-') -> tokens.addComplex(DECREMENT)
+                        else -> tokens.add(Token(MINUS, char.toString(), line))
+                    }
+                }
+                char == '%' -> {
+                    if (currentChar.matches('=')) tokens.addComplex(MOD_EQUALS)
+                    else tokens.add(Token(MODULUS, char.toString(), line))
+                }
+
+                char == '*' -> {
+                    if (currentChar.matches('=')) tokens.addComplex(MULT_EQUAL)
+                    else tokens.add(Token(MULT, char.toString(), line))
+                }
+
+                char == '/' -> {
+                    when {
+                        currentChar.matches('/') -> while (peek != '\n' && !isAtEnd) advance()
+                        currentChar.matches('=') -> tokens.addComplex(DIV_EQUALS)
+                        else -> tokens.add(Token(DIVIDE, char.toString(), line))
+                    }
+                }
+
+                char == '&' -> if (currentChar.matches('&')) tokens.addComplex(AND)
+                char == '|' -> if (currentChar.matches('|')) tokens.addComplex(OR)
+
+                char == '"' -> string()
 
 
-            char.isWhitespace() -> if (char == '\n') line++
-            else -> {
-                if (char.isLetter()) {
-                    while (peek().isLetterOrDigit()) {
+                char.isDigit() -> {
+
+                    while (peek.isDigit()) {
                         advance()
-                        if (isAtEnd()) break
+                        if (isAtEnd) break
                     }
 
-                    val type = Sscript.reservedKeywords().let {
-                        val word = src.substring(start, index)
-                        it.getOrElse(word) { IDENTIFIER }
+                    if (peek == '.' && peekNext.isDigit()) {
+                        advance()
+                        while (currentChar.isDigit()) {
+                            advance()
+                            if (isAtEnd) break
+                        }
                     }
 
-                    addComplexToken(type)
+                    tokens.addComplex(NUMBER, src.substring(start, index), src.substring(start, index).toDouble())
 
-                } else {
-                    Sscript.error(line, "Unexpected character", char.toString())
+                }
+
+
+                char.isWhitespace() -> if (char == '\n') line++
+                else -> {
+                    if (char.isLetter()) {
+                        while (peek.isLetterOrDigit()) {
+                            advance()
+                            if (isAtEnd) break
+                        }
+
+                        val type = Sscript.reservedKeywords.let {
+                            val word = src.substring(start, index)
+                            it.getOrElse(word) { IDENTIFIER }
+                        }
+
+                        tokens.addComplex(type)
+
+                    } else {
+                        Sscript.error(line, "Unexpected character", char.toString())
+
+                    }
+
 
                 }
 
 
             }
-
 
         }
+        tokens.add(Token(END, "", line))
+        return tokens
 
     }
-    token.add(Token(END, "", line))
-    return token
+
 }
+
+//fun tokenCreator(file: BufferedReader): List<Token> {
+//
+//    val src: String = file.use { it.readText() }
+//
+//    val token = mutableListOf<Token>()
+//
+//
+//    var index = 0
+//    var line = 1
+//    var start = 0
+//
+//
+//    val isAtEnd = { index >= src.length; }
+//    val advance = { src.elementAt(index++) }
+//
+//    val match = fun(expected: Char): Boolean {
+//        if (isAtEnd()) return false
+//        if (src.elementAt(index) != expected) return false
+//
+//        index++
+//        return true
+//    }
+//
+//    val tokens.addComplex = fun(type: TOKEN_TYPES) {
+//        val text: String = src.substring(start, index)
+//        token.add(Token(type, text, line))
+//    }
+//
+//    fun tokens.addComplex(type: TOKEN_TYPES, value: String, literalValue: Any?) {
+//        token.add(Token(type, value, literalValue, line))
+//    }
+//
+//    fun peek() = if (isAtEnd()) 0.toChar() else src.elementAt(index)
+//
+//
+//    fun peekNext(): Char {
+//        if (index + 1 >= src.length) return 0.toChar()
+//        return src.elementAt(index + 1)
+//    }
+//
+//
+//    fun string() {
+//
+//        while (peek() != '"' && !isAtEnd()) advance()
+//        if (isAtEnd()) {
+//            Sscript.error(line, "Incomplete string")
+//        }
+//        advance()
+//        val cut = src.substring(start + 1, index - 1)
+//
+//        tokens.addComplex(STRING, cut, cut)
+//    }
+//
+//    while (!isAtEnd()) {
+//        start = index
+//        val char = advance()
+//
+//        when {
+//
+//            char == '{' -> token.add(Token(LEFT_BRACE, char.toString(), line))
+//            char == '}' -> token.add(Token(RIGHT_BRACE, char.toString(), line))
+//            char == '(' -> token.add(Token(LEFT_PAREN, char.toString(), line))
+//            char == ')' -> token.add(Token(RIGHT_PAREN, char.toString(), line))
+//            char == ';' -> token.add(Token(SEMICOLON, char.toString(), line))
+//            char == '.' -> token.add(Token(DOT, char.toString(), line))
+//            char == ',' -> token.add(Token(COMMA, char.toString(), line))
+//            char == ':' -> token.add(Token(COLON, char.toString(), line))
+//            char == '?' -> token.add(Token(QUESTION, char.toString(), line))
+//
+//            char == '#' -> {
+//                while (!currentChar.matches('#') && !isAtEnd()) {
+//                    advance()
+//
+//                }
+//            }
+//
+//            char == '!' -> {
+//                if (currentChar.matches('=')) tokens.addComplex(NOT_EQUAL)
+//                else token.add(Token(NOT, char.toString(), line))
+//            }
+//
+//            char == '<' -> {
+//                if (currentChar.matches('=')) tokens.addComplex(LESS_THAN_OR_EQUAL)
+//                else token.add(Token(LEFT_TRIANGLE, char.toString(), line))
+//            }
+//
+//            char == '>' -> {
+//                if (currentChar.matches('=')) tokens.addComplex(GREAT_THAN_OR_EQUAL)
+//                else token.add(Token(RIGHT_TRIANGLE, char.toString(), line))
+//            }
+//            char == '=' -> {
+//                if (currentChar.matches('=')) tokens.addComplex(EQUAL_EQUAL)
+//                else token.add(Token(ASSIGNMENT, char.toString(), line))
+//            }
+//
+//            char == '+' -> {
+//                when {
+//                    currentChar.matches('=') -> tokens.addComplex(PLUS_EQUALS)
+//                    currentChar.matches('+') -> tokens.addComplex(INCREMENT)
+//                    else -> token.add(Token(PLUS, char.toString(), line))
+//                }
+//            }
+//
+//            char == '-' -> {
+//                when {
+//                    currentChar.matches('=') -> tokens.addComplex(MINUS_EQUALS)
+//                    currentChar.matches('>') -> tokens.addComplex(ARROW)
+//                    currentChar.matches('-') -> tokens.addComplex(DECREMENT)
+//                    else -> token.add(Token(MINUS, char.toString(), line))
+//                }
+//            }
+//            char == '%' -> {
+//                if (currentChar.matches('=')) tokens.addComplex(MOD_EQUALS)
+//                else token.add(Token(MODULUS, char.toString(), line))
+//            }
+//
+//            char == '*' -> {
+//                if (currentChar.matches('=')) tokens.addComplex(MULT_EQUAL)
+//                else token.add(Token(MULT, char.toString(), line))
+//            }
+//
+//            char == '/' -> {
+//                when {
+//                    currentChar.matches('/') -> while (peek() != '\n' && !isAtEnd()) advance()
+//                    currentChar.matches('=') -> tokens.addComplex(DIV_EQUALS)
+//                    else -> token.add(Token(DIVIDE, char.toString(), line))
+//                }
+//            }
+//
+//            char == '&' -> if (currentChar.matches('&')) tokens.addComplex(AND)
+//            char == '|' -> if (currentChar.matches('|')) tokens.addComplex(OR)
+//
+//            char == '"' -> string()
+//
+//
+//            char.isDigit() -> {
+//
+//                while (peek().isDigit()) {
+//                    advance()
+//                    if (isAtEnd()) break
+//                }
+//
+//                if (peek() == '.' && peekNext().isDigit()) {
+//                    advance()
+//                    while (src.elementAt(index).isDigit()) {
+//                        advance()
+//                        if (isAtEnd()) break
+//                    }
+//                }
+//
+//                tokens.addComplex(NUMBER, src.substring(start, index), src.substring(start, index).toDouble())
+//
+//            }
+//
+//
+//            char.isWhitespace() -> if (char == '\n') line++
+//            else -> {
+//                if (char.isLetter()) {
+//                    while (peek().isLetterOrDigit()) {
+//                        advance()
+//                        if (isAtEnd()) break
+//                    }
+//
+//                    val type = Sscript.reservedKeywords.let {
+//                        val word = src.substring(start, index)
+//                        it.getOrElse(word) { IDENTIFIER }
+//                    }
+//
+//                    tokens.addComplex(type)
+//
+//                } else {
+//                    Sscript.error(line, "Unexpected character", char.toString())
+//
+//                }
+//
+//
+//            }
+//
+//
+//        }
+//
+//    }
+//    token.add(Token(END, "", line))
+//    return token
+//}
 
 
