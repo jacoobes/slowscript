@@ -1,4 +1,5 @@
-import compiler.Sscript
+package compiler
+
 
 
 fun main(args: Array<String>){

@@ -239,7 +239,11 @@ Short Circuiting -> `expression || expression`
  - NaN and null are falsy
 
 
-
+## A few things I want to complete
+  - VScode extension
+  - logo
+  - a cmdlet or something to make this easier to run then direct jar
+  - usable download on this repo
 
 
 
