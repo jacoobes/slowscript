@@ -1,0 +1,11 @@
+class Bird {
+    object(wings) {
+        this.wings = wings
+    }
+    hasWings() {
+        return this.wings;
+    }
+}
+
+log(Bird(false)
+    .hasWings())
