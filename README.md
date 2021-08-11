@@ -95,6 +95,7 @@ if (ans != 0) {
 - static methods in classes
 - escape characters
 - template literals
+- no data structures 
 
 <b><ins>As stated above, this language was created to learn language design and is not meant for practical use </b><ins>
 
