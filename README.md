@@ -242,7 +242,7 @@ Short Circuiting -> `expression || expression`
 
 
 ## A few things I want to complete
-  - VScode extension
+  - VScode extension (in the process)[https://github.com/jacoobes/slowscript-langExtension]
   - logo
   - a cmdlet or something to make this easier to run then direct jar
   - usable download on this repo
