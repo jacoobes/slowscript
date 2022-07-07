@@ -1,4 +1,4 @@
-## slowScript(.spt)
+![slowscript](/slowscript.svg)
 
 a tree-walk interpreter implemented in Kotlin that was created to learn how programming languages worked </br>
 Although not very practical to use in a real project, it is Turing complete and provides basic scripting needs. </br>
